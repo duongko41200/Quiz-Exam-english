@@ -1,6 +1,12 @@
 import { Box, Button, Typography } from '@mui/material';
 import React from 'react';
 import './ExamReading.css';
+import ListIcon from '@mui/icons-material/List';
+import InfoIcon from '@mui/icons-material/Info';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 const ExamReading = () => {
 	return (
@@ -273,7 +279,110 @@ const ExamReading = () => {
 
 				{/* Fottter */}
 
-				<Box className=" footer-test ">sdfsdf</Box>
+				<Box className=" footer-test  ">
+					<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+						<Box
+							sx={{
+								border: '1px solid var(--secondary-400, #b0b0b0)',
+								boxSizing: 'border-box',
+								width: '45px',
+								height: '45px',
+								textAlign: 'center',
+								verticalAlign: 'baseline',
+								outline: 'none',
+								cursor: 'pointer',
+								borderRadius: '6px',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								overflow: 'hidden',
+							}}
+						>
+							<ListIcon
+								sx={{ fontSize: ' calc(1.75rem ) !important' }}
+							></ListIcon>
+						</Box>
+						<Box
+							sx={{
+								border: '1px solid var(--secondary-400, #b0b0b0)',
+								boxSizing: 'border-box',
+								width: '45px',
+								height: '45px',
+								textAlign: 'center',
+								verticalAlign: 'baseline',
+								outline: 'none',
+								cursor: 'pointer',
+								borderRadius: '6px',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								overflow: 'hidden',
+							}}
+						>
+							<InfoIcon
+								sx={{ fontSize: ' calc(1.25rem ) !important' }}
+							/>
+						</Box>
+						<Box
+							sx={{
+								border: '1px solid var(--secondary-400, #b0b0b0)',
+								boxSizing: 'border-box',
+								width: '45px',
+								height: '45px',
+								textAlign: 'center',
+								verticalAlign: 'baseline',
+								outline: 'none',
+								cursor: 'pointer',
+								borderRadius: '6px',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								overflow: 'hidden',
+							}}
+						>
+							<SettingsIcon></SettingsIcon>
+						</Box>
+					</Box>
+
+					<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+						<Box
+							sx={{
+								border: '1px solid var(--secondary-400, #b0b0b0)',
+								boxSizing: 'border-box',
+								width: '45px',
+								height: '45px',
+								textAlign: 'center',
+								verticalAlign: 'baseline',
+								outline: 'none',
+								cursor: 'pointer',
+								borderRadius: '6px',
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								overflow: 'hidden',
+							}}
+						>
+							<ExitToAppIcon fontSize="medium"></ExitToAppIcon>
+						</Box>
+
+
+						<Button
+							variant="outlined"
+					
+							sx={{color: '#45368f',padding: '0.5rem 1rem'}}
+						>
+							<KeyboardBackspaceIcon sx={{marginRight:'5px'}}/>   Previous
+						</Button>
+
+						<Button
+							variant="contained"
+							className="pt-3  shadow mr-1"
+							sx={{backgroundColor: '#45368f',padding: '0.5rem 1rem'}}
+						>
+							Next <TrendingFlatIcon></TrendingFlatIcon>
+						</Button>
+					</Box>
+				</Box>
 			</Box>
 		</>
 	);

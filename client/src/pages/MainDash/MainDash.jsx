@@ -5,8 +5,15 @@ import Bars from '../../components/Bar/Bar';
 import RightSide from './RigtSide/RightSide';
 import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
+
+import { Outlet, useNavigate } from 'react-router-dom';
 const MainDash = () => {
 	const auth = useSelector((state) => state.authStore.user);
+	const navigate = useNavigate();
+	
+	const moveToExam = () => { 
+		navigate('/exam-test');
+	}
 
 	return (
 		<div className="MainDash">
@@ -28,7 +35,7 @@ const MainDash = () => {
 								lịch thi VSTEP mới nhất, thi thử VSTEP trực tuyến miễn
 								phí.
 							</p>
-							<Button  variant="contained" className="pt-3 btn btn-primary shadow lift me-1 mr-1">
+							<Button  variant="contained" className="pt-3 btn btn-primary shadow lift me-1 mr-1"  onClick={moveToExam}>
 								Vào thi ngay <i className="fe fe-headphones ms-2"></i>
 							</Button>
 							<Button variant="outlined" className="m-2 pt-3 w-fit btn btn-primary shadow">
