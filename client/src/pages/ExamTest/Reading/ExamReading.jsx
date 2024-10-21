@@ -4,14 +4,12 @@ import "./ExamReading.css";
 import ReadingPartOne from "./ReadingPartOne/ReadingPartOne";
 import { useDispatch, useSelector } from "react-redux";
 import ReadingPartTwo from "./ReadingPartTwo/ReadingPartTwo";
+import ReadingPartThree from "./ReadingPartThree/ReadingPartThree";
 
 const ExamReading = () => {
   const numberQuestion = useSelector(
     (state) => state.readingStore.numberQuestion
   );
-
-
-
 
   return (
     <>
@@ -58,6 +56,7 @@ const ExamReading = () => {
           </Box>
           {numberQuestion && numberQuestion === 1 && <ReadingPartOne />}
           {numberQuestion && numberQuestion === 2 && <ReadingPartTwo />}
+          {numberQuestion && numberQuestion === 3 && <ReadingPartThree />}
         </Box>
       </Box>
     </>
