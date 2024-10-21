@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
 	openModalBottom: false,
+	currentExamPart:'reading',
 };
 
 export const generalReducer = createSlice({

@@ -25,7 +25,7 @@ const App = () => {
 	}, []);
 	return (
 		<>
-			{auths != '' ? (
+			{/* {auths != '' ? ( */}
 				<div className="App">
 					<div className="AppGlass">
 						<Navigation />
@@ -33,9 +33,9 @@ const App = () => {
 					</div>
 					<Toaster />
 				</div>
-			) : (
+			{/* ) : (
 				<SignIn />
-			)}
+			)} */}
 		</>
 	);
 };
