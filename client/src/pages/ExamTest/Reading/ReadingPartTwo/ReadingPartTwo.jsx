@@ -95,7 +95,7 @@ const ReadingPartTwo = () => {
             className="box-left"
             sx={{
               backgroundColor: "#F4F6F9",
-              minWidth: "280px",
+              minWidth: "279px",
               height: "auto",
               padding: "14px",
               overflowY: "hidden",
