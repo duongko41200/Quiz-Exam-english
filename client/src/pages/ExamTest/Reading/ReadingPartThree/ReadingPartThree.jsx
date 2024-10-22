@@ -157,10 +157,6 @@ const ReadingPartThree = () => {
 		}
 	};
 
-	const onDrop = (e) => {
-		cónsole.log('e', e);
-	};
-
 	return (
 		<>
 			<Box>
@@ -174,7 +170,6 @@ const ReadingPartThree = () => {
 					onDragEnd={onDragEnd}
 					onDragStart={onDragStart}
 					onDragUpdate={onDragUpdate}
-					onDrop={onDrop}
 				>
 					<Box
 						sx={{
@@ -183,24 +178,10 @@ const ReadingPartThree = () => {
 							display: 'flex',
 							maxWidth: 'fit-content',
 							marginTop: '1rem',
+							height: '600px',
 						}}
 					>
 						<Box className=" box-right">
-							<Box
-								sx={{
-									fontFamily: 'Inter, sans-serif !important',
-									fontSize: '15px',
-								}}
-							>
-								<strong>Signs on the coast road</strong>
-							</Box>
-							<Box>
-								<p>
-									This report gives information about the traffic
-									problems on the coast road.
-								</p>
-							</Box>
-
 							<Box>
 								<Droppable droppableId="column1" direction="horizontal">
 									{(provided) => (
@@ -214,6 +195,26 @@ const ReadingPartThree = () => {
 												gap: 4,
 											}}
 										>
+											<Box
+												sx={{
+													maxWidth: 'fit-content',
+												}}
+											>
+												<Box
+													sx={{
+														fontFamily: 'Inter, sans-serif !important',
+														fontSize: '15px',
+													}}
+												>
+													<strong>Signs on the coast road</strong>
+												</Box>
+												<Box>
+													<p className="m-0">
+														This report gives information about the
+														traffic problems on the coast road.
+													</p>
+												</Box>
+											</Box>
 											{column1.map((item, index) => (
 												<Droppable
 													key={`droppable-${index}`}
@@ -317,7 +318,7 @@ const ReadingPartThree = () => {
 									<div
 										ref={provided.innerRef}
 										{...provided.droppableProps}
-										className="w-1/1  rounded"
+										className="w-1/1 h-full  rounded"
 									>
 										{column2.map((item, index) => (
 											<Draggable
