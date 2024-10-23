@@ -20,7 +20,9 @@ const ExamReading = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          padding: "1rem",
+          // padding: "1rem",
+          marginBottom: "4rem",
+          
         }}
         className="fluid"
       >
@@ -29,8 +31,9 @@ const ExamReading = () => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "start",
-            width: "45rem",
+            width: "fit-content",
             marginTop: "3.25rem",
+            padding:'1rem'
           }}
         >
           <Box

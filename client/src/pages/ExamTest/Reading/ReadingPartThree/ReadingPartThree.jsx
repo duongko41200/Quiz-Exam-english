@@ -178,10 +178,10 @@ const ReadingPartThree = () => {
 							display: 'flex',
 							maxWidth: 'fit-content',
 							marginTop: '1rem',
-							height: '600px',
 						}}
 					>
-						<Box className=" box-right">
+						{/* Box Left  */}
+						<Box className=" box-left">
 							<Box>
 								<Droppable droppableId="column1" direction="horizontal">
 									{(provided) => (
@@ -193,11 +193,12 @@ const ReadingPartThree = () => {
 												display: 'flex',
 												flexDirection: 'column',
 												gap: 4,
+												height: '600px',
 											}}
 										>
 											<Box
 												sx={{
-													maxWidth: 'fit-content',
+													maxWidth: '400px',
 												}}
 											>
 												<Box
@@ -277,7 +278,6 @@ const ReadingPartThree = () => {
 																		position: 'absolute',
 																		padding: '5px',
 																		fontSize: '14px',
-																		opacity: '0.5',
 																	}}
 																>
 																	{item?.content}
@@ -295,16 +295,16 @@ const ReadingPartThree = () => {
 							</Box>
 						</Box>
 
-						{/* bbox right */}
+						{/* box right */}
 						<Box
-							className="box-left"
+							className="box-right"
 							sx={{
 								backgroundColor: '#F4F6F9',
 								minWidth: '279px',
 								height: 'auto',
 								padding: '14px',
-								overflowY: 'hidden',
-
+								overflow: 'hidden',
+								maxWidth: '279px',
 								display: 'flex',
 								flexDirection: 'column',
 								gap: '0.5rem',

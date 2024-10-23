@@ -27,8 +27,8 @@
 .lrn_widget .lrn_response.lrn_cloze:not(.lrn_formulaV2) .lrn_response_input p {
     line-height: 2.7;
 }
-.box-right{
-    margin-bottom: 1.4em;
+.box-left{
+    /* margin-bottom: 1.4em; */
     padding-top: 1.2em;
     padding-right: 1.2em;
     padding-bottom: 0;
