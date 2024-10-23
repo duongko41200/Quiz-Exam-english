@@ -182,122 +182,121 @@ const ReadingPartThree = () => {
 					>
 						{/* Box Left  */}
 						<Box className=" box-left">
-							<Box>
-								<Droppable droppableId="column1" direction="horizontal">
-									{(provided) => (
+							<Droppable droppableId="column1">
+								{(provided) => (
+									<Box
+										ref={provided.innerRef}
+										{...provided.droppableProps}
+										className="w-1/1    rounded"
+										sx={{
+											display: 'flex',
+											flexDirection: 'column',
+											gap: 4,
+											height: '600px',
+										}}
+									>
 										<Box
-											ref={provided.innerRef}
-											{...provided.droppableProps}
-											className="w-1/1    rounded"
 											sx={{
-												display: 'flex',
-												flexDirection: 'column',
-												gap: 4,
-												height: '600px',
+												maxWidth: '400px',
 											}}
 										>
 											<Box
 												sx={{
-													maxWidth: '400px',
+													fontFamily: 'Inter, sans-serif !important',
+													fontSize: '15px',
 												}}
 											>
-												<Box
-													sx={{
-														fontFamily: 'Inter, sans-serif !important',
-														fontSize: '15px',
-													}}
-												>
-													<strong>Signs on the coast road</strong>
-												</Box>
-												<Box>
-													<p className="m-0">
-														This report gives information about the
-														traffic problems on the coast road.
-													</p>
-												</Box>
+												<strong>Signs on the coast road</strong>
 											</Box>
-											{column1.map((item, index) => (
-												<Droppable
-													key={`droppable-${index}`}
-													droppableId={`droppable-${index}`}
-													direction="horizontal"
-												>
-													{(provided) => (
-														<Box
-															ref={provided.innerRef}
-															{...provided.droppableProps}
-															className="bg-white border rounded min-h-[50px] flex items-center justify-center"
-															sx={{
-																width: '400px',
-																maxWidth: '400xx',
-																minHeight: '2.5em',
-																backgroundColor: '#F4F6F9',
-																borderRadius: '2px',
-																position: 'relative',
-															}}
-														>
-															{item && item.id !== pointActive ? (
-																<Draggable
-																	key={item.id}
-																	draggableId={item.id}
-																	index={index}
-																>
-																	{(provided) => (
-																		<Box
-																			sx={{
-																				width: '400px',
-																				border: '2px dashed #939393',
-																				minHeight: '2.5em',
-																				backgroundColor: '#F4F6F9',
-																				borderRadius: '2px',
-																				padding: '5px',
-																				fontSize: '14px',
-
-																				position: 'absolute',
-																				padding: '5px',
-																				fontSize: '14px',
-																			}}
-																			ref={provided.innerRef}
-																			{...provided.draggableProps}
-																			{...provided.dragHandleProps}
-																		>
-																			{item.content}
-																		</Box>
-																	)}
-																</Draggable>
-															) : (
-																<Box
-																	sx={{
-																		width: '100%',
-																		height: '100%',
-																		maxWidth: '400xx',
-																		border: '2px dashed #939393',
-																		minHeight: '50px',
-																		backgroundColor: '#F4F6F9',
-																		borderRadius: '2px',
-																		position: 'absolute',
-																		padding: '5px',
-																		fontSize: '14px',
-																	}}
-																>
-																	{item?.content}
-																</Box>
-															)}
-															{provided.placeholder}
-														</Box>
-													)}
-												</Droppable>
-											))}
-											{provided.placeholder}
+											<Box>
+												<p className="m-0">
+													This report gives information about the
+													traffic problems on the coast road.
+												</p>
+											</Box>
 										</Box>
-									)}
-								</Droppable>
-							</Box>
+										{column1.map((item, index) => (
+											<Droppable
+												key={`droppable-${index}`}
+												droppableId={`droppable-${index}`}
+												direction="vertical"
+											>
+												{(provided) => (
+													<Box
+														ref={provided.innerRef}
+														{...provided.droppableProps}
+														className="bg-white border rounded min-h-[50px] flex items-center justify-center"
+														sx={{
+															width: '400px',
+															maxWidth: '400xx',
+															minHeight: '2.5em',
+															backgroundColor: '#F4F6F9',
+															borderRadius: '2px',
+															position: 'relative',
+														}}
+													>
+														{item && item.id !== pointActive ? (
+															<Draggable
+																key={item.id}
+																draggableId={item.id}
+																index={index}
+																direction="vertical"
+															>
+																{(provided) => (
+																	<Box
+																		sx={{
+																			width: '400px',
+																			border: '2px dashed #939393',
+																			minHeight: '2.5em',
+																			backgroundColor: '#F4F6F9',
+																			borderRadius: '2px',
+																			padding: '5px',
+																			fontSize: '14px',
+
+																			position: 'absolute',
+																			padding: '5px',
+																			fontSize: '14px',
+																		}}
+																		ref={provided.innerRef}
+																		{...provided.draggableProps}
+																		{...provided.dragHandleProps}
+																	>
+																		{item.content}
+																	</Box>
+																)}
+															</Draggable>
+														) : (
+															<Box
+																sx={{
+																	width: '100%',
+																	height: '100%',
+																	maxWidth: '400xx',
+																	border: '2px dashed #939393',
+																	minHeight: '50px',
+																	backgroundColor: '#F4F6F9',
+																	borderRadius: '2px',
+																	position: 'absolute',
+																	padding: '5px',
+																	fontSize: '14px',
+																}}
+															>
+																{item?.content}
+															</Box>
+														)}
+														{provided.placeholder}
+													</Box>
+												)}
+											</Droppable>
+										))}
+										{provided.placeholder}
+									</Box>
+								)}
+							</Droppable>
 						</Box>
 
 						{/* box right */}
 						<Box
-							className="box-right"
+							className="colum-right"
 							sx={{
 								backgroundColor: '#F4F6F9',
 								minWidth: '279px',
@@ -313,7 +312,7 @@ const ReadingPartThree = () => {
 							{/* // box element */}
 
 							{/* //Draggable items */}
-							<Droppable droppableId="column2">
+							<Droppable droppableId="column2" direction="horizontal">
 								{(provided) => (
 									<div
 										ref={provided.innerRef}
@@ -325,6 +324,7 @@ const ReadingPartThree = () => {
 												key={item.id}
 												draggableId={item.id}
 												index={index}
+												direction="vertical"
 											>
 												{(provided) => (
 													<div
@@ -333,29 +333,39 @@ const ReadingPartThree = () => {
 														{...provided.dragHandleProps}
 														className="border border-gray-200 my-1 bg-white rounded"
 													>
-														<Box
-															sx={{
-																width: '250px',
-																height: '100px',
-																border: '1px solid #939393',
-																backgroundColor: '#fff',
-																borderRadius: '2px',
-															}}
+														<Draggable
+															key={item.id}
+															draggableId={item.id}
+															index={index}
+															direction="vertical"
 														>
-															<Box sx={{ textAlign: 'center' }}>
-																<DragHandleIcon />
-															</Box>
+															{(provided) => (
+																<Box
+																	sx={{
+																		width: '250px',
+																		height: '100px',
+																		border: '1px solid #939393',
+																		backgroundColor: '#fff',
+																		borderRadius: '2px',
+																	}}
+																>
+																	<Box sx={{ textAlign: 'center' }}>
+																		<DragHandleIcon />
+																	</Box>
 
-															<Box
-																sx={{
-																	textAlign: 'left',
-																	fontSize: '14px',
-																	padding: '7px 9px',
-																}}
-															>
-																{item.content}
-															</Box>
-														</Box>
+																	<Box
+																		sx={{
+																			textAlign: 'left',
+																			fontSize: '14px',
+																			padding: '7px 9px',
+																		}}
+																	>
+																		{item.content}
+																	</Box>
+																</Box>
+															)}
+														</Draggable>
+														{provided.placeholder}
 													</div>
 												)}
 											</Draggable>
