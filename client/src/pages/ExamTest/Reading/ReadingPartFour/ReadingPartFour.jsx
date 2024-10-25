@@ -1,220 +1,163 @@
 import { Box, Button, Typography } from '@mui/material';
 import './ReadingPartFour.css';
 import React, { useState } from 'react';
-import {
-	DragDropContext,
-	Droppable,
-	Draggable,
-} from 'react-beautiful-dnd';
-
-const initialItems = [
-	{ id: '0', content: 'Item 1' },
-	{ id: '1', content: 'Item 2' },
-	{ id: '2', content: 'Item 3' },
-];
+import Split from 'react-split';
+import { display, fontSize } from '@mui/system';
 
 const ReadingPartFour = () => {
-	const [column1, setColumn1] = useState(Array(3).fill(null)); // Khởi tạo 3 ô trống
-	const [column2, setColumn2] = useState(initialItems);
-	const [pointActive, setPointActive] = useState(null);
-
-	const onDragEnd = (result) => {
-		const { source, destination } = result;
-
-		if (!destination) return; // Không có vị trí đích
-
-		// Nếu kéo từ cột 2 sang cột 1
-		if (
-			source.droppableId === 'column2' &&
-			destination.droppableId.startsWith('droppable-')
-		) {
-			const newColumn1 = [...column1];
-			const newColumn2 = [...column2];
-			const targetIndex = parseInt(
-				destination.droppableId.split('-')[1]
-			);
-
-			// Nếu ô đích không trống
-			if (newColumn1[targetIndex]) {
-				// Đưa item hiện tại trong ô đích trở lại cột 2
-				newColumn2.push(newColumn1[targetIndex]);
-
-				const param = {
-					id: newColumn1[targetIndex].id,
-					content: newColumn1[targetIndex].content,
-				};
-
-				console.log('param', param);
-			}
-
-			// Thay thế nội dung ở cột 1
-			newColumn1[targetIndex] = newColumn2[source.index];
-			newColumn2.splice(source.index, 1); // Xóa item từ cột 2
-			setColumn1(newColumn1);
-			setColumn2(newColumn2);
-		}
-
-		// Nếu kéo từ cột 1 về cột 2
-		if (
-			source.droppableId.startsWith('droppable-') &&
-			destination.droppableId === 'column2'
-		) {
-			const newColumn1 = [...column1];
-			const newColumn2 = [...column2];
-			const targetIndex = parseInt(source.droppableId.split('-')[1]);
-
-			// Đặt lại ô ở cột 1
-			newColumn2.push(newColumn1[targetIndex]);
-			newColumn1[targetIndex] = null; // Đặt lại giá trị
-			setColumn1(newColumn1);
-			setColumn2(newColumn2);
-		}
-
-		// Nếu kéo trong cùng cột 1
-		if (
-			source.droppableId.startsWith('droppable-') &&
-			destination.droppableId.startsWith('droppable-')
-		) {
-			const newColumn1 = [...column1];
-			const sourceIndex = parseInt(source.droppableId.split('-')[1]);
-			const destinationIndex = parseInt(
-				destination.droppableId.split('-')[1]
-			);
-
-			// Hoán đổi vị trí
-			const temp = newColumn1[sourceIndex];
-			newColumn1[sourceIndex] = newColumn1[destinationIndex];
-			newColumn1[destinationIndex] = temp;
-
-			setColumn1(newColumn1);
-		}
-	};
-
-	const onDragUpdate = (result) => {
-		const { source, destination } = result;
-		console.log('result', result);
-		// Nếu kéo từ cột 2 sang cột 1
-		if (
-			source.droppableId === 'column2' &&
-			destination.droppableId.startsWith('droppable-')
-		) {
-			const newColumn1 = [...column1];
-			const newColumn2 = [...column2];
-			const targetIndex = parseInt(
-				destination.droppableId.split('-')[1]
-			);
-
-			// Nếu ô đích không trống
-			if (newColumn1[targetIndex]) {
-				// Đưa item hiện tại trong ô đích trở lại cột 2
-				newColumn2.push(newColumn1[targetIndex]);
-
-				const param = {
-					id: newColumn1[targetIndex].id,
-					content: newColumn1[targetIndex].content,
-				};
-
-				console.log('param', param);
-				setPointActive(newColumn1[targetIndex].id);
-			} else {
-				setPointActive(null);
-				console.log('newColumn1[targetIndex]', newColumn1[targetIndex]);
-			}
-		}
-	};
-
 	return (
-		<div className="flex justify-center p-5">
-			<DragDropContext
-				onDragEnd={onDragEnd}
-				onDragUpdate={onDragUpdate}
+		<>
+			<Box
+				sx={{
+					// width: '1000px',
+					border: '1px solid',
+					minHeight: '200px',
+					marginBottom: '4rem',
+					borderRadius: '5px',
+				}}
 			>
-				<Droppable droppableId="column1" direction="horizontal">
-					{(provided) => (
-						<div
-							ref={provided.innerRef}
-							{...provided.droppableProps}
-							className="w-1/3 border border-gray-300 p-2 m-2 rounded"
-						>
-							<h2 className="text-lg font-bold">Column 1</h2>
-							{column1.map((item, index) => (
-								<Droppable
-									key={`droppable-${index}`}
-									droppableId={`droppable-${index}`}
+				<Split className="split" minSize={200} sizes={[65, 35]}>
+					<Box
+						className="left bg-dark-layer-1"
+						sx={{
+							height: 'fit-content',
+							display: 'flex',
+							justifyContent: 'space-between',
+							flexDirection: 'column',
+							padding: '10px',
+							overflowY: 'auto',
+						}}
+					>
+						<Box>
+							<Box
+								sx={{
+									fontWeight: '500',
+									marginBottom: '10px',
+									fontSize: '15px',
+								}}
+							>
+								Four people respond in the comments section of an online
+								magazine article about education and work. Decide whose
+								opinion matches the statements below. Read the texts and
+								complete the questions below.
+							</Box>
+							<h2>
+								<strong>Education and work</strong>
+							</h2>
+							<br />
+
+							<Box sx={{ display: 'flex', flexDirection: 'column', gap:2,fontSize:'14px'}}>
+								<Box>
+									<strong>Petra</strong>
+								</Box>
+
+								<Box
+									class="ql-align-justify "
+									style={{ 'line-height': '0px !important' }}
 								>
-									{(provided) => (
-										<div
-											ref={provided.innerRef}
-											{...provided.droppableProps}
-											className="border border-gray-200 p-2 my-1 bg-white relative rounded min-h-[50px] flex items-center justify-center"
+									As you get older, responsibilities like a job and
+									family dominate your life. It can be hard to balance
+									things. Studying at university is demanding. So you
+									should do it at an age when you are independent and
+									carefree. It is also important to learn how the world
+									of business works. Spending unpaid time in a company
+									is a great way to get that experience. Any course that
+									can give you an opportunity to do that is worth
+									considering.
+								</Box>
+								<Box>
+									<strong>Antonio</strong>
+								</Box>
+								<Box class="ql-align-justify">
+									Life doesn’t really get serious until you hit your
+									mid-twenties. Before that, try out different things
+									and get some life experience. It’s only as you
+									approach your thirties that you need to get serious
+									about your career. That’s the time to start thinking
+									about further education. Many colleges offer
+									inexpensive courses for more mature students. Going
+									back to student life for a year is a great idea, and
+									you can then return to the world of work at management
+									level.
+								</Box>
+								<Box>
+									<strong>Eleanor</strong>
+								</Box>
+								<Box class="ql-align-justify">
+									Nowadays, it is popular for school leavers to take a
+									break before they think about an occupation or a place
+									at university. I think the most important thing is to
+									start working as soon as you can. You need practical
+									experience for your CV, and that can be more valuable
+									than a diploma. Nevertheless, your studies do not have
+									to stop just because you are working. Colleges and
+									universities offer options for people who want to do
+									both.
+								</Box>
+								<Box>
+									<strong>Jermaine</strong>
+								</Box>
+								<Box class="ql-align-justify">
+									I think we should all keep learning, but you don’t
+									need a piece of paper from an institution to prove it.
+									There are many free courses available online. Of
+									course, not all are good, but a little research will
+									help you identify which one is best for you. A lot of
+									young people get into debt because they have to pay
+									for their studies. With the resources available online
+									these days, you can take control. You won’t regret it.
+								</Box>
+							</Box>
+						</Box>
+					</Box>
+
+					<Box
+						className="right "
+						sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							height: '100%',
+						}}
+					>
+						<Box sx={{ display: 'flex', padding: '10px' }}>
+							<Box className="question-right p-1  col-8">
+								<Box sx={{ fontSize: '14px' }}>
+									Who thinks you should study when you are older?
+								</Box>
+							</Box>
+
+							<Box className="answer p-1 col-4">
+								<span data-lrn-template-response="">
+									<span class=" lrn_combobox">
+										<select
+											aria-label="Response input area"
+											class=" lrn-cloze-select lrn_cloze_response"
+											data-inputid="0"
+											fdprocessedid="0o584j"
 										>
-											{item && item.id !== pointActive ? (
-												<Draggable
-													key={item.id}
-													draggableId={item.id}
-													index={index}
-												>
-													{(provided) => (
-														<div
-															ref={provided.innerRef}
-															{...provided.draggableProps}
-															{...provided.dragHandleProps}
-															className={`w-full h-full border border-gray-200 p-2 bg-white rounded absolute ${
-																item.id === pointActive
-																	? 'opacity-10'
-																	: ' '
-															} top-0 left-0 tranform-none`}
-														>
-															{item.content}
-														</div>
-													)}
-												</Draggable>
-											) : (
-												<Box className="text-gray-400 absolute w-full h-full flex justify-center items-center">
-													<Box> {item?.content}</Box>
-												</Box>
-											)}
-											{provided.placeholder}
-										</div>
-									)}
-								</Droppable>
-							))}
-							{provided.placeholder}
-						</div>
-					)}
-				</Droppable>
-				<Droppable droppableId="column2">
-					{(provided) => (
-						<div
-							ref={provided.innerRef}
-							{...provided.droppableProps}
-							className="w-1/3 border border-gray-300 p-2 m-2 rounded"
-						>
-							<h2 className="text-lg font-bold">Column 2</h2>
-							{column2.map((item, index) => (
-								<Draggable
-									key={item.id}
-									draggableId={item.id}
-									index={index}
-								>
-									{(provided) => (
-										<div
-											ref={provided.innerRef}
-											{...provided.draggableProps}
-											{...provided.dragHandleProps}
-											className="border border-gray-200 p-2 my-1 bg-white rounded"
-										>
-											{item.content}
-										</div>
-									)}
-								</Draggable>
-							))}
-							{provided.placeholder}
-						</div>
-					)}
-				</Droppable>
-			</DragDropContext>
-		</div>
+											<option
+												role="option"
+												value=""
+												aria-label="Please select an option - "
+											></option>
+											<option role="option" value="large">
+												large
+											</option>
+											<option role="option" value="great">
+												great
+											</option>
+											<option role="option" value="big">
+												big
+											</option>
+										</select>
+									</span>
+								</span>
+							</Box>
+						</Box>
+					</Box>
+				</Split>
+			</Box>
+		</>
 	);
 };
 

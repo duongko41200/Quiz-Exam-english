@@ -159,7 +159,7 @@ const ReadingPartThree = () => {
 
 	return (
 		<>
-			<Box>
+			<Box >
 				<Box sx={{ fontWeight: '400', fontSize: '16px' }}>
 					<strong>
 						The sentences below are from a report. Put the sentences in

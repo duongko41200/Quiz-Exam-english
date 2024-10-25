@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ReadingPartTwo from "./ReadingPartTwo/ReadingPartTwo";
 import ReadingPartThree from "./ReadingPartThree/ReadingPartThree";
 import ReadingPartFour from "./ReadingPartFour/ReadingPartFour";
+import ReadingPartFive from "./ReadingPartFive/ReadingPartFive";
 
 const ExamReading = () => {
   const numberQuestion = useSelector(
@@ -22,6 +23,7 @@ const ExamReading = () => {
           alignItems: "center",
           // padding: "1rem",
           marginBottom: "4rem",
+     
           
         }}
         className="fluid"
@@ -33,7 +35,8 @@ const ExamReading = () => {
             justifyContent: "start",
             width: "fit-content",
             marginTop: "3.25rem",
-            padding:'1rem'
+            padding: '1rem',
+            width: "calc(100% - 500px)",
           }}
         >
           <Box
@@ -62,6 +65,7 @@ const ExamReading = () => {
           {numberQuestion && numberQuestion === 2 && <ReadingPartTwo />}
           {numberQuestion && numberQuestion === 3 && <ReadingPartThree />}
           {numberQuestion && numberQuestion === 4 && <ReadingPartFour />}
+          {numberQuestion && numberQuestion === 5 && <ReadingPartFive />}
         </Box>
       </Box>
     </>
