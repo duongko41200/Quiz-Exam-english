@@ -64,6 +64,8 @@ function SignIn() {
 				return;
 			}
 
+
+
 			//set aurthen
 			localStorage.setItem('userId', res.metadata?.user?._id);
 			localStorage.setItem(
@@ -74,31 +76,6 @@ function SignIn() {
 				'refreshToken',
 				res.metadata?.tokens?.refreshToken
 			);
-
-			const getData = JSON.parse(localStorage.getItem('textData'));
-
-			if (!getData || getData?.length <= 0) {
-				const getAllText = await TextService.getAll({
-					userId: res.metadata?.user._id,
-					accessToken: res.metadata?.tokens?.accessToken,
-				});
-
-				localStorage.setItem(
-					'textData',
-					JSON.stringify(getAllText[0]?.metadata?.contents ?? [])
-				);
-			}
-
-			ToastSuccess(CREATE_SUCCESS);
-
-			localStorage.setItem('user', JSON.stringify(res.metadata?.user));
-			dispatch(SET_USER(res.metadata?.user));
-			localStorage.removeItem('listText');
-			localStorage.removeItem('totalPages');
-			localStorage.removeItem('listPending');
-			// localStorage.removeItem('dayPending');
-			// localStorage.removeItem('topics')
-			// localStorage.removeItem('listChecking')
 
 			setIsShow(false);
 
@@ -112,7 +89,7 @@ function SignIn() {
 	return (
 		<>
 			<SpinnerLoading show={isShow}>
-				<div className="container sign-up-mode">
+				<div className="container ">
 					<div className="forms-container">
 						<div className="signin-signup">
 							<div className=" form sign-up-form">

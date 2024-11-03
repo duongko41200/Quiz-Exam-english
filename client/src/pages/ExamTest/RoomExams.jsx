@@ -1,5 +1,5 @@
 import { Box, Button } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ListIcon from '@mui/icons-material/List';
 import InfoIcon from '@mui/icons-material/Info';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -15,6 +15,9 @@ import {
 } from '../../store/feature/reading.js';
 
 const RoomExam = () => {
+	const testBankData = useSelector(
+		(state) => state.testBankStore.testBankData
+	);
 	const currentExamPart = useSelector(
 		(state) => state.generalStore.currentExamPart
 	);
@@ -33,6 +36,10 @@ const RoomExam = () => {
 			dispatch(SET_DECREMENT());
 		}
 	};
+
+	useEffect(() => {
+		console.log({ testBankData });
+	}, []);
 	return (
 		<>
 			<Box>
