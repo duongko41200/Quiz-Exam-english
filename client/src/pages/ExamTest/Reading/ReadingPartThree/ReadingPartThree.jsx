@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import './ReadingPartThree.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	DragDropContext,
 	Droppable,
@@ -8,6 +8,8 @@ import {
 } from 'react-beautiful-dnd';
 
 import DragHandleIcon from '@mui/icons-material/DragHandle';
+import { RES_DATA } from '../../../../Constant/global';
+import { useSelector } from 'react-redux';
 
 const initialItems = [
 	{
@@ -36,10 +38,19 @@ const initialItems = [
 	},
 ];
 
+const TITLE = 0;
+const DEAR_PERSON = 1;
+const FOOT_FISH = 2;
+const SIGNAL = 3;
+
 const ReadingPartThree = () => {
 	const [column1, setColumn1] = useState(Array(5).fill(null)); // Khởi tạo 3 ô trống
-	const [column2, setColumn2] = useState(initialItems);
+	const [column2, setColumn2] = useState([]);
 	const [pointActive, setPointActive] = useState(null);
+	const [contentPartThree, setContentPartThree] = useState();
+	const testBankData = useSelector(
+		(state) => state.testBankStore.testBankData
+	);
 
 	const onDragEnd = (result) => {
 		const { source, destination } = result;
@@ -157,14 +168,32 @@ const ReadingPartThree = () => {
 		}
 	};
 
+	useEffect(() => {
+		const readingPartThree = testBankData.reading.part3[RES_DATA].data;
+
+		const answerList = readingPartThree?.questions?.answerList;
+
+		let answerListPart3 = [];
+
+		for (let i = 0; i < answerList.length; i++) {
+			answerListPart3 = [
+				...answerListPart3,
+				{
+					id: answerList[i].numberOrder.toString(),
+					content: answerList[i].content,
+				},
+			];
+		}
+
+		setColumn2(answerListPart3);
+		setContentPartThree(readingPartThree?.questions);
+	}, [testBankData]);
+
 	return (
 		<>
-			<Box >
-				<Box sx={{ fontWeight: '400', fontSize: '16px' }}>
-					<strong>
-						The sentences below are from a report. Put the sentences in
-						the right order. The first sentence is done for you.&nbsp;
-					</strong>
+			<Box>
+				<Box sx={{ fontWeight: '700', fontSize: '16px' }}>
+					{contentPartThree?.content.split('tentisspace')[TITLE]}
 				</Box>
 				<DragDropContext
 					onDragEnd={onDragEnd}
@@ -206,13 +235,22 @@ const ReadingPartThree = () => {
 													fontSize: '15px',
 												}}
 											>
-												<strong>Signs on the coast road</strong>
+												<strong>
+													{
+														contentPartThree?.content.split(
+															'tentisspace'
+														)[DEAR_PERSON]
+													}
+												</strong>
 											</Box>
 											<Box>
-												<p className="m-0">
-													This report gives information about the
-													traffic problems on the coast road.
-												</p>
+												<Box sx={{ marginTop: '10px' }}>
+													{
+														contentPartThree?.content.split(
+															'tentisspace'
+														)[FOOT_FISH]
+													}
+												</Box>
 											</Box>
 										</Box>
 										{column1.map((item, index) => (
