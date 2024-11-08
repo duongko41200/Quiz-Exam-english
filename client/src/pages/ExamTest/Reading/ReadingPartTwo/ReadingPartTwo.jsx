@@ -245,9 +245,12 @@ const ReadingPartTwo = () => {
 												</strong>
 											</Box>
 											<Box>
-                        <Box sx={{marginTop: '10px'}}>
-                          {contentPartTwo?.content.split('tentisspace')[FOOT_FISH]}
-
+												<Box sx={{ marginTop: '10px' }} >
+													{
+														contentPartTwo?.content.split(
+															'tentisspace'
+														)[FOOT_FISH]
+													}
 												</Box>
 											</Box>
 										</Box>

@@ -1,8 +1,70 @@
 import { Box, Button, Typography } from '@mui/material';
 import './ReadingPartFive.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RES_DATA } from '../../../../Constant/global';
 
 const ReadingPartFive = () => {
+	const [contentPartFour, setContentPartFour] = useState();
+	const [subQuestion, setSubQuestion] = useState([]);
+	const [answerList, setAnswerList] = useState([]);
+
+	const testBankData = useSelector(
+		(state) => state.testBankStore.testBankData
+	);
+
+	useEffect(() => {
+		const readingPartFive = testBankData.reading.part5[RES_DATA].data;
+		const content = readingPartFive?.questions?.content;
+		const subQuestion = readingPartFive?.questions?.subQuestion;
+		const answerList = readingPartFive?.questions?.answerList;
+
+		setContentPartFour(content);
+		setSubQuestion(subQuestion);
+		setAnswerList(answerList);
+	}, [testBankData]);
+
+	const renderContent = () => {
+		if (!contentPartFour) return null;
+		return contentPartFour.split('tentisspace').map((part, index) => (
+			<Box
+				key={index}
+				className={index % 2 === 0 ? '' : 'ql-align-justify'}
+				sx={{ fontSize: index === 1 ? '24px' : '14px',lineHeight: '2.7rem' }}
+			>
+				{index > 1 && (
+					<Box className="answer p-1 col-4 w-[200px]">
+						<span data-lrn-template-response="">
+							<span className="lrn_combobox">
+								<select
+									aria-label="Response input area"
+									className="lrn-cloze-select lrn_cloze_response"
+									data-inputid="0"
+								>
+									<option
+										role="option"
+										value=""
+										aria-label="Please select an option - "
+									></option>
+									{answerList.length > 0 &&
+										answerList.map((answer, idx) => (
+											<option
+												key={idx}
+												role="option"
+												value={answer.content}
+											>
+												{answer.content}
+											</option>
+										))}
+								</select>
+							</span>
+						</span>
+					</Box>
+				)}
+				{index === 1 || index === 0 ? <strong>{part}</strong> : part}
+			</Box>
+		));
+	};
 	return (
 		<>
 			<Box
@@ -19,154 +81,12 @@ const ReadingPartFive = () => {
 						display: 'flex',
 						justifyContent: 'space-between',
 						flexDirection: 'column',
+						gap: 3,
 					}}
 				>
-					<Box>
-						<Box
-							sx={{
-								fontWeight: '500',
-								marginBottom: '10px',
-								fontSize: '15px',
-							}}
-						>
-							Read the passage quickly. Choose a heading for each
-							numbered paragraph (1–7) from the drop-down box. There is
-							one more heading than you need.
-						</Box>
-						<Box sx={{ fontSize: '20px' }}>
-							<strong>Mission to Mars</strong>
-						</Box>
-						<br />
+					{renderContent()}
 
-						<Box>
-							<Box className="answer p-1 col-4 w-[200px]">
-								<span className="lrn_combobox">
-									<span>
-										<select>
-											<option
-												role="option"
-												value=""
-												aria-label="Please select an option - "
-											></option>
-											<option role="option" value="large">
-												larges sadfsdfsdfsdf
-											</option>
-											<option role="option" value="great">
-												great
-											</option>
-											<option role="option" value="big">
-												big
-											</option>
-										</select>
-									</span>
-								</span>
-							</Box>
-
-							<Box>
-								<p class="ql-align-justify ">
-									1. On 3 June 2010, an international crew of six
-									astronauts entered a spaceship and prepared themselves
-									for a 520-day voyage to the planet Mars and back. The
-									module that was to be their home for the next year and
-									a half contained their sleeping quarters, a
-									kitchen/dining room, a living room, a control room and
-									a toilet. There was also space for food storage, a
-									small greenhouse, a bathroom, a sauna and even a gym.
-									The Mars landing was scheduled for 12 February 2011,
-									following a 255-day flight, and would involve a full
-									two days of exploration of the planet's surface. An
-									equally long return journey would see the astronauts
-									return to Earth on 4 November 2011.
-								</p>
-							</Box>
-						</Box>
-
-						<Box>
-							<Box className="answer p-1 col-4 w-[200px]">
-								<span className="lrn_combobox">
-									<span>
-										<select>
-											<option
-												role="option"
-												value=""
-												aria-label="Please select an option - "
-											></option>
-											<option role="option" value="large">
-												larges sadfsdfsdfsdf
-											</option>
-											<option role="option" value="great">
-												great
-											</option>
-											<option role="option" value="big">
-												big
-											</option>
-										</select>
-									</span>
-								</span>
-							</Box>
-
-							<Box>
-								<p class="ql-align-justify ">
-									1. On 3 June 2010, an international crew of six
-									astronauts entered a spaceship and prepared themselves
-									for a 520-day voyage to the planet Mars and back. The
-									module that was to be their home for the next year and
-									a half contained their sleeping quarters, a
-									kitchen/dining room, a living room, a control room and
-									a toilet. There was also space for food storage, a
-									small greenhouse, a bathroom, a sauna and even a gym.
-									The Mars landing was scheduled for 12 February 2011,
-									following a 255-day flight, and would involve a full
-									two days of exploration of the planet's surface. An
-									equally long return journey would see the astronauts
-									return to Earth on 4 November 2011.
-								</p>
-							</Box>
-						</Box>
-
-						<Box>
-							<Box className="answer p-1 col-4 w-[200px]">
-								<span className="lrn_combobox">
-									<span>
-										<select>
-											<option
-												role="option"
-												value=""
-												aria-label="Please select an option - "
-											></option>
-											<option role="option" value="large">
-												larges sadfsdfsdfsdf
-											</option>
-											<option role="option" value="great">
-												great
-											</option>
-											<option role="option" value="big">
-												big
-											</option>
-										</select>
-									</span>
-								</span>
-							</Box>
-
-							<Box>
-								<p class="ql-align-justify ">
-									1. On 3 June 2010, an international crew of six
-									astronauts entered a spaceship and prepared themselves
-									for a 520-day voyage to the planet Mars and back. The
-									module that was to be their home for the next year and
-									a half contained their sleeping quarters, a
-									kitchen/dining room, a living room, a control room and
-									a toilet. There was also space for food storage, a
-									small greenhouse, a bathroom, a sauna and even a gym.
-									The Mars landing was scheduled for 12 February 2011,
-									following a 255-day flight, and would involve a full
-									two days of exploration of the planet's surface. An
-									equally long return journey would see the astronauts
-									return to Earth on 4 November 2011.
-								</p>
-							</Box>
-						</Box>
-					</Box>
+			
 				</Box>
 			</Box>
 		</>
