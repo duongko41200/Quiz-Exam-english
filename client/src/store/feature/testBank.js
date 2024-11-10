@@ -1,5 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+
+
+
+const setResponseUser = (questions, limit) => {
+	questions.forEach((question, index) => {
+		if (index < limit) {
+			question['responseUser'] = '';
+		}
+	});
+};
+
 const initialState = {
 	testBankData: {
 		title: 'đề mẫu',
@@ -163,7 +174,6 @@ export const testBankReducer = createSlice({
 				action.payload[`${Object.keys(action.payload)}`];
 		},
 		SET_TYPE_TEXT: (state, action) => {
-	
 			state.typeText = action.payload;
 		},
 		// SET_TESTBANK_DATA: (state, action) => {
@@ -206,8 +216,17 @@ export const testBankReducer = createSlice({
 		},
 
 		SET_TESTBANK_DATA: (state, action) => {
-			console.log('action:', action);
-			state.testBankData = action.payload;
+			const testBank = action.payload;
+
+
+
+			setResponseUser(testBank['reading']['part1'][0]['data']['questions']['subQuestion'], 6);
+			testBank['reading']['part2'][0]['data']['questions']['responseUser'] = '';
+			testBank['reading']['part3'][0]['data']['questions']['responseUser'] = '';
+			setResponseUser(testBank['reading']['part4'][0]['data']['questions']['subQuestion'], 8);
+			setResponseUser(testBank['reading']['part5'][0]['data']['questions']['subQuestion'], 8);
+
+			state.testBankData = testBank;
 		},
 		// extraReducers: (builder) => {
 		// 	builder.addCase(getAllText.fulfilled, (state, action) => {
