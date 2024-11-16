@@ -1,5 +1,5 @@
 import { Box, Button } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ListIcon from '@mui/icons-material/List';
 import InfoIcon from '@mui/icons-material/Info';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -36,6 +36,49 @@ const RoomExam = () => {
 	);
 
 	const dispatch = useDispatch();
+	const [hours, setHours] = useState(0);
+	const [minutes, setMinutes] = useState(0);
+	const [seconds, setSeconds] = useState(0);
+	const [timeLeft, setTimeLeft] = useState(0);
+	const [intervalId, setIntervalId] = useState(null);
+
+	useEffect(() => {
+		if (currentExamPart === 'writing') {
+			setMinutes(50);
+			setTimeLeft(50 * 60);
+		} else if (currentExamPart === 'reading') {
+			setMinutes(30);
+			setTimeLeft(30 * 60);
+		}
+	}, [currentExamPart]);
+
+	useEffect(() => {
+		if (timeLeft > 0) {
+			const id = setInterval(() => {
+				setTimeLeft((prevTime) => prevTime - 1);
+			}, 1000);
+			setIntervalId(id);
+			return () => clearInterval(id);
+		}
+
+	}, [timeLeft]);
+
+	useEffect(() => {
+		const remainingHours = Math.floor(timeLeft / 3600);
+		const remainingMinutes = Math.floor((timeLeft % 3600) / 60);
+		const remainingSeconds = timeLeft % 60;
+
+		setHours(remainingHours);
+		setMinutes(remainingMinutes);
+		setSeconds(remainingSeconds);
+	}, [timeLeft]);
+
+	const resetCountdown = () => {
+		clearInterval(intervalId);
+		setMinutes(50);
+		setSeconds(0);
+		setTimeLeft(50 * 60);
+	};
 
 	const nextQuestion = () => {
 		if (numberQuestion < 5 && currentExamPart === 'reading') {
@@ -45,6 +88,7 @@ const RoomExam = () => {
 			dispatch(SET_INCREMENT_WRITING());
 		}
 	};
+
 	const previousQuestion = () => {
 		if (numberQuestion > 1 && currentExamPart === 'reading') {
 			dispatch(SET_DECREMENT());
@@ -54,168 +98,107 @@ const RoomExam = () => {
 		}
 	};
 
-	const MoveExamSkill = () => {
+	const moveExamSkill = () => {
 		dispatch(SET_MOVE_EXAM_SKILL());
 		dispatch(SET_RESET_NUMBER_QUESTION());
 	};
 
 	useEffect(() => {
 		console.log({ testBankData });
-	}, []);
+	}, [testBankData]);
+
 	return (
-		<>
-			<Box>
-				<Box
-					sx={{
-						display: 'flex',
-						justifyContent: 'end',
-						alignItems: 'center',
-						padding: '1rem',
-						height: '3.75rem',
-						width: '100%',
-						// position: 'absolute',
-						// top: 0,
-						// right: 0,
-						backgroundColor: '#fff',
-						position: 'fixed',
-						zIndex: 1000,
-					}}
-				>
+		<Box>
+			<Box
+				sx={{
+					display: 'flex',
+					justifyContent: 'end',
+					alignItems: 'center',
+					padding: '1rem',
+					height: '3.75rem',
+					width: '100%',
+					backgroundColor: '#fff',
+					position: 'fixed',
+					zIndex: 1000,
+				}}
+			>
+				<Box sx={{ position: 'fixed', padding: '20px',paddingTop:'30px' }}>
 					<Box
 						sx={{
-							position: 'fixed !important',
-							padding: '20px 20px',
+							margin: 0,
+							color: '#161616',
+							fontWeight: 'bold',
+							fontSize: '1.5em',
 						}}
 					>
-						<Box
-							sx={{
-								margin: '0',
-								color: '#161616',
-								fontWeight: 'bold',
-								fontSize: '1.5em',
-							}}
-						>
-							00:00:00
-						</Box>
-						<Box sx={{ fontSize: '14px' }}>Time remaining</Box>
+						<span>{hours.toString().padStart(2, '0')}</span>:
+						<span>{minutes.toString().padStart(2, '0')}</span>:
+						<span>{seconds.toString().padStart(2, '0')}</span>
 					</Box>
-				</Box>
-				// BODY OF THE EXAM
-				{currentExamPart === 'reading' && <ExamReading />}
-				{currentExamPart === 'writing' && <ExamWriting />}
-				{/* Fottter */}
-				<Box className=" footer-test">
-					<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-						<Box
-							sx={{
-								border: '1px solid var(--secondary-400, #b0b0b0)',
-								boxSizing: 'border-box',
-								width: '45px',
-								height: '45px',
-								textAlign: 'center',
-								verticalAlign: 'baseline',
-								outline: 'none',
-								cursor: 'pointer',
-								borderRadius: '6px',
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'center',
-								overflow: 'hidden',
-							}}
-						>
-							<ListIcon
-								sx={{ fontSize: ' calc(1.75rem ) !important' }}
-							></ListIcon>
-						</Box>
-						<Box
-							sx={{
-								border: '1px solid var(--secondary-400, #b0b0b0)',
-								boxSizing: 'border-box',
-								width: '45px',
-								height: '45px',
-								textAlign: 'center',
-								verticalAlign: 'baseline',
-								outline: 'none',
-								cursor: 'pointer',
-								borderRadius: '6px',
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'center',
-								overflow: 'hidden',
-							}}
-						>
-							<InfoIcon
-								sx={{ fontSize: ' calc(1.25rem ) !important' }}
-							/>
-						</Box>
-						<Box
-							sx={{
-								border: '1px solid var(--secondary-400, #b0b0b0)',
-								boxSizing: 'border-box',
-								width: '45px',
-								height: '45px',
-								textAlign: 'center',
-								verticalAlign: 'baseline',
-								outline: 'none',
-								cursor: 'pointer',
-								borderRadius: '6px',
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'center',
-								overflow: 'hidden',
-							}}
-						>
-							<SettingsIcon></SettingsIcon>
-						</Box>
-					</Box>
-
-					<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-						<Box
-							sx={{
-								border: '1px solid var(--secondary-400, #b0b0b0)',
-								boxSizing: 'border-box',
-								width: '45px',
-								height: '45px',
-								textAlign: 'center',
-								verticalAlign: 'baseline',
-								outline: 'none',
-								cursor: 'pointer',
-								borderRadius: '6px',
-								display: 'flex',
-								alignItems: 'center',
-								justifyContent: 'center',
-								overflow: 'hidden',
-							}}
-							onClick={MoveExamSkill}
-						>
-							<ExitToAppIcon fontSize="medium"></ExitToAppIcon>
-						</Box>
-
-						<Button
-							variant="outlined"
-							sx={{ color: '#45368f', padding: '0.5rem 1rem' }}
-							onClick={previousQuestion}
-						>
-							<KeyboardBackspaceIcon sx={{ marginRight: '5px' }} />{' '}
-							Previous
-						</Button>
-
-						<Button
-							variant="contained"
-							className="pt-3  shadow mr-1"
-							sx={{
-								backgroundColor: '#45368f',
-								padding: '0.5rem 1rem',
-							}}
-							onClick={nextQuestion}
-						>
-							Next <TrendingFlatIcon></TrendingFlatIcon>
-						</Button>
-					</Box>
+					<Box sx={{ fontSize: '14px' }}>Time remaining</Box>
 				</Box>
 			</Box>
-		</>
+			{currentExamPart === 'reading' && <ExamReading />}
+			{currentExamPart === 'writing' && <ExamWriting />}
+			<Box className="footer-test">
+				<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+					<IconBox>
+						<ListIcon sx={{ fontSize: '1.75rem' }} />
+					</IconBox>
+					<IconBox>
+						<InfoIcon sx={{ fontSize: '1.25rem' }} />
+					</IconBox>
+					<IconBox>
+						<SettingsIcon />
+					</IconBox>
+				</Box>
+				<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+					<IconBox onClick={moveExamSkill}>
+						<ExitToAppIcon fontSize="medium" />
+					</IconBox>
+					<Button
+						variant="outlined"
+						sx={{ color: '#45368f', padding: '0.5rem 1rem' }}
+						onClick={previousQuestion}
+					>
+						<KeyboardBackspaceIcon sx={{ marginRight: '5px' }} />{' '}
+						Previous
+					</Button>
+					<Button
+						variant="contained"
+						className="pt-3 shadow mr-1"
+						sx={{ backgroundColor: '#45368f', padding: '0.5rem 1rem' }}
+						onClick={nextQuestion}
+					>
+						Next <TrendingFlatIcon />
+					</Button>
+				</Box>
+			</Box>
+		</Box>
 	);
 };
+
+const IconBox = ({ children, onClick }) => (
+	<Box
+		sx={{
+			border: '1px solid #b0b0b0',
+			boxSizing: 'border-box',
+			width: '45px',
+			height: '45px',
+			textAlign: 'center',
+			verticalAlign: 'baseline',
+			outline: 'none',
+			cursor: 'pointer',
+			borderRadius: '6px',
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			overflow: 'hidden',
+		}}
+		onClick={onClick}
+	>
+		{children}
+	</Box>
+);
 
 export default RoomExam;
