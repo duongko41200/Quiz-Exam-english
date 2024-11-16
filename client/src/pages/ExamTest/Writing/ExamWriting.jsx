@@ -4,6 +4,8 @@ import './ExamWriting.css';
 import { useDispatch, useSelector } from 'react-redux';
 import WritingPartOne from './WritingPartOne/WritingPartOne';
 import WritingPartTwo from './WritingPartTwo/WritingPartTwo';
+import WritingPartThree from './WritingPartThree/WritingPartThree';
+import WritingPartFour from './WritingPartFour/WritingPartFour';
 
 const ExamReading = () => {
 	const numberQuestion = useSelector(
@@ -58,11 +60,13 @@ const ExamReading = () => {
 					</Box>
 					{numberQuestion && numberQuestion === 1 && <WritingPartOne />}
 					{numberQuestion && numberQuestion === 2 && <WritingPartTwo />}
-					{/* {numberQuestion && numberQuestion === 1 && <ReadingPartOne />}
-          {numberQuestion && numberQuestion === 2 && <ReadingPartTwo />}
-          {numberQuestion && numberQuestion === 3 && <ReadingPartThree />}
-          {numberQuestion && numberQuestion === 4 && <ReadingPartFour />}
-          {numberQuestion && numberQuestion === 5 && <ReadingPartFive />} */}
+
+					{numberQuestion && numberQuestion === 3 && (
+						<WritingPartThree />
+					)}
+					{numberQuestion && numberQuestion === 4 && (
+						<WritingPartFour />
+					)}
 				</Box>
 			</Box>
 		</>
