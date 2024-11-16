@@ -12,6 +12,7 @@ const ReadingPartFive = () => {
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
 	);
+	
 
 	useEffect(() => {
 		const readingPartFive = testBankData.reading.part5[RES_DATA].data;

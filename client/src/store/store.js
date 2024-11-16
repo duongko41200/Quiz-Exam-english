@@ -5,6 +5,7 @@ import authReducer from './feature/auth';
 import generalReducer from './general';
 import readingReducer from './feature/reading';
 import testBankReducer from './feature/testBank';
+import writingReducer from './feature/writing';
 
 export const store = configureStore({
 	reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
 		authStore: authReducer,
 		generalStore: generalReducer,
 		readingStore: readingReducer,
+		writingStore: writingReducer,
 		testBankStore: testBankReducer,
 	},
 });

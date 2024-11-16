@@ -7,12 +7,19 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import ExamReading from './Reading/ExamReading.jsx';
+import ExamWriting from './Writing/ExamWriting.jsx';
 import './RoomExam.css';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	SET_DECREMENT,
 	SET_INCREMENT,
+	SET_RESET_NUMBER_QUESTION,
 } from '../../store/feature/reading.js';
+import { SET_MOVE_EXAM_SKILL } from '../../store/general.js';
+import {
+	SET_DECREMENT_WRITING,
+	SET_INCREMENT_WRITING,
+} from '../../store/feature/writing.js';
 
 const RoomExam = () => {
 	const testBankData = useSelector(
@@ -24,17 +31,32 @@ const RoomExam = () => {
 	const numberQuestion = useSelector(
 		(state) => state.readingStore.numberQuestion
 	);
+	const numberQuestionWriting = useSelector(
+		(state) => state.writingStore.numberQuestion
+	);
+
 	const dispatch = useDispatch();
 
 	const nextQuestion = () => {
 		if (numberQuestion < 5 && currentExamPart === 'reading') {
 			dispatch(SET_INCREMENT());
 		}
+		if (numberQuestionWriting < 4 && currentExamPart === 'writing') {
+			dispatch(SET_INCREMENT_WRITING());
+		}
 	};
 	const previousQuestion = () => {
 		if (numberQuestion > 1 && currentExamPart === 'reading') {
 			dispatch(SET_DECREMENT());
 		}
+		if (numberQuestionWriting > 1 && currentExamPart === 'writing') {
+			dispatch(SET_DECREMENT_WRITING());
+		}
+	};
+
+	const MoveExamSkill = () => {
+		dispatch(SET_MOVE_EXAM_SKILL());
+		dispatch(SET_RESET_NUMBER_QUESTION());
 	};
 
 	useEffect(() => {
@@ -79,7 +101,8 @@ const RoomExam = () => {
 					</Box>
 				</Box>
 				// BODY OF THE EXAM
-				<ExamReading />
+				{currentExamPart === 'reading' && <ExamReading />}
+				{currentExamPart === 'writing' && <ExamWriting />}
 				{/* Fottter */}
 				<Box className=" footer-test">
 					<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -163,6 +186,7 @@ const RoomExam = () => {
 								justifyContent: 'center',
 								overflow: 'hidden',
 							}}
+							onClick={MoveExamSkill}
 						>
 							<ExitToAppIcon fontSize="medium"></ExitToAppIcon>
 						</Box>
