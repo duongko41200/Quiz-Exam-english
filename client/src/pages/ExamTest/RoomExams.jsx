@@ -20,6 +20,7 @@ import {
 	SET_DECREMENT_WRITING,
 	SET_INCREMENT_WRITING,
 } from '../../store/feature/writing.js';
+import BasicModal from '../../components/Modal/ModalBasic.jsx';
 
 const RoomExam = () => {
 	const testBankData = useSelector(
@@ -39,8 +40,9 @@ const RoomExam = () => {
 	const [hours, setHours] = useState(0);
 	const [minutes, setMinutes] = useState(0);
 	const [seconds, setSeconds] = useState(0);
-	const [timeLeft, setTimeLeft] = useState(0);
+	const [timeLeft, setTimeLeft] = useState(null);
 	const [intervalId, setIntervalId] = useState(null);
+	const [openModal, setOpenModal] = useState(false);
 
 	useEffect(() => {
 		if (currentExamPart === 'writing') {
@@ -53,6 +55,7 @@ const RoomExam = () => {
 	}, [currentExamPart]);
 
 	useEffect(() => {
+
 		if (timeLeft > 0) {
 			const id = setInterval(() => {
 				setTimeLeft((prevTime) => prevTime - 1);
@@ -60,7 +63,9 @@ const RoomExam = () => {
 			setIntervalId(id);
 			return () => clearInterval(id);
 		}
-
+		if (timeLeft===0) {
+			moveExamSkill();
+		}
 	}, [timeLeft]);
 
 	useEffect(() => {
@@ -99,8 +104,16 @@ const RoomExam = () => {
 	};
 
 	const moveExamSkill = () => {
+		setOpenModal(true);
+	};
+	const closeModal = () => {
+		setOpenModal(false);
+	};
+
+	const nextPartSkill = () => {
 		dispatch(SET_MOVE_EXAM_SKILL());
 		dispatch(SET_RESET_NUMBER_QUESTION());
+		setOpenModal(false);
 	};
 
 	useEffect(() => {
@@ -108,73 +121,102 @@ const RoomExam = () => {
 	}, [testBankData]);
 
 	return (
-		<Box>
-			<Box
-				sx={{
-					display: 'flex',
-					justifyContent: 'end',
-					alignItems: 'center',
-					padding: '1rem',
-					height: '3.75rem',
-					width: '100%',
-					backgroundColor: '#fff',
-					position: 'fixed',
-					zIndex: 1000,
-				}}
-			>
-				<Box sx={{ position: 'fixed', padding: '20px',paddingTop:'30px' }}>
+		<>
+			<Box>
+				<Box
+					sx={{
+						display: 'flex',
+						justifyContent: 'end',
+						alignItems: 'center',
+						padding: '1rem',
+						height: '3.75rem',
+						width: '100%',
+						backgroundColor: '#fff',
+						position: 'fixed',
+						zIndex: 1000,
+					}}
+				>
 					<Box
 						sx={{
-							margin: 0,
-							color: '#161616',
-							fontWeight: 'bold',
-							fontSize: '1.5em',
+							position: 'fixed',
+							padding: '20px',
+							paddingTop: '30px',
 						}}
 					>
-						<span>{hours.toString().padStart(2, '0')}</span>:
-						<span>{minutes.toString().padStart(2, '0')}</span>:
-						<span>{seconds.toString().padStart(2, '0')}</span>
+						<Box
+							sx={{
+								margin: 0,
+								color: '#161616',
+								fontWeight: 'bold',
+								fontSize: '1.5em',
+							}}
+						>
+							<span>{hours.toString().padStart(2, '0')}</span>:
+							<span>{minutes.toString().padStart(2, '0')}</span>:
+							<span>{seconds.toString().padStart(2, '0')}</span>
+						</Box>
+						<Box sx={{ fontSize: '14px' }}>Time remaining</Box>
 					</Box>
-					<Box sx={{ fontSize: '14px' }}>Time remaining</Box>
+				</Box>
+				{currentExamPart === 'reading' && <ExamReading />}
+				{currentExamPart === 'writing' && <ExamWriting />}
+				<Box className="footer-test">
+					<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+						<IconBox>
+							<ListIcon sx={{ fontSize: '1.75rem' }} />
+						</IconBox>
+						<IconBox>
+							<InfoIcon sx={{ fontSize: '1.25rem' }} />
+						</IconBox>
+						<IconBox>
+							<SettingsIcon />
+						</IconBox>
+					</Box>
+					<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+						<IconBox onClick={moveExamSkill}>
+							<ExitToAppIcon fontSize="medium" />
+						</IconBox>
+						<Button
+							variant="outlined"
+							sx={{ color: '#45368f', padding: '0.5rem 1rem' }}
+							onClick={previousQuestion}
+						>
+							<KeyboardBackspaceIcon sx={{ marginRight: '5px' }} />{' '}
+							Previous
+						</Button>
+						<Button
+							variant="contained"
+							className="pt-3 shadow mr-1"
+							sx={{
+								backgroundColor: '#45368f',
+								padding: '0.5rem 1rem',
+							}}
+							onClick={nextQuestion}
+						>
+							Next <TrendingFlatIcon />
+						</Button>
+					</Box>
 				</Box>
 			</Box>
-			{currentExamPart === 'reading' && <ExamReading />}
-			{currentExamPart === 'writing' && <ExamWriting />}
-			<Box className="footer-test">
-				<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-					<IconBox>
-						<ListIcon sx={{ fontSize: '1.75rem' }} />
-					</IconBox>
-					<IconBox>
-						<InfoIcon sx={{ fontSize: '1.25rem' }} />
-					</IconBox>
-					<IconBox>
-						<SettingsIcon />
-					</IconBox>
-				</Box>
-				<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-					<IconBox onClick={moveExamSkill}>
-						<ExitToAppIcon fontSize="medium" />
-					</IconBox>
-					<Button
-						variant="outlined"
-						sx={{ color: '#45368f', padding: '0.5rem 1rem' }}
-						onClick={previousQuestion}
-					>
-						<KeyboardBackspaceIcon sx={{ marginRight: '5px' }} />{' '}
-						Previous
-					</Button>
-					<Button
-						variant="contained"
-						className="pt-3 shadow mr-1"
-						sx={{ backgroundColor: '#45368f', padding: '0.5rem 1rem' }}
-						onClick={nextQuestion}
-					>
-						Next <TrendingFlatIcon />
-					</Button>
-				</Box>
-			</Box>
-		</Box>
+
+			<BasicModal
+				open={openModal}
+				handleClose={closeModal}
+				label="Move to another skill"
+			>
+				<Button
+					variant="contained"
+					className="pt-3 shadow mr-1"
+					sx={{
+						backgroundColor: '#45368f',
+						padding: '0.5rem 1rem',
+					}}
+					onClick={nextPartSkill}
+				>
+					Next
+				</Button>
+			</BasicModal>
+		</>
 	);
 };
 

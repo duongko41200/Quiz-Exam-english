@@ -9,6 +9,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import TestBankService from '../../services/API/testBank.service';
 import { RES_DATA } from '../../Constant/global';
 import { SET_TESTBANK_DATA } from '../../store/feature/testBank';
+import { SET_RESET_PART_SKILL } from '../../store/general';
 
 const MainDash = () => {
 	const auth = useSelector((state) => state.authStore.user);
@@ -17,6 +18,7 @@ const MainDash = () => {
 
 	const moveToExam = async () => {
 		navigate('/exam-test');
+		dispatch(SET_RESET_PART_SKILL());
 	};
 
 	const fetchData = async () => {

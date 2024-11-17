@@ -12,6 +12,10 @@ const ExamReading = () => {
 		(state) => state.writingStore.numberQuestion
 	);
 
+	const testBankData = useSelector(
+		(state) => state.testBankStore.testBankData
+	);
+
 	return (
 		<>
 			<Box

@@ -5,11 +5,6 @@ import { RES_DATA } from '../../../../Constant/global';
 import TextareaInput from '../../../../components/TextareaAutosize/TextareaAutosize';
 import { Box, Button, Checkbox, TextareaAutosize } from '@mui/material';
 
-const TITLE = 0;
-const DEAR_PERSON = 1;
-const FOOT_FISH = 2;
-const SIGNAL = 3;
-
 const WritingPartTwo = () => {
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
@@ -50,68 +45,28 @@ const WritingPartTwo = () => {
 	);
 
 	useEffect(() => {
-		const readingPartOne = testBankData.reading.part1[RES_DATA].data;
-		setResWritingPartOne(readingPartOne);
-		setContentPartOne(readingPartOne?.questions);
+		const writingPartTwo = testBankData.writing.part2[RES_DATA];
+		setResWritingPartOne(
+			writingPartTwo?.questions[RES_DATA].subQuestion
+		);
+		setContentPartOne(writingPartTwo?.questions[RES_DATA].content);
 	}, [testBankData]);
-
-	const renderSubQuestions = (subQuestions) => {
-		return subQuestions.map((item, index) => (
-			<div key={index} className="flex justify-start gap-1 text-sm">
-				{item.content.split(' ').map((word, idx) =>
-					word !== 'tentisspace' ? (
-						<div key={idx}>{word}</div>
-					) : (
-						<span key={idx} data-lrn-template-response="">
-							<span className="lrn_combodiv">
-								<select
-									aria-label="Response input area"
-									className="lrn-cloze-select lrn_cloze_response"
-									data-inputid="1"
-								>
-									<option
-										role="option"
-										value=""
-										aria-label="Please select an option - "
-									></option>
-									{item.answerList.map((answer, idx) => (
-										<option
-											key={idx}
-											role="option"
-											value={answer.content}
-										>
-											{answer.content}
-										</option>
-									))}
-								</select>
-							</span>
-						</span>
-					)
-				)}
-			</div>
-		));
-	};
 
 	return (
 		<div>
 			<div className="lrn_stimulus_content lrn_clearfix lrn_question mb-5">
-				<b>
-					You are a new member of the travel club. Fill in the form.
-					Write in sentences. Use 20–30 words. Recommended time: 7
-					minutes.
-				</b>
+				<b>{contentPartOne}</b>
 			</div>
 			<div className="lrn_response_innerbody lrn-response-validate-wrapper">
 				<div className="lrn_response_input"></div>
 
 				<div className="flex justify-start flex-col gap-6">
-					{/* {contentPartOne?.subQuestion &&
-						renderSubQuestions(contentPartOne.subQuestion)} */}
-
 					<Box>
 						<Box>
 							<Box>
-								<p>Please tell us why you are interested in travel. </p>
+								<p>
+									{resWritingPartOne && resWritingPartOne[0].content}{' '}
+								</p>
 							</Box>
 						</Box>
 						<Box>
@@ -132,7 +87,7 @@ const WritingPartTwo = () => {
 									fontWeight: '500',
 								}}
 							>
-								Word: {result.length}/45{' '}
+								Word: {result.length}/45
 							</Box>
 						</Box>
 					</Box>

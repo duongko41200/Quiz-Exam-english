@@ -21,10 +21,13 @@ const BG_COLOR = {
 	7: '#3E8F78',
 };
 
+const SPACE_BANK = 'tentisspace';
+
 export {
 	STEPS_ADD_WORD_SENTENCE,
 	RES_DATA,
 	LIMIT_TEXT_OF_PAGE,
 	LIMIT_LIST_TEXT_OF_PAGE,
 	BG_COLOR,
+	SPACE_BANK,
 };

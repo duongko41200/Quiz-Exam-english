@@ -34,11 +34,18 @@ export const generalReducer = createSlice({
 				state.pointExam + 1
 			);
 		},
+		SET_RESET_PART_SKILL: (state, action) => {
+			state.currentExamPart = 'reading';
+			state.pointExam = 2;
+		},
 	},
 });
 
 // Action creators are generated for each case reducer function
-export const { SET_OPEN_MODAL_BOTTOM, SET_MOVE_EXAM_SKILL } =
-	generalReducer.actions;
+export const {
+	SET_OPEN_MODAL_BOTTOM,
+	SET_MOVE_EXAM_SKILL,
+	SET_RESET_PART_SKILL,
+} = generalReducer.actions;
 
 export default generalReducer.reducer;
