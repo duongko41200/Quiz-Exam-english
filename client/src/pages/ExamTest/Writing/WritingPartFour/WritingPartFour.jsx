@@ -1,15 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import '../../Reading/ExamReading.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA, SPACE_BANK } from '../../../../Constant/global';
 import TextareaInput from '../../../../components/TextareaAutosize/TextareaAutosize';
 import { Box, TextareaAutosize } from '@mui/material';
+import { SET_RESPONSE_RESULT_WRITING } from '../../../../store/feature/testBank';
 
 const TITLE = 0;
 const BODY = 1;
 const FOOT_FISH = 2;
 const EMAIL_INFOMAL = 0;
 const EMAIL_FORMAL = 1;
+
+const PART_FOUR = 4;
 
 const WritingPartFour = () => {
 	const testBankData = useSelector(
@@ -18,6 +21,7 @@ const WritingPartFour = () => {
 
 	const [resWritingPartOne, setResWritingPartOne] = useState();
 	const [contentPartOne, setContentPartOne] = useState();
+	const dispatch = useDispatch();
 	const [subTitle, setSubTitle] = useState(null);
 	const [result1, setResult1] = useState([]);
 	const [result2, setResult2] = useState([]);
@@ -41,6 +45,10 @@ const WritingPartFour = () => {
 				.split(/\s+/)
 				.filter((word) => word.length > 0);
 
+			dispatch(
+				SET_RESPONSE_RESULT_WRITING({ part: PART_FOUR, index, value })
+			);
+
 			if (index === EMAIL_INFOMAL) {
 				setResult1(inputWords);
 			}
@@ -59,6 +67,23 @@ const WritingPartFour = () => {
 		setContentPartOne(writingPartFour?.questions[RES_DATA].content);
 		setSubTitle(writingPartFour?.questions[RES_DATA].questionTitle);
 	}, [testBankData]);
+
+	useEffect(() => {
+		const writingPartFour = testBankData.writing.part4[RES_DATA];
+		if (writingPartFour) {
+			const subQuestion =
+				writingPartFour.questions[RES_DATA].subQuestion;
+			const responseUser = subQuestion.map((item) => item.responseUser);
+			if (responseUser.length === 2) {
+				setResult1(
+					responseUser[0].split(/\s+/).filter((word) => word.length > 0)
+				);
+				setResult2(
+					responseUser[1].split(/\s+/).filter((word) => word.length > 0)
+				);
+			}
+		}
+	}, []);
 
 	return (
 		<div>
@@ -90,6 +115,7 @@ const WritingPartFour = () => {
 										onChange={(e) => handleChangeTextarea(e, index)}
 										maxRows={4}
 										minRows={4}
+										defaultValue={question.responseUser}
 									/>
 								</TextareaInput>
 								<Box

@@ -1,15 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import '../../Reading/ExamReading.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../../Constant/global';
 import TextareaInput from '../../../../components/TextareaAutosize/TextareaAutosize';
 import { Box, Button, Checkbox, TextareaAutosize } from '@mui/material';
+import { SET_RESPONSE_RESULT_WRITING } from '../../../../store/feature/testBank';
 
-const QUESTON_FIRST = 0;
-const QUESTON_SECOND = 1;
-const QUESTON_THIRD = 2;
-const QUESTON_FOUR = 3;
-const QUESTON_FIVE = 4;
+const PART_ONE = 1;
 
 const WritingPartOne = () => {
 	const testBankData = useSelector(
@@ -18,12 +15,7 @@ const WritingPartOne = () => {
 
 	const [resWritingPartOne, setResWritingPartOne] = useState();
 	const [contentPartOne, setContentPartOne] = useState();
-
-	const [result1, setResult1] = useState([]);
-	const [result2, setResult2] = useState([]);
-	const [result3, setResult3] = useState([]);
-	const [result4, setResult4] = useState([]);
-	const [result5, setResult5] = useState([]);
+	const dispatch = useDispatch();
 
 	const debounce = (func, wait) => {
 		let timeout;
@@ -34,8 +26,6 @@ const WritingPartOne = () => {
 	};
 	const handleChangeTextarea = useCallback(
 		debounce((e, index) => {
-			console.log('values text:', e.target.value);
-
 			const value = e.target.value;
 
 			const inputWords = value
@@ -45,11 +35,9 @@ const WritingPartOne = () => {
 
 			console.log({ inputWords });
 
-			if (index === QUESTON_FIRST) setResult1(inputWords);
-			if (index === QUESTON_SECOND) setResult2(inputWords);
-			if (index === QUESTON_THIRD) setResult3(inputWords);
-			if (index === QUESTON_FOUR) setResult4(inputWords);
-			if (index === QUESTON_FIVE) setResult5(inputWords);
+			dispatch(
+				SET_RESPONSE_RESULT_WRITING({ part: PART_ONE, index, value })
+			);
 		}, 300),
 		[]
 	);
@@ -90,6 +78,7 @@ const WritingPartOne = () => {
 												onChange={(e) => handleChangeTextarea(e, index)}
 												maxRows={1}
 												minRows={1}
+												defaultValue={item.responseUser}
 											/>
 										</TextareaInput>
 									</Box>

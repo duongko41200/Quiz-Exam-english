@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import '../../Reading/ExamReading.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../../Constant/global';
 import TextareaInput from '../../../../components/TextareaAutosize/TextareaAutosize';
 import { Box, Button, Checkbox, TextareaAutosize } from '@mui/material';
+import { SET_RESPONSE_RESULT_WRITING } from '../../../../store/feature/testBank';
 
 const QUESTON_FIRST = 0;
 const QUESTON_SECOND = 1;
 const QUESTON_THIRD = 2;
+const PART_THREE = 3;
 
 const WritingPartThree = () => {
 	const testBankData = useSelector(
@@ -16,6 +18,7 @@ const WritingPartThree = () => {
 
 	const [resWritingPartOne, setResWritingPartOne] = useState();
 	const [contentPartOne, setContentPartOne] = useState();
+	const dispatch = useDispatch();
 
 	const [result1, setResult1] = useState([]);
 	const [result2, setResult2] = useState([]);
@@ -39,7 +42,9 @@ const WritingPartThree = () => {
 				.split(/\s+/)
 				.filter((word) => word.length > 0);
 
-			console.log({ inputWords });
+			dispatch(
+				SET_RESPONSE_RESULT_WRITING({ part: PART_THREE, index, value })
+			);
 
 			if (index === QUESTON_FIRST) setResult1(inputWords);
 			if (index === QUESTON_SECOND) setResult2(inputWords);
@@ -55,6 +60,18 @@ const WritingPartThree = () => {
 		);
 		setContentPartOne(writingPartThree?.questions[RES_DATA].content);
 	}, [testBankData]);
+	useEffect(() => {
+		const writingPartThree = testBankData.writing.part3[RES_DATA];
+		if (writingPartThree) {
+			const subQuestion = writingPartThree.questions[RES_DATA].subQuestion;
+			const responseUser = subQuestion.map((item) => item.responseUser);
+			if (responseUser.length === 3) {
+				setResult1(responseUser[0].split(/\s+/).filter((word) => word.length > 0));
+				setResult2(responseUser[1].split(/\s+/).filter((word) => word.length > 0));
+				setResult3(responseUser[2].split(/\s+/).filter((word) => word.length > 0));
+			}
+		}
+	}, []);
 
 	return (
 		<div>
@@ -92,6 +109,7 @@ const WritingPartThree = () => {
 												onChange={(e) => handleChangeTextarea(e, index)}
 												maxRows={4}
 												minRows={4}
+												defaultValue={item.responseUser}
 											/>
 										</TextareaInput>
 										<Box

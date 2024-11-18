@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import '../../Reading/ExamReading.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../../Constant/global';
 import TextareaInput from '../../../../components/TextareaAutosize/TextareaAutosize';
 import { Box, Button, Checkbox, TextareaAutosize } from '@mui/material';
+import { SET_RESPONSE_RESULT_WRITING } from '../../../../store/feature/testBank';
+
+const PART_TWO = 2;
 
 const WritingPartTwo = () => {
 	const testBankData = useSelector(
@@ -13,6 +16,7 @@ const WritingPartTwo = () => {
 
 	const [resWritingPartOne, setResWritingPartOne] = useState();
 	const [contentPartOne, setContentPartOne] = useState();
+	const dispatch = useDispatch();
 
 	const debounce = (func, wait) => {
 		let timeout;
@@ -38,6 +42,9 @@ const WritingPartTwo = () => {
 			console.log({ inputWords });
 
 			setResult(inputWords);
+			dispatch(
+				SET_RESPONSE_RESULT_WRITING({ part: PART_TWO, index: 0, value })
+			);
 
 			// setUserCode(inputWords)
 		}, 500),
@@ -51,6 +58,17 @@ const WritingPartTwo = () => {
 		);
 		setContentPartOne(writingPartTwo?.questions[RES_DATA].content);
 	}, [testBankData]);
+
+	useEffect(() => {
+		const writingPartTwo = testBankData.writing.part2[RES_DATA].questions[0].subQuestion
+		if (writingPartTwo) {
+			const inputWords = writingPartTwo[0].responseUser
+				.toLowerCase()
+				.split(/\s+/)
+				.filter((word) => word.length > 0);
+			setResult(inputWords);
+		}
+	}, []);
 
 	return (
 		<div>
@@ -78,6 +96,10 @@ const WritingPartTwo = () => {
 									onChange={handleChangeTextarea}
 									maxRows={5}
 									minRows={5}
+									defaultValue={
+										resWritingPartOne &&
+										resWritingPartOne[0].responseUser
+									}
 								/>
 							</TextareaInput>
 							<Box

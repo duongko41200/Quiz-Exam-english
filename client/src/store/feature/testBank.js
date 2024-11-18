@@ -3,13 +3,21 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 
 
-const setResponseUser = (questions, limit) => {
+const setResponseReading = (questions, limit) => {
 	questions.forEach((question, index) => {
 		if (index < limit) {
 			question['responseUser'] = '';
 		}
 	});
 };
+
+const setResponseWriting = (questions, limit) => { 
+	questions.forEach((question, index) => {
+		if (index < limit) {
+			question['responseUser'] = '';
+		}
+	});
+}
 
 const initialState = {
 	testBankData: {
@@ -219,15 +227,32 @@ export const testBankReducer = createSlice({
 			const testBank = action.payload;
 
 
-
-			setResponseUser(testBank['reading']['part1'][0]['data']['questions']['subQuestion'], 6);
+			setResponseReading(testBank['reading']['part1'][0]['data']['questions']['subQuestion'], 6);
 			testBank['reading']['part2'][0]['data']['questions']['responseUser'] = '';
 			testBank['reading']['part3'][0]['data']['questions']['responseUser'] = '';
-			setResponseUser(testBank['reading']['part4'][0]['data']['questions']['subQuestion'], 8);
-			setResponseUser(testBank['reading']['part5'][0]['data']['questions']['subQuestion'], 8);
+			setResponseReading(testBank['reading']['part4'][0]['data']['questions']['subQuestion'], 8);
+			setResponseReading(testBank['reading']['part5'][0]['data']['questions']['subQuestion'], 8);
+
+
+			setResponseWriting(testBank['writing']['part1'][0]['questions'][0]['subQuestion'], 5);
+			setResponseWriting(testBank['writing']['part2'][0]['questions'][0]['subQuestion'], 1);
+			setResponseWriting(testBank['writing']['part3'][0]['questions'][0]['subQuestion'], 3);
+			setResponseWriting(testBank['writing']['part4'][0]['questions'][0]['subQuestion'], 2);
 
 			state.testBankData = testBank;
 		},
+
+		SET_RESPONSE_RESULT_WRITING: (state, action) => { 
+			const {part, index, value } = action.payload;
+			
+			state.testBankData['writing'][`part${part}`][0]['questions'][0]['subQuestion'][index]['responseUser'] = value;
+			console.log("first,",state.testBankData)
+
+		}
+
+	
+
+
 		// extraReducers: (builder) => {
 		// 	builder.addCase(getAllText.fulfilled, (state, action) => {
 		// 		console.log('action:', action.payload);
@@ -259,6 +284,7 @@ export const {
 	SET_TESTBANK_DATA,
 	SET_TYPE_TEXT,
 	RESET_TESTBANK_DATA,
+	SET_RESPONSE_RESULT_WRITING
 } = testBankReducer.actions;
 
 export default testBankReducer.reducer;

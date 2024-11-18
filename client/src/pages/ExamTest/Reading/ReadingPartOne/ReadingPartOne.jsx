@@ -16,6 +16,11 @@ const ReadingPartOne = () => {
 	const [resReadingPartOne, setResReadingPartOne] = useState();
 	const [contentPartOne, setContentPartOne] = useState();
 
+	const selectOption = (e,idx) => { 
+
+		console.log(e.target.value,idx);
+	}
+
 	useEffect(() => {
 		const readingPartOne = testBankData.reading.part1[RES_DATA].data;
 		setResReadingPartOne(readingPartOne);
@@ -32,9 +37,10 @@ const ReadingPartOne = () => {
 						<span key={idx} data-lrn-template-response="">
 							<span className="lrn_combodiv">
 								<select
-									aria-label="Response input area"
-									className="lrn-cloze-select lrn_cloze_response"
-									data-inputid="1"
+										aria-label="Response input area"
+										className="lrn-cloze-select lrn_cloze_response"
+										data-inputid="1"
+										onChange={(e) => { selectOption(e,index) }}
 								>
 									<option
 										role="option"
@@ -46,6 +52,7 @@ const ReadingPartOne = () => {
 											key={idx}
 											role="option"
 											value={answer.content}
+
 										>
 											{answer.content}
 										</option>

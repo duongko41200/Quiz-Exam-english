@@ -27,6 +27,8 @@ const MainDash = () => {
 
 			const data = getTestBank[RES_DATA].metadata[RES_DATA];
 
+			console.log("tesst dataa:",data)
+
 			dispatch(SET_TESTBANK_DATA(data));
 		} catch (error) {
 			console.log({ error });
