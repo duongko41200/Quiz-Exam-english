@@ -2,13 +2,17 @@ import { Box } from '@mui/material';
 import './ReadingPartFour.css';
 import React, { useEffect, useState } from 'react';
 import Split from 'react-split';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../../Constant/global';
+import { SET_RESPONSE_RESULT_READING } from '../../../../store/feature/testBank';
+
+const PART_FOUR = 4;
 
 const ReadingPartFour = () => {
 	const [contentPartFour, setContentPartFour] = useState();
 	const [subQuestion, setSubQuestion] = useState([]);
 	const [answerList, setAnswerList] = useState([]);
+	const dispatch = useDispatch();
 
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
@@ -24,6 +28,14 @@ const ReadingPartFour = () => {
 		setSubQuestion(subQuestion);
 		setAnswerList(answerList);
 	}, [testBankData]);
+
+	const selectOption = (e, index) => {
+		const value = e.target.value;
+
+		dispatch(
+			SET_RESPONSE_RESULT_READING({ part: PART_FOUR, index, value })
+		);
+	};
 
 	const renderContent = () => {
 		if (!contentPartFour) return null;
@@ -94,6 +106,10 @@ const ReadingPartFour = () => {
 													aria-label="Response input area"
 													className="lrn-cloze-select lrn_cloze_response"
 													data-inputid="0"
+													onChange={(e) => {
+														selectOption(e, index);
+													}}
+													defaultValue={item.responseUser}
 												>
 													<option
 														role="option"

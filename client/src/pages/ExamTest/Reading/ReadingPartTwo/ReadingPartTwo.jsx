@@ -8,8 +8,12 @@ import {
 } from 'react-beautiful-dnd';
 
 import DragHandleIcon from '@mui/icons-material/DragHandle';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../../Constant/global';
+import { SET_RESPONSE_RESULT_READING } from '../../../../store/feature/testBank';
+
+
+const PART_TWO = 2
 
 let initialItems = [
 	{
@@ -48,6 +52,7 @@ const ReadingPartTwo = () => {
 	const [column2, setColumn2] = useState([]);
 	const [pointActive, setPointActive] = useState(null);
 	const [contentPartTwo, setContentPartTwo] = useState();
+	const dispatch = useDispatch();
 
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
@@ -82,6 +87,13 @@ const ReadingPartTwo = () => {
 			newColumn2.splice(source.index, 1); // Xóa item từ cột 2
 			setColumn1(newColumn1);
 			setColumn2(newColumn2);
+
+
+			console.log({ newColumn1 })
+			
+			dispatch(
+				SET_RESPONSE_RESULT_READING({ part: PART_TWO, value: newColumn1 })
+			);
 		}
 
 		// Nếu kéo từ cột 1 về cột 2

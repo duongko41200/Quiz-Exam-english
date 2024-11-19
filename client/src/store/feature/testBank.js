@@ -248,6 +248,28 @@ export const testBankReducer = createSlice({
 			state.testBankData['writing'][`part${part}`][0]['questions'][0]['subQuestion'][index]['responseUser'] = value;
 			console.log("first,",state.testBankData)
 
+		},
+
+		
+		SET_RESPONSE_RESULT_READING: (state, action) => { 
+			const { part, index, value } = action.payload;
+			
+
+			if (part === 1 || part === 4 || part === 5) {
+				
+				state.testBankData['reading'][`part${part}`][0]['data']['questions']['subQuestion'][index]['responseUser'] = value
+
+			}
+			if (part === 2 || part === 3) {
+				let data = [];
+				state.testBankData['reading'][`part${part}`][0]['data']['questions']['responseUser'] = value
+					.filter(item => item != null)
+					.map(item => parseInt(item.id));
+			}
+			
+			
+			console.log("first,",state.testBankData)
+
 		}
 
 	
@@ -284,7 +306,8 @@ export const {
 	SET_TESTBANK_DATA,
 	SET_TYPE_TEXT,
 	RESET_TESTBANK_DATA,
-	SET_RESPONSE_RESULT_WRITING
+	SET_RESPONSE_RESULT_WRITING,
+	SET_RESPONSE_RESULT_READING
 } = testBankReducer.actions;
 
 export default testBankReducer.reducer;

@@ -1,18 +1,21 @@
 import { Box, Button, Typography } from '@mui/material';
 import './ReadingPartFive.css';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../../Constant/global';
+import { SET_RESPONSE_RESULT_READING } from '../../../../store/feature/testBank';
+
+const PART_FIVE = 5;
 
 const ReadingPartFive = () => {
 	const [contentPartFour, setContentPartFour] = useState();
 	const [subQuestion, setSubQuestion] = useState([]);
 	const [answerList, setAnswerList] = useState([]);
+	const dispatch = useDispatch();
 
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
 	);
-	
 
 	useEffect(() => {
 		const readingPartFive = testBankData.reading.part5[RES_DATA].data;
@@ -25,15 +28,27 @@ const ReadingPartFive = () => {
 		setAnswerList(answerList);
 	}, [testBankData]);
 
+	const selectOption = (e, index) => {
+		const value = e.target.value;
+		console.log({ value, index });
+
+		dispatch(
+			SET_RESPONSE_RESULT_READING({ part: PART_FIVE, index, value })
+		);
+	};
+
 	const renderContent = () => {
 		if (!contentPartFour) return null;
 		return contentPartFour.split('tentisspace').map((part, index) => (
 			<Box
 				key={index}
-				className={index % 2 === 0 ? '' : 'ql-align-justify'}
-				sx={{ fontSize: index === 1 ? '24px' : '14px',lineHeight: '2.7rem' }}
+				className={index === 0 ? '' : 'ql-align-justify'}
+				sx={{
+					fontSize: index === 1 ? '24px' : '14px',
+					lineHeight: '2.7rem',
+				}}
 			>
-				{index > 1 && (
+				{index > (contentPartFour.split('tentisspace')[1] === 'null' ? 0 : 1) && (
 					<Box className="answer p-1 col-4 w-[200px]">
 						<span data-lrn-template-response="">
 							<span className="lrn_combobox">
@@ -41,19 +56,16 @@ const ReadingPartFive = () => {
 									aria-label="Response input area"
 									className="lrn-cloze-select lrn_cloze_response"
 									data-inputid="0"
+									onChange={(e) => selectOption(e, index - (contentPartFour.split('tentisspace')[1] === 'null' ? 1 : 2))}
+									defaultValue={
+										subQuestion.length > 0 &&
+										subQuestion[index - (contentPartFour.split('tentisspace')[1] === 'null' ? 1 : 2)]?.responseUser
+									}
 								>
-									<option
-										role="option"
-										value=""
-										aria-label="Please select an option - "
-									></option>
+									<option role="option" value="" aria-label="Please select an option - "></option>
 									{answerList.length > 0 &&
 										answerList.map((answer, idx) => (
-											<option
-												key={idx}
-												role="option"
-												value={answer.content}
-											>
+											<option key={idx} role="option" value={answer.content}>
 												{answer.content}
 											</option>
 										))}
@@ -86,8 +98,6 @@ const ReadingPartFive = () => {
 					}}
 				>
 					{renderContent()}
-
-			
 				</Box>
 			</Box>
 		</>

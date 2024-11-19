@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import '../../Reading/ExamReading.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../../Constant/global';
+import { SET_RESPONSE_RESULT_READING } from '../../../../store/feature/testBank';
 
 const TITLE = 0;
 const DEAR_PERSON = 1;
 const FOOT_FISH = 2;
 const SIGNAL = 3;
+
+const PART_ONE = 1;
 
 const ReadingPartOne = () => {
 	const testBankData = useSelector(
@@ -15,11 +18,15 @@ const ReadingPartOne = () => {
 
 	const [resReadingPartOne, setResReadingPartOne] = useState();
 	const [contentPartOne, setContentPartOne] = useState();
+	const dispatch = useDispatch();
 
-	const selectOption = (e,idx) => { 
+	const selectOption = (e, index) => {
+		const value = e.target.value;
 
-		console.log(e.target.value,idx);
-	}
+		dispatch(
+			SET_RESPONSE_RESULT_READING({ part: PART_ONE, index, value })
+		);
+	};
 
 	useEffect(() => {
 		const readingPartOne = testBankData.reading.part1[RES_DATA].data;
@@ -37,10 +44,13 @@ const ReadingPartOne = () => {
 						<span key={idx} data-lrn-template-response="">
 							<span className="lrn_combodiv">
 								<select
-										aria-label="Response input area"
-										className="lrn-cloze-select lrn_cloze_response"
-										data-inputid="1"
-										onChange={(e) => { selectOption(e,index) }}
+									aria-label="Response input area"
+									className="lrn-cloze-select lrn_cloze_response"
+									data-inputid="1"
+									onChange={(e) => {
+										selectOption(e, index);
+									}}
+									defaultValue={item.responseUser}
 								>
 									<option
 										role="option"
@@ -52,7 +62,6 @@ const ReadingPartOne = () => {
 											key={idx}
 											role="option"
 											value={answer.content}
-
 										>
 											{answer.content}
 										</option>
