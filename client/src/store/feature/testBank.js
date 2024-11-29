@@ -262,13 +262,11 @@ export const testBankReducer = createSlice({
 			}
 			if (part === 2 || part === 3) {
 				let data = [];
+				console.log({value})
 				state.testBankData['reading'][`part${part}`][0]['data']['questions']['responseUser'] = value
-					.filter(item => item != null)
-					.map(item => parseInt(item.id));
 			}
 			
 			
-			console.log("first,",state.testBankData)
 
 		}
 

@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import '../../Reading/ExamReading.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../../Constant/global';
-import { SET_RESPONSE_RESULT_READING } from '../../../../store/feature/testBank';
+import {
+	SET_RESPONSE_RESULT_READING,
+	SET_TESTBANK_DATA,
+} from '../../../../store/feature/testBank';
+import TestBankService from '../../../../services/API/testBank.service';
 
 const TITLE = 0;
 const DEAR_PERSON = 1;
@@ -27,11 +31,26 @@ const ReadingPartOne = () => {
 			SET_RESPONSE_RESULT_READING({ part: PART_ONE, index, value })
 		);
 	};
+	const fetchData = async () => {
+		try {
+			const getTestBank = await TestBankService.getAllTestBank();
+
+			const data = getTestBank[RES_DATA].metadata[RES_DATA];
+
+			dispatch(SET_TESTBANK_DATA(data));
+		} catch (error) {
+			console.log({ error });
+		}
+	};
 
 	useEffect(() => {
-		const readingPartOne = testBankData.reading.part1[RES_DATA].data;
-		setResReadingPartOne(readingPartOne);
-		setContentPartOne(readingPartOne?.questions);
+		if (testBankData.reading.part1[RES_DATA]?.data) {
+			const readingPartOne = testBankData.reading.part1[RES_DATA]?.data;
+			setResReadingPartOne(readingPartOne);
+			setContentPartOne(readingPartOne?.questions);
+		} else {
+			fetchData();
+		}
 	}, [testBankData]);
 
 	const renderSubQuestions = (subQuestions) => {

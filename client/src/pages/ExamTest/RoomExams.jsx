@@ -15,12 +15,16 @@ import {
 	SET_INCREMENT,
 	SET_RESET_NUMBER_QUESTION,
 } from '../../store/feature/reading.js';
-import { SET_MOVE_EXAM_SKILL } from '../../store/general.js';
+import {
+	SET_MOVE_EXAM_SKILL,
+	SET_RESULT_TEST,
+} from '../../store/general.js';
 import {
 	SET_DECREMENT_WRITING,
 	SET_INCREMENT_WRITING,
 } from '../../store/feature/writing.js';
 import BasicModal from '../../components/Modal/ModalBasic.jsx';
+import ResultTest from './ResultTest/ResultTest.jsx';
 
 const RoomExam = () => {
 	const testBankData = useSelector(
@@ -43,6 +47,7 @@ const RoomExam = () => {
 	const [timeLeft, setTimeLeft] = useState(null);
 	const [intervalId, setIntervalId] = useState(null);
 	const [openModal, setOpenModal] = useState(false);
+	const [showButtonComplete, setShowButtonComplete] = useState(false);
 
 	useEffect(() => {
 		if (currentExamPart === 'writing') {
@@ -55,7 +60,6 @@ const RoomExam = () => {
 	}, [currentExamPart]);
 
 	useEffect(() => {
-
 		if (timeLeft > 0) {
 			const id = setInterval(() => {
 				setTimeLeft((prevTime) => prevTime - 1);
@@ -63,7 +67,7 @@ const RoomExam = () => {
 			setIntervalId(id);
 			return () => clearInterval(id);
 		}
-		if (timeLeft===0) {
+		if (timeLeft === 0) {
 			moveExamSkill();
 		}
 	}, [timeLeft]);
@@ -86,10 +90,21 @@ const RoomExam = () => {
 	};
 
 	const nextQuestion = () => {
-		if (numberQuestion < 5 && currentExamPart === 'reading') {
+		if (numberQuestion < 6 && currentExamPart === 'reading') {
+			if (numberQuestion === 5) {
+				setOpenModal(true);
+
+				return;
+			}
 			dispatch(SET_INCREMENT());
 		}
-		if (numberQuestionWriting < 4 && currentExamPart === 'writing') {
+		if (numberQuestionWriting < 5 && currentExamPart === 'writing') {
+			if (numberQuestionWriting === 4) {
+				setOpenModal(true);
+				setShowButtonComplete(true);
+
+				return;
+			}
 			dispatch(SET_INCREMENT_WRITING());
 		}
 	};
@@ -105,27 +120,39 @@ const RoomExam = () => {
 
 	const moveExamSkill = () => {
 		setOpenModal(true);
+		if (currentExamPart === 'writing') {
+			setShowButtonComplete(true);
+		}
+			
 	};
 	const closeModal = () => {
 		setOpenModal(false);
+		setShowButtonComplete(false);
 	};
 
 	const nextPartSkill = () => {
 		dispatch(SET_MOVE_EXAM_SKILL());
 		dispatch(SET_RESET_NUMBER_QUESTION());
 		setOpenModal(false);
+		setShowButtonComplete(false);
 	};
 
-	useEffect(() => {
-		console.log({ testBankData });
-	}, [testBankData]);
+	const handleCompleteTest = () => {
+		dispatch(SET_RESULT_TEST());
+		dispatch(SET_RESET_NUMBER_QUESTION());
+		setOpenModal(false);
+		setShowButtonComplete(false);
+	};
+
+	// useEffect(() => {
+	// 	console.log({ testBankData });
+	// }, [testBankData]);
 
 	return (
 		<>
 			<Box>
 				<Box
 					sx={{
-						display: 'flex',
 						justifyContent: 'end',
 						alignItems: 'center',
 						padding: '1rem',
@@ -134,6 +161,9 @@ const RoomExam = () => {
 						backgroundColor: '#fff',
 						position: 'fixed',
 						zIndex: 1000,
+						display: `${
+							currentExamPart === 'result' ? 'none' : 'flex'
+						}`,
 					}}
 				>
 					<Box
@@ -160,6 +190,7 @@ const RoomExam = () => {
 				</Box>
 				{currentExamPart === 'reading' && <ExamReading />}
 				{currentExamPart === 'writing' && <ExamWriting />}
+				{currentExamPart === 'result' && <ResultTest />}
 				<Box className="footer-test">
 					<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
 						<IconBox>
@@ -184,6 +215,7 @@ const RoomExam = () => {
 							<KeyboardBackspaceIcon sx={{ marginRight: '5px' }} />{' '}
 							Previous
 						</Button>
+
 						<Button
 							variant="contained"
 							className="pt-3 shadow mr-1"
@@ -204,12 +236,27 @@ const RoomExam = () => {
 				handleClose={closeModal}
 				label="Move to another skill"
 			>
+				{showButtonComplete && (
+					<Button
+						variant="contained"
+						className="pt-3 shadow mr-1"
+						sx={{
+							backgroundColor: '#000',
+							padding: '0.5rem 1rem',
+						}}
+						onClick={handleCompleteTest}
+					>
+						Complete
+					</Button>
+				)}
+
 				<Button
 					variant="contained"
 					className="pt-3 shadow mr-1"
 					sx={{
 						backgroundColor: '#45368f',
 						padding: '0.5rem 1rem',
+						marginLeft: '1rem',
 					}}
 					onClick={nextPartSkill}
 				>

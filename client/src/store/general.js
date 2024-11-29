@@ -10,6 +10,9 @@ const convertCurrentExamSkill = (currentExamPart) => {
 			return 'writing';
 		case 4:
 			return 'speaking';
+		
+		case 5:
+			return 'result';
 		default:
 			return 'reading';
 	}
@@ -38,6 +41,11 @@ export const generalReducer = createSlice({
 			state.currentExamPart = 'reading';
 			state.pointExam = 2;
 		},
+		SET_RESULT_TEST: (state, action) => {
+			state.currentExamPart = 'result';
+			state.pointExam = 5;
+		},
+	
 	},
 });
 
@@ -46,6 +54,7 @@ export const {
 	SET_OPEN_MODAL_BOTTOM,
 	SET_MOVE_EXAM_SKILL,
 	SET_RESET_PART_SKILL,
+	SET_RESULT_TEST
 } = generalReducer.actions;
 
 export default generalReducer.reducer;
