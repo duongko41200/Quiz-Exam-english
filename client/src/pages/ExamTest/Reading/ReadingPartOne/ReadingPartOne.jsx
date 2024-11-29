@@ -7,6 +7,7 @@ import {
 	SET_TESTBANK_DATA,
 } from '../../../../store/feature/testBank';
 import TestBankService from '../../../../services/API/testBank.service';
+import { useNavigate } from "react-router-dom";
 
 const TITLE = 0;
 const DEAR_PERSON = 1;
@@ -16,105 +17,84 @@ const SIGNAL = 3;
 const PART_ONE = 1;
 
 const ReadingPartOne = () => {
-	const testBankData = useSelector(
-		(state) => state.testBankStore.testBankData
-	);
+  const testBankData = useSelector((state) => state.testBankStore.testBankData);
 
-	const [resReadingPartOne, setResReadingPartOne] = useState();
-	const [contentPartOne, setContentPartOne] = useState();
-	const dispatch = useDispatch();
+  const [resReadingPartOne, setResReadingPartOne] = useState();
+  const [contentPartOne, setContentPartOne] = useState();
+  const navigate = useNavigate();
 
-	const selectOption = (e, index) => {
-		const value = e.target.value;
+  const dispatch = useDispatch();
 
-		dispatch(
-			SET_RESPONSE_RESULT_READING({ part: PART_ONE, index, value })
-		);
-	};
-	const fetchData = async () => {
-		try {
-			const getTestBank = await TestBankService.getAllTestBank();
+  const selectOption = (e, index) => {
+    const value = e.target.value;
 
-			const data = getTestBank[RES_DATA].metadata[RES_DATA];
+    dispatch(SET_RESPONSE_RESULT_READING({ part: PART_ONE, index, value }));
+  };
 
-			dispatch(SET_TESTBANK_DATA(data));
-		} catch (error) {
-			console.log({ error });
-		}
-	};
+  useEffect(() => {
+    if (testBankData.reading.part1.length <= 0) {
+      navigate("/");
+      return;
+    }
+    const readingPartOne = testBankData.reading.part1[RES_DATA].data;
+    setResReadingPartOne(readingPartOne);
+    setContentPartOne(readingPartOne?.questions);
+  }, [testBankData]);
 
-	useEffect(() => {
-		if (testBankData.reading.part1[RES_DATA]?.data) {
-			const readingPartOne = testBankData.reading.part1[RES_DATA]?.data;
-			setResReadingPartOne(readingPartOne);
-			setContentPartOne(readingPartOne?.questions);
-		} else {
-			fetchData();
-		}
-	}, [testBankData]);
+  const renderSubQuestions = (subQuestions) => {
+    return subQuestions.map((item, index) => (
+      <div key={index} className="flex justify-start gap-1 text-sm">
+        {item.content.split(" ").map((word, idx) =>
+          word !== "tentisspace" ? (
+            <div key={idx}>{word}</div>
+          ) : (
+            <span key={idx} data-lrn-template-response="">
+              <span className="lrn_combodiv">
+                <select
+                  aria-label="Response input area"
+                  className="lrn-cloze-select lrn_cloze_response"
+                  data-inputid="1"
+                  onChange={(e) => {
+                    selectOption(e, index);
+                  }}
+                  defaultValue={item.responseUser}
+                >
+                  <option
+                    role="option"
+                    value=""
+                    aria-label="Please select an option - "
+                  ></option>
+                  {item.answerList.map((answer, idx) => (
+                    <option key={idx} role="option" value={answer.content}>
+                      {answer.content}
+                    </option>
+                  ))}
+                </select>
+              </span>
+            </span>
+          )
+        )}
+      </div>
+    ));
+  };
 
-	const renderSubQuestions = (subQuestions) => {
-		return subQuestions.map((item, index) => (
-			<div key={index} className="flex justify-start gap-1 text-sm">
-				{item.content.split(' ').map((word, idx) =>
-					word !== 'tentisspace' ? (
-						<div key={idx}>{word}</div>
-					) : (
-						<span key={idx} data-lrn-template-response="">
-							<span className="lrn_combodiv">
-								<select
-									aria-label="Response input area"
-									className="lrn-cloze-select lrn_cloze_response"
-									data-inputid="1"
-									onChange={(e) => {
-										selectOption(e, index);
-									}}
-									defaultValue={item.responseUser}
-								>
-									<option
-										role="option"
-										value=""
-										aria-label="Please select an option - "
-									></option>
-									{item.answerList.map((answer, idx) => (
-										<option
-											key={idx}
-											role="option"
-											value={answer.content}
-										>
-											{answer.content}
-										</option>
-									))}
-								</select>
-							</span>
-						</span>
-					)
-				)}
-			</div>
-		));
-	};
-
-	return (
-		<div>
-			<div className="lrn_stimulus_content lrn_clearfix lrn_question mb-5">
-				<b>{contentPartOne?.content.split('tentisspace')[TITLE]}</b>
-			</div>
-			<div className="lrn_response_innerbody lrn-response-validate-wrapper">
-				<div className="lrn_response_input"></div>
-				<p>
-					{contentPartOne?.content.split('tentisspace')[DEAR_PERSON]}
-				</p>
-				<div className="flex justify-start flex-col gap-6">
-					{contentPartOne?.subQuestion &&
-						renderSubQuestions(contentPartOne.subQuestion)}
-				</div>
-				<div>
-					{contentPartOne?.content.split('tentisspace')[FOOT_FISH]}
-				</div>
-				<p>{contentPartOne?.content.split('tentisspace')[SIGNAL]}</p>
-			</div>
-		</div>
-	);
+  return (
+    <div>
+      <div className="lrn_stimulus_content lrn_clearfix lrn_question mb-5">
+        <b>{contentPartOne?.content.split("tentisspace")[TITLE]}</b>
+      </div>
+      <div className="lrn_response_innerbody lrn-response-validate-wrapper">
+        <div className="lrn_response_input"></div>
+        <p>{contentPartOne?.content.split("tentisspace")[DEAR_PERSON]}</p>
+        <div className="flex justify-start flex-col gap-6">
+          {contentPartOne?.subQuestion &&
+            renderSubQuestions(contentPartOne.subQuestion)}
+        </div>
+        <div>{contentPartOne?.content.split("tentisspace")[FOOT_FISH]}</div>
+        <p>{contentPartOne?.content.split("tentisspace")[SIGNAL]}</p>
+      </div>
+    </div>
+  );
 };
 
 export default ReadingPartOne;

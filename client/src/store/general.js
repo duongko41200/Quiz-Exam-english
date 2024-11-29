@@ -3,24 +3,21 @@ import { createSlice } from '@reduxjs/toolkit';
 const convertCurrentExamSkill = (currentExamPart) => {
 	switch (currentExamPart) {
 		case 1:
-			return 'listening';
+			return "speaking";
 		case 2:
 			return 'reading';
 		case 3:
 			return 'writing';
 		case 4:
-			return 'speaking';
-		
-		case 5:
-			return 'result';
+			return 'listening';
 		default:
-			return 'reading';
+			return 'speaking';
 	}
 };
 const initialState = {
 	openModalBottom: false,
-	currentExamPart: 'reading',
-	pointExam: 2,
+	currentExamPart: 'speaking',
+	pointExam: 1,
 };
 
 export const generalReducer = createSlice({
@@ -38,8 +35,8 @@ export const generalReducer = createSlice({
 			);
 		},
 		SET_RESET_PART_SKILL: (state, action) => {
-			state.currentExamPart = 'reading';
-			state.pointExam = 2;
+			state.currentExamPart = 'speaking';
+			state.pointExam = 1;
 		},
 		SET_RESULT_TEST: (state, action) => {
 			state.currentExamPart = 'result';
