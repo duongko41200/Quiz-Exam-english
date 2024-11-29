@@ -10,7 +10,7 @@ const App = () => {
 	const dispatch = useDispatch();
 	const auths = useSelector((state) => state.authStore.user);
 
-	/// *********** Nội dung khởi taoj ban đầu ở dây *************************
+	/// *********** Nội dung khởi tạo ban đầu ở dây *************************
 	useLayoutEffect(() => {
 		// const userId = localStorage.getItem('userId');
 		// // const listText = localStorage.getItem('listText')

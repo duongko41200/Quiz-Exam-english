@@ -226,6 +226,8 @@ export const testBankReducer = createSlice({
 		SET_TESTBANK_DATA: (state, action) => {
 			const testBank = action.payload;
 
+			console.log('testBank store:', testBank);
+
 
 			setResponseReading(testBank['reading']['part1'][0]['data']['questions']['subQuestion'], 6);
 			testBank['reading']['part2'][0]['data']['questions']['responseUser'] = '';
@@ -234,10 +236,10 @@ export const testBankReducer = createSlice({
 			setResponseReading(testBank['reading']['part5'][0]['data']['questions']['subQuestion'], 8);
 
 
-			setResponseWriting(testBank['writing']['part1'][0]['questions'][0]['subQuestion'], 5);
-			setResponseWriting(testBank['writing']['part2'][0]['questions'][0]['subQuestion'], 1);
-			setResponseWriting(testBank['writing']['part3'][0]['questions'][0]['subQuestion'], 3);
-			setResponseWriting(testBank['writing']['part4'][0]['questions'][0]['subQuestion'], 2);
+			// setResponseWriting(testBank['writing']['part1'][0]['questions'][0]['subQuestion'], 5);
+			// setResponseWriting(testBank['writing']['part2'][0]['questions'][0]['subQuestion'], 1);
+			// setResponseWriting(testBank['writing']['part3'][0]['questions'][0]['subQuestion'], 3);
+			// setResponseWriting(testBank['writing']['part4'][0]['questions'][0]['subQuestion'], 2);
 
 			state.testBankData = testBank;
 		},
