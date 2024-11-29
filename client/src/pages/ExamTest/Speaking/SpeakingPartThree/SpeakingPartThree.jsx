@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RES_DATA } from "../../../../Constant/global";
 import { SET_RESPONSE_RESULT_READING } from "../../../../store/feature/testBank";
 import { useNavigate } from "react-router-dom";
+import { Box } from "@mui/material";
 
 const TITLE = 0;
 const DEAR_PERSON = 1;
@@ -47,26 +48,30 @@ const SpeakingPartThree = () => {
   }, [testBankData]);
 
   return (
-    <div>
-      <div className="lrn_stimulus_content lrn_clearfix lrn_question mb-5">
+    <Box>
+      <Box className="lrn_stimulus_content lrn_clearfix lrn_question mb-5">
         <b>
           {subQuestions.length > 0 &&
             subQuestions[numberQuestionEachPart - 1].content}
         </b>
-      </div>
+      </Box>
 
       {numberQuestionEachPart === 1 && contentPartThree && (
-        <div className="flex gap-2">
-          <div>
+        <Box className="flex gap-2">
+          <Box sx={{
+            with: {
+              
+            }
+          }}>
             <img src={contentPartThree.image[0].path} />
-          </div>
+          </Box>
 
-          <div>
+          <Box>
             <img src={contentPartThree.image[1].path} />
-          </div>
-        </div>
+          </Box>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 

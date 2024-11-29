@@ -18,7 +18,11 @@ const ModalCountDown = ({ seconds }) => {
     >
       <Card
         sx={{
-          width: "350px",
+          width: {
+            sm: '200px',
+            md: '300px',
+            xl: '350px',
+          },
           padding: "20px",
           borderRadius: "16px",
           display: "flex",
@@ -38,8 +42,14 @@ const ModalCountDown = ({ seconds }) => {
           {/* Circle Button */}
           <IconButton
             sx={{
-              width: "7.5em",
-              height: "7.5em",
+              width: {
+                md: "6.5em",
+                xl: "7.5em",
+              },
+              height:{
+                md: "6.5em",
+                xl: "7.5em",
+              },
               borderRadius: "100%",
               backgroundColor: "#fff",
               boxShadow: "0 0 26px #1507b729",

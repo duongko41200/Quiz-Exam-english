@@ -46,6 +46,9 @@ const SpeakingPartOne = () => {
     setSubQuestions(SpeakingPartOne?.questions[RES_DATA].subQuestion);
   }, [testBankData]);
 
+
+
+
   return (
     <div>
       <div className="lrn_stimulus_content lrn_clearfix lrn_question mb-5">
