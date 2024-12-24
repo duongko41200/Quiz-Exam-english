@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Button, Card, IconButton, Typography } from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
 
-const ModalCountDown = ({ seconds }) => {
+const ModalCountDown = ({ seconds,stopRecord }) => {
   return (
     <Box
       sx={{
@@ -92,6 +92,7 @@ const ModalCountDown = ({ seconds }) => {
             },
             height: "50px",
           }}
+          onClick={stopRecord}
         >
           Finish Recording
         </Button>

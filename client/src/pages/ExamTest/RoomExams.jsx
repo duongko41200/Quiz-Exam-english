@@ -30,6 +30,7 @@ import {
 } from '../../store/feature/speaking.js';
 import ResultTest from './ResultTest/ResultTest.jsx';
 import { speechToText } from '../../utils/speechToText.js';
+import useAudioRecorder from '../../hook/useAudioRecorder.js';
 
 const RoomExam = () => {
 	const testBankData = useSelector(
@@ -51,6 +52,8 @@ const RoomExam = () => {
 		(state) => state.speakingStore.numberQuestionEachPart
 	);
 
+	// console.log("currentExamPart",currentExamPart)
+
 	/////////// ABOVE REDUX //////////
 	const dispatch = useDispatch();
 	const [hours, setHours] = useState(0);
@@ -59,6 +62,14 @@ const RoomExam = () => {
 	const [timeLeft, setTimeLeft] = useState(null);
 	const [intervalId, setIntervalId] = useState(null);
 	const [openModal, setOpenModal] = useState(false);
+
+	const {
+		isRecording,
+		audioURL,
+		errorMessage,
+		startRecording,
+		stopRecording,
+	} = useAudioRecorder();
 
 	useEffect(() => {
 		if (currentExamPart === 'writing') {
@@ -89,7 +100,8 @@ const RoomExam = () => {
 
 				setMinutes(0);
 				setTimeLeft(timecountSpeaking[numberQuestionSpeaking]);
-			}, 1000);
+				startRecording();
+			}, 2000);
 		}
 	}, [numberQuestionSpeaking, numberQuestionEachPart]);
 
@@ -102,20 +114,27 @@ const RoomExam = () => {
 				setTimeLeft((prevTime) => prevTime - 1);
 			}, 1000);
 			setIntervalId(id);
+
 			return () => clearInterval(id);
 		}
 		if (timeLeft === 0 && currentExamPart !== 'speaking') {
 			moveExamSkill();
+			return;
 		}
 		if (timeLeft === 0 && currentExamPart === 'speaking') {
 			console.log({ numberQuestionEachPart });
 			if (numberQuestionSpeaking !== 4 && numberQuestionEachPart < 4) {
 				if (numberQuestionEachPart === 3) {
+					stopRecording();
 					nextQuestion();
 					return;
 				}
+
+				console.log('test');
+				stopRecording();
 				dispatch(SET_INCREMENT_SPEAKING_EACH_PART());
 			} else {
+				stopRecord();
 				moveExamSkill();
 			}
 		}
@@ -143,14 +162,20 @@ const RoomExam = () => {
 	const nextQuestion = () => {
 		if (numberQuestion < 5 && currentExamPart === 'reading') {
 			dispatch(SET_INCREMENT());
+			return;
 		}
 		if (numberQuestionWriting < 4 && currentExamPart === 'writing') {
 			dispatch(SET_INCREMENT_WRITING());
+			return;
 		}
 		if (numberQuestionSpeaking < 4 && currentExamPart === 'speaking') {
 			dispatch(SET_RESET_NUMBER_QUESTION_SPEAKING());
 			dispatch(SET_INCREMENT_SPEAKING());
+			return;
 		}
+
+		moveExamSkill();
+		
 	};
 
 	const previousQuestion = () => {
@@ -161,6 +186,9 @@ const RoomExam = () => {
 			dispatch(SET_DECREMENT_WRITING());
 		}
 	};
+	const stopRecord = () => {
+		stopRecording();
+	};
 
 	const moveExamSkill = () => {
 		setOpenModal(true);
@@ -169,10 +197,12 @@ const RoomExam = () => {
 		setOpenModal(false);
 	};
 
+	// move to next part skill
 	const nextPartSkill = () => {
 		dispatch(SET_MOVE_EXAM_SKILL());
 		// dispatch(SET_RESET_NUMBER_QUESTION());
 		setOpenModal(false);
+		stopRecord();
 	};
 
 	return (
@@ -215,12 +245,26 @@ const RoomExam = () => {
 						</Box>
 					</Box>
 				) : (
-					<ModalCountDown seconds={seconds} />
+					<ModalCountDown seconds={seconds} stopRecord={stopRecord} />
 				)}
 				{currentExamPart === 'speaking' && <ExamSpeaking />}
 				{currentExamPart === 'reading' && <ExamReading />}
 				{currentExamPart === 'writing' && <ExamWriting />}
 				{currentExamPart === 'result' && <ResultTest />}
+
+				{/* {audioURL && (
+					<div style={{ marginTop: '20px' }}>
+						<h3>Bản ghi âm:</h3>
+						<audio controls src={audioURL}></audio>
+						<a
+							href={audioURL}
+							download="recording.mp3"
+							style={{ display: 'block', marginTop: '10px' }}
+						>
+							Tải xuống
+						</a>
+					</div>
+				)} */}
 
 				<Box className="footer-test">
 					<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

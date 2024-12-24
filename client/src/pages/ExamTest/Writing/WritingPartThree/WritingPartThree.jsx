@@ -60,18 +60,18 @@ const WritingPartThree = () => {
 		);
 		setContentPartOne(writingPartThree?.questions[RES_DATA].content);
 	}, [testBankData]);
-	useEffect(() => {
-		const writingPartThree = testBankData.writing.part3[RES_DATA];
-		if (writingPartThree) {
-			const subQuestion = writingPartThree.questions[RES_DATA].subQuestion;
-			const responseUser = subQuestion.map((item) => item.responseUser);
-			if (responseUser.length === 3) {
-				setResult1(responseUser[0].split(/\s+/).filter((word) => word.length > 0));
-				setResult2(responseUser[1].split(/\s+/).filter((word) => word.length > 0));
-				setResult3(responseUser[2].split(/\s+/).filter((word) => word.length > 0));
-			}
-		}
-	}, []);
+	// useEffect(() => {
+	// 	const writingPartThree = testBankData.writing.part3[RES_DATA];
+	// 	if (writingPartThree) {
+	// 		const subQuestion = writingPartThree.questions[RES_DATA].subQuestion;
+	// 		const responseUser = subQuestion.map((item) => item.responseUser);
+	// 		if (responseUser.length === 3) {
+	// 			setResult1(responseUser[0].split(/\s+/).filter((word) => word.length > 0));
+	// 			setResult2(responseUser[1].split(/\s+/).filter((word) => word.length > 0));
+	// 			setResult3(responseUser[2].split(/\s+/).filter((word) => word.length > 0));
+	// 		}
+	// 	}
+	// }, []);
 
 	return (
 		<div>

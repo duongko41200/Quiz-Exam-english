@@ -61,13 +61,18 @@ const WritingPartTwo = () => {
 
 	useEffect(() => {
 		const writingPartTwo = testBankData.writing.part2[RES_DATA].questions[0].subQuestion
-		if (writingPartTwo) {
-			const inputWords = writingPartTwo[0].responseUser
-				.toLowerCase()
-				.split(/\s+/)
-				.filter((word) => word.length > 0);
-			setResult(inputWords);
-		}
+
+		console.log("testBankData",testBankData)
+
+		// if (writingPartTwo) {
+
+		// 	console.log('writingPartTwo:', writingPartTwo);
+		// 	const inputWords = writingPartTwo[0].responseUser
+		// 		.toLowerCase()
+		// 		.split(/\s+/)
+		// 		.filter((word) => word.length > 0);
+		// 	setResult(inputWords);
+		// }
 	}, []);
 
 	return (
@@ -83,7 +88,7 @@ const WritingPartTwo = () => {
 						<Box>
 							<Box>
 								<p>
-									{resWritingPartOne && resWritingPartOne[0].content}{' '}
+									{resWritingPartOne && resWritingPartOne[0].content}
 								</p>
 							</Box>
 						</Box>

@@ -68,22 +68,22 @@ const WritingPartFour = () => {
 		setSubTitle(writingPartFour?.questions[RES_DATA].questionTitle);
 	}, [testBankData]);
 
-	useEffect(() => {
-		const writingPartFour = testBankData.writing.part4[RES_DATA];
-		if (writingPartFour) {
-			const subQuestion =
-				writingPartFour.questions[RES_DATA].subQuestion;
-			const responseUser = subQuestion.map((item) => item.responseUser);
-			if (responseUser.length === 2) {
-				setResult1(
-					responseUser[0].split(/\s+/).filter((word) => word.length > 0)
-				);
-				setResult2(
-					responseUser[1].split(/\s+/).filter((word) => word.length > 0)
-				);
-			}
-		}
-	}, []);
+	// useEffect(() => {
+	// 	const writingPartFour = testBankData.writing.part4[RES_DATA];
+	// 	if (writingPartFour) {
+	// 		const subQuestion =
+	// 			writingPartFour.questions[RES_DATA].subQuestion;
+	// 		const responseUser = subQuestion.map((item) => item.responseUser);
+	// 		if (responseUser.length === 2) {
+	// 			setResult1(
+	// 				responseUser[0].split(/\s+/).filter((word) => word.length > 0)
+	// 			);
+	// 			setResult2(
+	// 				responseUser[1].split(/\s+/).filter((word) => word.length > 0)
+	// 			);
+	// 		}
+	// 	}
+	// }, []);
 
 	return (
 		<div>

@@ -7,7 +7,6 @@ import WritingPartOne from "../../pages/Writing/WritingPart/WritingPartOne";
 import WritingPartTwo from "../../pages/Writing/WritingPart/WritingPartTwo";
 import WritingPartThree from "../../pages/Writing/WritingPart/WritingPartThree";
 import WritingPartFour from "../../pages/Writing/WritingPart/WritingPartFour";
-
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const convertCurrentExamSkill = (currentExamPart) => {
 	switch (currentExamPart) {
 		case 1:
-			return "speaking";
+			return 'speaking';
 		case 2:
 			return 'reading';
 		case 3:
@@ -17,7 +17,7 @@ const convertCurrentExamSkill = (currentExamPart) => {
 const initialState = {
 	openModalBottom: false,
 	currentExamPart: 'speaking',
-	pointExam: 1,
+	pointExam: 1, // current point skill exam
 };
 
 export const generalReducer = createSlice({
@@ -33,6 +33,7 @@ export const generalReducer = createSlice({
 			state.currentExamPart = convertCurrentExamSkill(
 				state.pointExam + 1
 			);
+			state.pointExam = state.pointExam + 1;
 		},
 		SET_RESET_PART_SKILL: (state, action) => {
 			state.currentExamPart = 'speaking';
@@ -42,7 +43,6 @@ export const generalReducer = createSlice({
 			state.currentExamPart = 'result';
 			state.pointExam = 5;
 		},
-	
 	},
 });
 
@@ -51,7 +51,7 @@ export const {
 	SET_OPEN_MODAL_BOTTOM,
 	SET_MOVE_EXAM_SKILL,
 	SET_RESET_PART_SKILL,
-	SET_RESULT_TEST
+	SET_RESULT_TEST,
 } = generalReducer.actions;
 
 export default generalReducer.reducer;
