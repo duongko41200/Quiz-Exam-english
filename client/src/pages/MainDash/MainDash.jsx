@@ -27,7 +27,7 @@ const MainDash = () => {
 
 			const data = await getTestBank[RES_DATA].metadata[RES_DATA];
 
-			console.log("tesst dataa:",data)
+			console.log('tesst dataa:', data);
 
 			dispatch(SET_TESTBANK_DATA(data));
 		} catch (error) {
@@ -45,7 +45,7 @@ const MainDash = () => {
 				className="bg-between section-top margin-navbar position-relative"
 				style={{
 					backgroundColor: '#edf2f9',
-					backgroundImage: `src(../../images/bg-apptis.png)`,
+					backgroundImage: `url(https://res.cloudinary.com/dys0lk3ly/image/upload/v1735137288/bg-aptis_aesbrs.png),url(https://res.cloudinary.com/dys0lk3ly/image/upload/v1735137288/bg-aptiit_zaxu4o.png)`,
 				}}
 			>
 				<div className=" absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

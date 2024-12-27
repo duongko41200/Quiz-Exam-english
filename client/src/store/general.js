@@ -9,7 +9,9 @@ const convertCurrentExamSkill = (currentExamPart) => {
 		case 3:
 			return 'writing';
 		case 4:
-			return 'listening';
+			return 'result';
+		// case 5:
+		// 	return 'result';
 		default:
 			return 'speaking';
 	}
@@ -30,6 +32,10 @@ export const generalReducer = createSlice({
 		},
 
 		SET_MOVE_EXAM_SKILL: (state, action) => {
+
+			console.log("part:",convertCurrentExamSkill(
+				state.pointExam + 1
+			))
 			state.currentExamPart = convertCurrentExamSkill(
 				state.pointExam + 1
 			);

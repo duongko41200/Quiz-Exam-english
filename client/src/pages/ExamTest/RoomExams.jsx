@@ -52,10 +52,10 @@ const RoomExam = () => {
 		(state) => state.speakingStore.numberQuestionEachPart
 	);
 
-	// console.log("currentExamPart",currentExamPart)
+	const dispatch = useDispatch();
 
 	/////////// ABOVE REDUX //////////
-	const dispatch = useDispatch();
+
 	const [hours, setHours] = useState(0);
 	const [minutes, setMinutes] = useState(0);
 	const [seconds, setSeconds] = useState(0);
@@ -175,7 +175,6 @@ const RoomExam = () => {
 		}
 
 		moveExamSkill();
-		
 	};
 
 	const previousQuestion = () => {
@@ -208,44 +207,51 @@ const RoomExam = () => {
 	return (
 		<>
 			<Box>
-				{currentExamPart && currentExamPart !== 'speaking' ? (
-					<Box
-						sx={{
-							display: 'flex',
-							justifyContent: 'end',
-							alignItems: 'center',
-							padding: '1rem',
-							height: '3.75rem',
-							width: '100%',
-							backgroundColor: '#fff',
-							position: 'fixed',
-							zIndex: 1000,
-						}}
-					>
-						<Box
-							sx={{
-								position: 'fixed',
-								padding: '20px',
-								paddingTop: '30px',
-							}}
-						>
+				{currentExamPart && currentExamPart !== 'result' && (
+					<Box>
+						{currentExamPart && currentExamPart !== 'speaking' ? (
 							<Box
 								sx={{
-									margin: 0,
-									color: '#161616',
-									fontWeight: 'bold',
-									fontSize: '1.5em',
+									display: 'flex',
+									justifyContent: 'end',
+									alignItems: 'center',
+									padding: '1rem',
+									height: '3.75rem',
+									width: '100%',
+									backgroundColor: '#fff',
+									position: 'fixed',
+									zIndex: 1000,
 								}}
 							>
-								<span>{hours.toString().padStart(2, '0')}</span>:
-								<span>{minutes.toString().padStart(2, '0')}</span>:
-								<span>{seconds.toString().padStart(2, '0')}</span>
+								<Box
+									sx={{
+										position: 'fixed',
+										padding: '20px',
+										paddingTop: '30px',
+									}}
+								>
+									<Box
+										sx={{
+											margin: 0,
+											color: '#161616',
+											fontWeight: 'bold',
+											fontSize: '1.5em',
+										}}
+									>
+										<span>{hours.toString().padStart(2, '0')}</span>:
+										<span>{minutes.toString().padStart(2, '0')}</span>:
+										<span>{seconds.toString().padStart(2, '0')}</span>
+									</Box>
+									<Box sx={{ fontSize: '14px' }}>Time remaining</Box>
+								</Box>
 							</Box>
-							<Box sx={{ fontSize: '14px' }}>Time remaining</Box>
-						</Box>
+						) : (
+							<ModalCountDown
+								seconds={seconds}
+								stopRecord={stopRecord}
+							/>
+						)}
 					</Box>
-				) : (
-					<ModalCountDown seconds={seconds} stopRecord={stopRecord} />
 				)}
 				{currentExamPart === 'speaking' && <ExamSpeaking />}
 				{currentExamPart === 'reading' && <ExamReading />}
