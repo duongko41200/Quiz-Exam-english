@@ -2,8 +2,8 @@ import * as React from 'react';
 
 export default function FrameReadingResult({ children }) {
 	return (
-		<div className="flex justify-center w-full max-h-[550px] min-h-[300px] rounded-xl  shadow-md border border-gray-300">
-			<div className="left max-h-[550px] overflow-y-auto w-[60%] rounded-xl bg-gray-100 py-6 px-4">
+		<div className="flex justify-center w-full h-[580px] min-h-[300px] rounded-xl  shadow-md border border-gray-300 bg-white p-4">
+			<div className="left max-h-[550px] overflow-y-auto min-w-[60%] w-fit rounded-xl bg-[#f8f9fa] py-6 px-4">
 				{children[0]}
 			</div>
 

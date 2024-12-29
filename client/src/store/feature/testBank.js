@@ -230,8 +230,8 @@ export const testBankReducer = createSlice({
 
 
 			setResponseReading(testBank['reading']['part1'][0]['data']['questions']['subQuestion'], 6);
-			testBank['reading']['part2'][0]['data']['questions']['responseUser'] = '';
-			testBank['reading']['part3'][0]['data']['questions']['responseUser'] = '';
+			testBank['reading']['part2'][0]['data']['questions']['responseUser'] = [null, null, null, null,null];
+			testBank['reading']['part3'][0]['data']['questions']['responseUser'] = [null, null, null, null,null];
 			setResponseReading(testBank['reading']['part4'][0]['data']['questions']['subQuestion'], 8);
 			setResponseReading(testBank['reading']['part5'][0]['data']['questions']['subQuestion'], 8);
 

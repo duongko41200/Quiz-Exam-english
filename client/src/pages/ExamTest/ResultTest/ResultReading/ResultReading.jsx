@@ -5,19 +5,12 @@ import BasicTable from '../../../../components/Table/BasicTable/BasicTable';
 import ReadingBaseOne from '../../../../components/ReadingBase/ReadingBaseOne.tsx';
 import FrameReadingResult from '../../../../components/FrameReadingResult/FrameReadingResult.jsx';
 
-const PART_ONE = 1;
-const TITLE = 0;
-const DEAR_PERSON = 1;
-const FOOT_FISH = 2;
-const SIGNAL = 3;
-
-const ResultTestReading = ({ resultReading }) => {
-	const testBankData = useSelector(
-		(state) => state.testBankStore.testBankData
-	);
+const ResultTestReading = ({ resultReading, numberLession }) => {
+	const testBankData = useSelector((state) => state.testBankStore.testBankData);
 
 	const [resReadingPartOne, setResReadingPartOne] = useState();
-
+	const [resReadingPartFour, setResReadingPartFour] = useState();
+	const [resReadingPartFive, setResReadingPartFive] = useState();
 	const [contentPartOne, setContentPartOne] = useState(null);
 
 	useEffect(() => {
@@ -26,180 +19,226 @@ const ResultTestReading = ({ resultReading }) => {
 			return;
 		}
 		const readingPartOne = testBankData.reading.part1[RES_DATA].data;
+		const readingPartFour = testBankData.reading.part4[RES_DATA].data?.questions;
+		const readingPartFive = testBankData.reading.part5[RES_DATA].data.questions;
+
+		setResReadingPartFour(readingPartFour);
+		setResReadingPartFive(readingPartFive);
 		setResReadingPartOne(readingPartOne);
 		setContentPartOne(readingPartOne?.questions);
 	}, [testBankData]);
-	return (
-		<div className="px-10 py-6 bg-gray-100 flex flex-col gap-10">
-			<FrameReadingResult>
-				<ReadingBaseOne>
-					{contentPartOne?.subQuestion.length > 0 &&
-						contentPartOne?.subQuestion.map((item, index) => {
-							return (
-								<div
-									key={index}
-									className="flex justify-start gap-1 text-sm"
-								>
-									{item.content.split(' ').map((word, idx) =>
-										word !== 'tentisspace' ? (
-											<div key={idx}>{word}</div>
-										) : (
-											<span key={idx} className="">
-												<span>
-													<select
-														className={`font-medium text-[15px] ${
-															item.responseUser === item.correctAnswer
-																? 'text-green-700'
-																: 'text-red-700'
-														} ${
-															!item.responseUser && 'bg-gray-200'
-														}  border border-gray-400 rounded-md p-1 w-20`}
-														defaultValue={item.responseUser}
-														disabled
-													>
-														<option
-															role="option"
-															value=""
-															aria-label="Please select an option - "
-														></option>
-														{item.answerList.map((answer, idx) => (
-															<option
-																key={idx}
-																role="option"
-																value={answer.content}
-															>
-																{answer.content}
-															</option>
-														))}
-													</select>
-												</span>
-											</span>
-										)
-									)}
-								</div>
-							);
-						})}
-				</ReadingBaseOne>
-				{resultReading?.[0]?.part1 &&
-					resultReading?.[0]?.part1.map((item, index) => {
-						return (
-							<div class="questions-wrapper " key={index}>
-								<div class="question-wrapper flex gap-2">
-									<div class="question-number">
-										<strong className="rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block">
-											{index + 1}
-										</strong>
-									</div>
 
-									<div class="question-content ">
-										<div class="mt-2 text-success text-[#3cb46e] text-lg">
-											{item.resultCorrect}
-										</div>
-									</div>
+	const renderPartOne = () => (
+		<FrameReadingResult>
+			<ReadingBaseOne>
+				{contentPartOne?.subQuestion.length > 0 &&
+					contentPartOne?.subQuestion.map((item, index) => (
+						<div key={index} className="flex justify-start gap-1 text-sm">
+							{item?.content.split(' ').map((word, idx) =>
+								word !== 'tentisspace' ? (
+									<div key={idx}>{word}</div>
+								) : (
+									<span key={idx}>
+										<select
+											className={`font-medium w-fit text-[15px] ${
+												item.responseUser === item.correctAnswer
+													? 'text-green-700'
+													: 'text-red-700'
+											} ${!item.responseUser && 'bg-gray-200'} border border-gray-400 rounded-md p-1 w-20`}
+											defaultValue={item.responseUser}
+											disabled
+										>
+											<option value="" aria-label="Please select an option - "></option>
+											{item.answerList.map((answer, idx) => (
+												<option key={idx} value={answer.content}>
+													{answer.content}
+												</option>
+											))}
+										</select>
+									</span>
+								)
+							)}
+						</div>
+					))}
+			</ReadingBaseOne>
+			{resultReading?.[0]?.part1 &&
+				resultReading?.[0]?.part1.map((item, index) => (
+					<div className="questions-wrapper" key={index}>
+						<div className="question-wrapper flex gap-2">
+							<div className="question-number">
+								<strong className="rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block">
+									{index + 1}
+								</strong>
+							</div>
+							<div className="question-content">
+								<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
+									{item.resultCorrect}
 								</div>
 							</div>
-						);
-					})}
-			</FrameReadingResult>
-
-			<FrameReadingResult>
-				<div className="flex flex-col gap-6">
-					{resultReading?.[1]?.part2?.[0]?.resultCorrect?.map(
-						(item, index) => (
-							<div
-								className="border border-gray-300 p-2 bg-gray-50 min-h-[50px]"
-								key={index}
-							>
-								<div>
-									{
-										resultReading?.[1]?.part2?.[0]?.resultOfUser?.[
-											index
-										]?.content
-									}
-								</div>
-							</div>
-						)
-					)}
-				</div>
-
-				{resultReading?.[1]?.part2?.[0]?.resultCorrect?.map(
-					(item, index) => {
-						return (
-							<div class="questions-wrapper " key={index}>
-								<div class="question-wrapper flex gap-2">
-									<div class="question-number">
-										<strong className="rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block">
-											{index + 1}
-										</strong>
-									</div>
-
-									<div class="question-content ">
-										<div class="mt-2 text-success text-[#3cb46e] text-lg">
-											{item.content}
-										</div>
-									</div>
-								</div>
-							</div>
-						);
-					}
-				)}
-			</FrameReadingResult>
-
-			<FrameReadingResult>
-				<div className="flex flex-col gap-6">
-					{resultReading?.[2]?.part3?.[0]?.resultCorrect?.map(
-						(item, index) => (
-							<div
-								className="border border-gray-300 p-2 bg-gray-50 min-h-[50px]"
-								key={index}
-							>
-								<div>
-									{
-										resultReading?.[1]?.part2?.[0]?.resultOfUser?.[
-											index
-										]?.content
-									}
-								</div>
-							</div>
-						)
-					)}
-				</div>
-
-				{resultReading?.[2]?.part3?.[0]?.resultCorrect?.map(
-					(item, index) => {
-						return (
-							<div class="questions-wrapper " key={index}>
-								<div class="question-wrapper flex gap-2">
-									<div class="question-number">
-										<strong className="rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block">
-											{index + 1}
-										</strong>
-									</div>
-
-									<div class="question-content ">
-										<div class="mt-2 text-success text-[#3cb46e] text-lg">
-											{item.content}
-										</div>
-									</div>
-								</div>
-							</div>
-						);
-					}
-				)}
-			</FrameReadingResult>
-
-			<div className="flex flex-col gap-10">
-				<div className="flex gap-10">
-					<div>
-						<h2>PART 4:</h2>
-						<BasicTable rows={resultReading?.[3]?.part4} />
+						</div>
 					</div>
-					<div>
-						<h2>PART 5:</h2>
-						<BasicTable rows={resultReading?.[4]?.part5} />
+				))}
+		</FrameReadingResult>
+	);
+
+	const renderPartTwo = () => (
+		<FrameReadingResult>
+			<div className="flex flex-col gap-4">
+				{resultReading?.[1]?.part2?.[0]?.resultOfUser?.map((item, index) => (
+					<div
+						className={`border border-gray-300 shadow rounded p-2 bg-gray-50 min-h-[50px] ${
+							item?.id == index + 1 ? 'text-[#3cb46e]' : 'text-red-500'
+						} ${!item ? 'bg-gray-200' : ''}`}
+						key={index}
+					>
+						<div>{item?.content}</div>
 					</div>
-				</div>
+				))}
 			</div>
+			{resultReading?.[1]?.part2?.[0]?.resultCorrect?.map((item, index) => (
+				<div className="questions-wrapper" key={index}>
+					<div className="question-wrapper flex gap-2">
+						<div className="question-number">
+							<strong className="rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block">
+								{index + 1}
+							</strong>
+						</div>
+						<div className="question-content">
+							<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
+								{item?.content}
+							</div>
+						</div>
+					</div>
+				</div>
+			))}
+		</FrameReadingResult>
+	);
+
+	const renderPartThree = () => (
+		<FrameReadingResult>
+			<div className="flex flex-col gap-4">
+				{resultReading?.[2]?.part3?.[0]?.resultOfUser?.map((item, index) => (
+					<div
+						className={`border border-gray-300 shadow rounded p-2 bg-gray-50 min-h-[50px] ${
+							item?.id == index + 1 ? 'text-[#3cb46e]' : 'text-red-500'
+						} ${!item ? 'bg-gray-200' : ''}`}
+						key={index}
+					>
+						<div>{item?.content}</div>
+					</div>
+				))}
+			</div>
+			{resultReading?.[2]?.part3?.[0]?.resultCorrect?.map((item, index) => (
+				<div className="questions-wrapper" key={index}>
+					<div className="question-wrapper flex gap-2">
+						<div className="question-number">
+							<strong className="rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block">
+								{index + 1}
+							</strong>
+						</div>
+						<div className="question-content">
+							<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
+								{item?.content}
+							</div>
+						</div>
+					</div>
+				</div>
+			))}
+		</FrameReadingResult>
+	);
+
+	const renderPartFour = () => (
+		<FrameReadingResult>
+			{resReadingPartFour &&
+				resReadingPartFour?.content
+					?.split('tentisspace')
+					.map((part, index) => (
+						<div key={index} className="md:text-[14px] 2xl:text-[16px] leading-[1.7rem]">
+							{index % 2 === 0 || index === 1 ? <strong>{part}</strong> : part}
+						</div>
+					))}
+			{resReadingPartFour &&
+				resReadingPartFour?.subQuestion.map((item, index) => (
+					<div className="questions-wrapper" key={index}>
+						<div className="question-wrapper flex gap-2">
+							<div className="question-number">
+								<strong className="rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block">
+									{index + 1}
+								</strong>
+							</div>
+							<div className="question-content">
+								<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
+									{item?.correctAnswer}: <span className="text-gray-700">{item?.content}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				))}
+		</FrameReadingResult>
+	);
+
+	const renderPartFive = () => (
+		<FrameReadingResult>
+			{resReadingPartFive &&
+				resReadingPartFive?.content
+					?.split('tentisspace')
+					.map((part, index) => (
+						<div key={index} className="md:text-[14px] 2xl:text-[16px] leading-[1.7rem]">
+							{index > (part.split('tentisspace')[1] === 'null' ? 0 : 1) && (
+								<div className="answer p-1 col-4 w-[200px]">
+									<span data-lrn-template-response="">
+										<span className="lrn_combobox">
+											<input
+												className={`min-w-[250px] border-2 bg-white border-black shadow rounded-md p-1 ${
+													resReadingPartFive.subQuestion[index - (part.split('tentisspace')[1] === 'null' ? 1 : 2)]
+														?.responseUser ===
+													resReadingPartFive.subQuestion[index - (part.split('tentisspace')[1] === 'null' ? 1 : 2)]
+														?.correctAnswer
+														? 'border-green-500 text-green-500 font-medium'
+														: ' font-medium border-red-500 text-red-500'
+												}`}
+												data-inputid="0"
+												defaultValue={
+													resReadingPartFive.subQuestion.length > 0 &&
+													resReadingPartFive.subQuestion[index - (part.split('tentisspace')[1] === 'null' ? 1 : 2)]
+														?.responseUser
+												}
+												disabled
+											/>
+										</span>
+									</span>
+								</div>
+							)}
+							{index === 1 || index === 0 ? <strong>{part}</strong> : part}
+						</div>
+					))}
+			{resReadingPartFive &&
+				resReadingPartFive?.subQuestion.map((item, index) => (
+					<div className="questions-wrapper" key={index}>
+						<div className="question-wrapper flex gap-2">
+							<div className="question-number">
+								<strong className="rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block">
+									{index + 1}
+								</strong>
+							</div>
+							<div className="question-content">
+								<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
+									{item?.correctAnswer}
+								</div>
+							</div>
+						</div>
+					</div>
+				))}
+		</FrameReadingResult>
+	);
+
+	return (
+		<div className="bg-[#f8f9fa] flex flex-col gap-10" style={{ width: 'calc(100vw - 270px)', important: 'true' }}>
+			{numberLession === 1 && renderPartOne()}
+			{numberLession === 2 && renderPartTwo()}
+			{numberLession === 3 && renderPartThree()}
+			{numberLession === 4 && renderPartFour()}
+			{numberLession === 5 && renderPartFive()}
 		</div>
 	);
 };

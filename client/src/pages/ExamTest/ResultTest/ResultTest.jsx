@@ -41,9 +41,6 @@ const getResultWithDisplay = (partData) => {
 		}
 	}
 
-	console.log('data tesst', resultCorrect);
-
-	console.log('partData: ', partData);
 	return {
 		id: 1,
 		resultOfUser: partData.responseUser,
@@ -65,7 +62,7 @@ const ResultTest = () => {
 		{ part5: [] },
 	]);
 
-	const [resultWriting, setResultWriting] = useState()
+	const [resultWriting, setResultWriting] = useState();
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -97,31 +94,34 @@ const ResultTest = () => {
 			{ part5: readingPartFive },
 		];
 
-		console.log({ testBankData });
 
-
-
-		const writingPartOne = testBankData.writing.part1[RES_DATA].questions[0].subQuestion
-		const writingPartTwo = testBankData.writing.part2[RES_DATA].questions[0].subQuestion
-		const writingPartThree = testBankData.writing.part3[RES_DATA].questions[0].subQuestion
-		const writingPartFour = testBankData.writing.part4[RES_DATA].questions[0].subQuestion
+		const writingPartOne =
+			testBankData.writing.part1[RES_DATA].questions[0].subQuestion;
+		const writingPartTwo =
+			testBankData.writing.part2[RES_DATA].questions[0].subQuestion;
+		const writingPartThree =
+			testBankData.writing.part3[RES_DATA].questions[0].subQuestion;
+		const writingPartFour =
+			testBankData.writing.part4[RES_DATA].questions[0].subQuestion;
 
 		const resultWriting = [
 			{ part1: writingPartOne },
-			{ part2: writingPartTwo},
+			{ part2: writingPartTwo },
 			{ part3: writingPartThree },
 			{ part4: writingPartFour },
 		];
-
 
 		setResultReading(resultReading);
 		setResultWriting(resultWriting);
 	}, [testBankData]);
 
 	return (
-		<div className="p-10">
+		<div className="p-4 bg-[#f8f9fa]">
 			<div>
-				<BasicTabsResult resultReading={resultReading} resultWriting={resultWriting} />
+				<BasicTabsResult
+					resultReading={resultReading}
+					resultWriting={resultWriting}
+				/>
 			</div>
 		</div>
 	);

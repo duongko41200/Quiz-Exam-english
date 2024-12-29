@@ -9,54 +9,30 @@ import {
 
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { RES_DATA } from '../../../../Constant/global';
-import { useSelector } from 'react-redux';
-
-const initialItems = [
-	{
-		id: '1',
-		content: `For this reason it is easy for them to take a wrong turn and get lost.`,
-	},
-	{
-		id: '2',
-		content:
-			'For this reason it is easy for them to take a wrong turn and get lost.22 2',
-	},
-	{
-		id: '3',
-		content:
-			'For this reason it is easy for them to take a wrong turn and get lost.333',
-	},
-	{
-		id: '4',
-		content:
-			'For this reason it is easy for them to take a wrong turn and get lost.44',
-	},
-	{
-		id: '5',
-		content:
-			'For this reason it is easy for them to take a wrong turn and get lost.55',
-	},
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_RESPONSE_RESULT_READING } from '../../../../store/feature/testBank';
 
 const TITLE = 0;
 const DEAR_PERSON = 1;
 const FOOT_FISH = 2;
 const SIGNAL = 3;
+const PART_THREE = 3
 
 const ReadingPartThree = () => {
-	const [column1, setColumn1] = useState(Array(5).fill(null)); // Khởi tạo 3 ô trống
+	const [column1, setColumn1] = useState(Array(5).fill(null));
 	const [column2, setColumn2] = useState([]);
 	const [pointActive, setPointActive] = useState(null);
 	const [contentPartThree, setContentPartThree] = useState();
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
 	);
+	const dispatch = useDispatch();
 
 	const onDragEnd = (result) => {
 		const { source, destination } = result;
 
 		if (!destination) {
-			return; // Không có vị trí đích
+			return;
 		}
 
 		// Nếu kéo từ cột 2 sang cột 1
@@ -81,6 +57,13 @@ const ReadingPartThree = () => {
 			newColumn2.splice(source.index, 1); // Xóa item từ cột 2
 			setColumn1(newColumn1);
 			setColumn2(newColumn2);
+
+			dispatch(
+				SET_RESPONSE_RESULT_READING({
+					part: PART_THREE,
+					value: newColumn1,
+				})
+			);
 		}
 
 		// Nếu kéo từ cột 1 về cột 2
