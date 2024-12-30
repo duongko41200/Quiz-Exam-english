@@ -59,21 +59,21 @@ const WritingPartTwo = () => {
 		setContentPartOne(writingPartTwo?.questions[RES_DATA].content);
 	}, [testBankData]);
 
-	useEffect(() => {
-		const writingPartTwo = testBankData.writing.part2[RES_DATA].questions[0].subQuestion
+	// useEffect(() => {
+	// 	const writingPartTwo = testBankData.writing.part2[RES_DATA].questions[0].subQuestion
 
-		console.log("testBankData",testBankData)
+	// 	console.log("testBankData",testBankData)
 
-		// if (writingPartTwo) {
+	// 	// if (writingPartTwo) {
 
-		// 	console.log('writingPartTwo:', writingPartTwo);
-		// 	const inputWords = writingPartTwo[0].responseUser
-		// 		.toLowerCase()
-		// 		.split(/\s+/)
-		// 		.filter((word) => word.length > 0);
-		// 	setResult(inputWords);
-		// }
-	}, []);
+	// 	// 	console.log('writingPartTwo:', writingPartTwo);
+	// 	// 	const inputWords = writingPartTwo[0].responseUser
+	// 	// 		.toLowerCase()
+	// 	// 		.split(/\s+/)
+	// 	// 		.filter((word) => word.length > 0);
+	// 	// 	setResult(inputWords);
+	// 	// }
+	// }, []);
 
 	return (
 		<div>

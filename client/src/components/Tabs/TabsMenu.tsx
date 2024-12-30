@@ -66,7 +66,10 @@ export default function BasicTabsResult({
 						/>
 					)}
 					{partSkill && partSkill === 'Writing' && (
-						<ResultTestWriting resultWriting={resultWriting} />
+						<ResultTestWriting
+							resultWriting={resultWriting}
+							numberLession={numberLession}
+						/>
 					)}
 				</Box>
 				<div className="h-full flex justify-center shadow-md bg-gray-100">
