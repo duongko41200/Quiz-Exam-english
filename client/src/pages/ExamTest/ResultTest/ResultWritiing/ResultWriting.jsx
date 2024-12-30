@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RES_DATA } from '../../../../Constant/global';
+import { RES_DATA, SPACE_BANK } from '../../../../Constant/global';
 import BasicTable from '../../../../components/Table/BasicTable/BasicTable';
 import { Box, TextareaAutosize } from '@mui/material';
 import FrameReadingResult from '../../../../components/FrameReadingResult/FrameReadingResult';
 import TextareaInput from '../../../../components/TextareaAutosize/TextareaAutosize';
 
-const PART_ONE = 1;
+const TITLE = 0;
+const BODY = 1;
+const FOOT_FISH = 2;
 
 const ResultTestWriting = ({ resultWriting, numberLession }) => {
-	console.log('resultWriting', resultWriting);
 
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
@@ -21,11 +22,21 @@ const ResultTestWriting = ({ resultWriting, numberLession }) => {
 	const [contentPartTwo, setContentPartTwo] = useState();
 	const [resWritingPartThree, setResWritingPartThree] = useState();
 	const [contentPartThree, setContentPartThree] = useState();
+
+	const [resWritingPartFour, setResWritingPartFour] = useState();
+	const [contentPartFour, setContentPartFour] = useState();
+	const [subTitle, setSubTitle] = useState(null);
 	const dispatch = useDispatch();
 	useEffect(() => {
 		const writingPartOne = testBankData.writing.part1[RES_DATA];
 		const writingPartTwo = testBankData.writing.part2[RES_DATA];
 		const writingPartThree = testBankData.writing.part3[RES_DATA];
+		const writingPartFour = testBankData.writing.part4[RES_DATA];
+		setResWritingPartFour(
+			writingPartFour?.questions[RES_DATA].subQuestion
+		);
+		setContentPartFour(writingPartFour?.questions[RES_DATA].content);
+		setSubTitle(writingPartFour?.questions[RES_DATA].questionTitle);
 		setResWritingPartThree(
 			writingPartThree?.questions[RES_DATA].subQuestion
 		);
@@ -121,8 +132,11 @@ const ResultTestWriting = ({ resultWriting, numberLession }) => {
 										fontWeight: '500',
 									}}
 								>
-									Word:{' '}
-									{resWritingPartTwo[0].responseUser.split(' ').length}
+									Word:
+									{resWritingPartTwo[0].responseUser
+										? resWritingPartTwo[0].responseUser.split(' ')
+												.length
+										: 0}
 									/45
 								</Box>
 							</Box>
@@ -192,6 +206,67 @@ const ResultTestWriting = ({ resultWriting, numberLession }) => {
 									</Box>
 								);
 							})}
+					</div>
+				</div>
+			</div>
+
+			<div></div>
+		</FrameReadingResult>
+	);
+
+	const renderPartFour = () => (
+		<FrameReadingResult>
+			<div>
+				<div className="lrn_stimulus_content lrn_clearfix lrn_question mb-5 flex flex-col gap-2">
+					<div className="font-bold text-md">{contentPartFour}</div>
+					<div>{subTitle && subTitle.split(SPACE_BANK)[TITLE]}</div>
+					<div className="text-[15px]">
+						{subTitle && subTitle.split(SPACE_BANK)[BODY]}
+					</div>
+					<div>{subTitle && subTitle.split(SPACE_BANK)[FOOT_FISH]}</div>
+				</div>
+				<div className="lrn_response_innerbody lrn-response-validate-wrapper mt-10">
+					<div className="lrn_response_input"></div>
+					<div className="flex justify-start flex-col gap-4">
+						{resWritingPartFour?.map((question, index) => (
+							<Box
+								key={index}
+								sx={{
+									display: 'flex',
+									flexDirection: 'column',
+									gap: 2,
+								}}
+							>
+								<Box>
+									<Box fontSize="0.9rem" fontWeight={700} width={500}>
+										{question.content}
+									</Box>
+								</Box>
+								<Box>
+									<TextareaInput>
+										<TextareaAutosize
+											className="text-md text-bold font-normal w-full leading-normal p-3 rounded-xl rounded-br-none focus:shadow-outline-purple dark:focus:shadow-outline-purple focus:shadow-lg border border-solid border-slate-300 hover:border-slate-500 dark:hover:border-purple-500 focus:border-slate-500 dark:focus:border-purple-500 dark:border-slate-600 dark:bg-slate-900 text-bold dark:text-slate-300 focus-visible:outline-0 box-border p-[17px] bg-[#f8f8f8] font-sans placeholder:text-black placeholder:text-lg"
+											aria-label="empty textarea"
+											placeholder="Type your answer here"
+											onChange={(e) => handleChangeTextarea(e, index)}
+											maxRows={4}
+											minRows={4}
+											defaultValue={question.responseUser}
+										/>
+									</TextareaInput>
+									{/* <Box
+									sx={{
+										textAlign: 'end',
+										padding: '10px',
+										fontWeight: '500',
+									}}
+								>
+									Word: {index === 0 ? result1.length : result2.length}/
+									{index === 0 ? 75 : 225}
+								</Box> */}
+								</Box>
+							</Box>
+						))}
 					</div>
 				</div>
 			</div>
