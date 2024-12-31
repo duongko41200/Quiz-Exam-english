@@ -125,7 +125,7 @@ const ResultTestWriting = ({ resultWriting, numberLession }) => {
 										disabled
 									/>
 								</TextareaInput>
-								<Box
+								{/* <Box
 									sx={{
 										textAlign: 'end',
 										padding: '10px',
@@ -138,7 +138,7 @@ const ResultTestWriting = ({ resultWriting, numberLession }) => {
 												.length
 										: 0}
 									/45
-								</Box>
+								</Box> */}
 							</Box>
 						</Box>
 					</div>

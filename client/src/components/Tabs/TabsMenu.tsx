@@ -46,7 +46,7 @@ export default function BasicTabsResult({
 	return (
 		<>
 			<div className="w-full flex justify-center font-bold items-center h-[50px] text-[18px] ">
-				Đáp án/transcript: Aptis Test - {partSkill} - {numberLession}
+				Đáp án/transcript: Aptis Test - {partSkill} - Part {numberLession}
 			</div>
 			<Box
 				sx={{
