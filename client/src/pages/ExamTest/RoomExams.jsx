@@ -130,8 +130,10 @@ const RoomExam = () => {
 					return;
 				}
 
-				console.log('test');
 				stopRecording();
+
+
+				console.log({tesstAudio:audioURL})
 				dispatch(SET_INCREMENT_SPEAKING_EACH_PART());
 			} else {
 				stopRecord();
@@ -139,6 +141,11 @@ const RoomExam = () => {
 			}
 		}
 	}, [timeLeft]);
+
+
+
+
+
 
 	///////////// XỬ LÝ HÀNH ĐỘNG KHI HẾT THỜI GIAN //////////////////////
 
@@ -258,7 +265,7 @@ const RoomExam = () => {
 				{currentExamPart === 'writing' && <ExamWriting />}
 				{currentExamPart === 'result' && <ResultTest />}
 
-				{/* {audioURL && (
+				{audioURL && (
 					<div style={{ marginTop: '20px' }}>
 						<h3>Bản ghi âm:</h3>
 						<audio controls src={audioURL}></audio>
@@ -270,7 +277,7 @@ const RoomExam = () => {
 							Tải xuống
 						</a>
 					</div>
-				)} */}
+				)}
 
 				<Box className="footer-test">
 					<Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

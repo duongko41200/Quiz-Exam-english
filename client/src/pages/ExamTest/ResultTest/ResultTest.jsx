@@ -63,9 +63,12 @@ const ResultTest = () => {
 	]);
 
 	const [resultWriting, setResultWriting] = useState();
+	const [resultSpeaking, setResultSpeaking] = useState();
 	const dispatch = useDispatch();
 
 	useEffect(() => {
+
+		console.log("testBankData",testBankData)
 		const readingPartOne = getResult(
 			testBankData.reading.part1[RES_DATA].data.questions,
 			true
@@ -110,6 +113,11 @@ const ResultTest = () => {
 			{ part3: writingPartThree },
 			{ part4: writingPartFour },
 		];
+
+		// const speakingPartOne = getResult(
+		// 	testBankData.speaking.part1[RES_DATA].questions,
+		// 	true
+		// );
 
 		setResultReading(resultReading);
 		setResultWriting(resultWriting);

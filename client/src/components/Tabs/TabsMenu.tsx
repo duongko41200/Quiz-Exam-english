@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import ResultTestReading from '../../pages/ExamTest/ResultTest/ResultReading/ResultReading';
 import ResultTestWriting from '../../pages/ExamTest/ResultTest/ResultWritiing/ResultWriting';
 import { Button, Grid, Typography } from '@mui/material';
+import ResultTestSpeaking from '../../pages/ExamTest/ResultTest/ResultSpeaking/ResultSpeaking';
 
 export default function BasicTabsResult({
 	resultReading,
@@ -46,7 +47,8 @@ export default function BasicTabsResult({
 	return (
 		<>
 			<div className="w-full flex justify-center font-bold items-center h-[50px] text-[18px] ">
-				Đáp án/transcript: Aptis Test - {partSkill} - Part {numberLession}
+				Đáp án/transcript: Aptis Test - {partSkill} - Part{' '}
+				{numberLession}
 			</div>
 			<Box
 				sx={{
@@ -68,6 +70,11 @@ export default function BasicTabsResult({
 					{partSkill && partSkill === 'Writing' && (
 						<ResultTestWriting
 							resultWriting={resultWriting}
+							numberLession={numberLession}
+						/>
+					)}
+					{partSkill && partSkill === 'Speaking' && (
+						<ResultTestSpeaking
 							numberLession={numberLession}
 						/>
 					)}

@@ -12,6 +12,23 @@
 	--bg-blue: #edf2f9;
 	--text-color: #506690
 }
+.custom-audio::-webkit-media-controls-panel {
+	background-color: #ffffff; /* Nền trắng cho phần giao diện */
+	border-radius: 0.5rem; /* Bo tròn các góc */
+  }
+  
+  .custom-audio::-webkit-media-controls-play-button,
+  .custom-audio::-webkit-media-controls-volume-slider {
+	background-color: #ffffff; /* Màu nền trắng cho các nút */
+	border: 1px solid #ccc; /* Viền nhẹ để phân biệt */
+	border-radius: 0.25rem; /* Bo góc */
+  }
+  
+  .custom-audio::-webkit-media-controls-current-time-display,
+  .custom-audio::-webkit-media-controls-time-remaining-display {
+	color: #333; /* Màu chữ đậm hơn */
+  }
+  
 
 .App {
 	/* padding: 0.5rem 3.5rem; */

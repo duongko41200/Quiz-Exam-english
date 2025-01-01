@@ -1,8 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-
-
-
 const setResponseReading = (questions, limit) => {
 	questions.forEach((question, index) => {
 		if (index < limit) {
@@ -11,13 +8,13 @@ const setResponseReading = (questions, limit) => {
 	});
 };
 
-const setResponseWriting = (questions, limit) => { 
+const setResponseWriting = (questions, limit) => {
 	questions.forEach((question, index) => {
 		if (index < limit) {
 			question['responseUser'] = '';
 		}
 	});
-}
+};
 
 const initialState = {
 	testBankData: {
@@ -228,13 +225,30 @@ export const testBankReducer = createSlice({
 
 			console.log('testBank store:', testBank);
 
-
-			setResponseReading(testBank['reading']['part1'][0]['data']['questions']['subQuestion'], 6);
-			testBank['reading']['part2'][0]['data']['questions']['responseUser'] = [null, null, null, null,null];
-			testBank['reading']['part3'][0]['data']['questions']['responseUser'] = [null, null, null, null,null];
-			setResponseReading(testBank['reading']['part4'][0]['data']['questions']['subQuestion'], 8);
-			setResponseReading(testBank['reading']['part5'][0]['data']['questions']['subQuestion'], 8);
-
+			setResponseReading(
+				testBank['reading']['part1'][0]['data']['questions'][
+					'subQuestion'
+				],
+				6
+			);
+			testBank['reading']['part2'][0]['data']['questions'][
+				'responseUser'
+			] = [null, null, null, null, null];
+			testBank['reading']['part3'][0]['data']['questions'][
+				'responseUser'
+			] = [null, null, null, null, null];
+			setResponseReading(
+				testBank['reading']['part4'][0]['data']['questions'][
+					'subQuestion'
+				],
+				8
+			);
+			setResponseReading(
+				testBank['reading']['part5'][0]['data']['questions'][
+					'subQuestion'
+				],
+				8
+			);
 
 			// setResponseWriting(testBank['writing']['part1'][0]['questions'][0]['subQuestion'], 5);
 			// setResponseWriting(testBank['writing']['part2'][0]['questions'][0]['subQuestion'], 1);
@@ -244,70 +258,53 @@ export const testBankReducer = createSlice({
 			state.testBankData = testBank;
 		},
 
-		SET_RESPONSE_RESULT_WRITING: (state, action) => { 
-			const {part, index, value } = action.payload;
-			
-			state.testBankData['writing'][`part${part}`][0]['questions'][0]['subQuestion'][index]['responseUser'] = value;
-			console.log("first,",state.testBankData)
+		SET_RESPONSE_RESULT_WRITING: (state, action) => {
+			const { part, index, value } = action.payload;
 
+			state.testBankData['writing'][`part${part}`][0]['questions'][0][
+				'subQuestion'
+			][index]['responseUser'] = value;
+			console.log('first,', state.testBankData);
 		},
 
-		
-		SET_RESPONSE_RESULT_READING: (state, action) => { 
+		SET_RESPONSE_RESULT_READING: (state, action) => {
 			const { part, index, value } = action.payload;
-			
 
 			if (part === 1 || part === 4 || part === 5) {
-				
-				state.testBankData['reading'][`part${part}`][0]['data']['questions']['subQuestion'][index]['responseUser'] = value
-
+				state.testBankData['reading'][`part${part}`][0]['data'][
+					'questions'
+				]['subQuestion'][index]['responseUser'] = value;
 			}
 			if (part === 2 || part === 3) {
 				let data = [];
-				console.log({value})
-				state.testBankData['reading'][`part${part}`][0]['data']['questions']['responseUser'] = value
+				console.log({ value });
+				state.testBankData['reading'][`part${part}`][0]['data'][
+					'questions'
+				]['responseUser'] = value;
 			}
-			
-			
+		},
+		SET_RESPONSE_RESULT_SPEAKING: (state, action) => {
+			const { part, index, value } = action.payload;
 
-		}
+			console.log({ part, index, value });
 
-	
+			state.testBankData['speaking'][`part${part}`][0]['questions'][0][
+				'subQuestion'
+			][index - 1]['responseUser'] = value;
+		},
 
 
-		// extraReducers: (builder) => {
-		// 	builder.addCase(getAllText.fulfilled, (state, action) => {
-		// 		console.log('action:', action.payload);
-		// 		state.listData = action.payload.contents;
-		// 		state.totalPages = action.payload.totalPages;
-		// 	});
-
-		// 	builder.addCase(getListTextByFilter.fulfilled, (state, action) => {
-		// 		console.log('action filter:', action.payload);
-		// 		state.remainingQuantity = action.payload.contents.length;
-		// 		state.listTextReview = action.payload.contents;
-		// 		state.totalPagesReview = action.payload.totalPages;
-		// 		state.totalListTextReview = action.payload.total;
-		// 	});
-		// 	builder.addCase(deleteText.fulfilled, (state, action) => {
-		// 		console.log('action delete:', action.payload);
-		// 		state.remainingQuantity = action.payload.contents.length;
-		// 		state.listTextReview = action.payload.contents;
-		// 		state.totalPagesReview = action.payload.totalPages;
-		// 		state.totalListTextReview = action.payload.total;
-		// 	});
-		// },
 	},
 });
 
-// Action creators are generated for each case reducer function
 export const {
 	SET_WORD,
 	SET_TESTBANK_DATA,
 	SET_TYPE_TEXT,
 	RESET_TESTBANK_DATA,
 	SET_RESPONSE_RESULT_WRITING,
-	SET_RESPONSE_RESULT_READING
+	SET_RESPONSE_RESULT_READING,
+	SET_RESPONSE_RESULT_SPEAKING,
 } = testBankReducer.actions;
 
 export default testBankReducer.reducer;
