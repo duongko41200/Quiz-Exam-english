@@ -38,7 +38,7 @@ const SpeakingPartFour = () => {
       navigate("/");
       return;
     }
-    const SpeakingPartFour = testBankData.speaking.part2[RES_DATA];
+    const SpeakingPartFour = testBankData.speaking.part4[RES_DATA];
 
     setResSpeakingPartFour(SpeakingPartFour);
     setContentPartFour(SpeakingPartFour?.questions[RES_DATA]);
