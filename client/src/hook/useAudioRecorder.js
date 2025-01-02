@@ -36,9 +36,9 @@ const useAudioRecorder = () => {
 					type: 'audio/mp3',
 				});
 				const audioUrl = URL.createObjectURL(audioBlob);
-        setAudioURL(audioUrl);
-        
-        console.log("numberQuestionSpeaking",numberQuestionSpeaking)
+				setAudioURL(audioUrl);
+
+				console.log('numberQuestionSpeaking', numberQuestionSpeaking);
 
 				dispatch(
 					SET_RESPONSE_RESULT_SPEAKING({
