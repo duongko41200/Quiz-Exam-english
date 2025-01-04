@@ -10,7 +10,7 @@ import {
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { RES_DATA } from '../../../../Constant/global';
 import { useDispatch, useSelector } from 'react-redux';
-import { SET_RESPONSE_RESULT_READING } from '../../../../store/feature/testBank';
+import { SET_ATTEMPTED_QUESTION, SET_RESPONSE_RESULT_READING } from '../../../../store/feature/testBank';
 
 const TITLE = 0;
 const DEAR_PERSON = 1;
@@ -64,6 +64,10 @@ const ReadingPartThree = () => {
 					value: newColumn1,
 				})
 			);
+						dispatch(SET_ATTEMPTED_QUESTION({
+							  numberQuestion: 3,
+							  currentExamPart: 'reading',
+							}));
 		}
 
 		// Nếu kéo từ cột 1 về cột 2

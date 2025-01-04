@@ -56,7 +56,7 @@ const SpeakingPartTwo = () => {
       </div>
 
       {numberQuestionEachPart === 1 && contentPartTwo && (
-        <img src={contentPartTwo.image[0].path} />
+        <img src={contentPartTwo.image && contentPartTwo?.image[0]?.path} />
       )}
     </div>
   );

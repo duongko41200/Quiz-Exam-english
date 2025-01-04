@@ -20,6 +20,7 @@ const initialState = {
 	openModalBottom: false,
 	currentExamPart: 'speaking',
 	pointExam: 1, // current point skill exam
+	isModalList:false
 };
 
 export const generalReducer = createSlice({
@@ -49,6 +50,9 @@ export const generalReducer = createSlice({
 			state.currentExamPart = 'result';
 			state.pointExam = 5;
 		},
+		SET_MODAL_LIST: (state, action) => {
+			state.isModalList = action.payload;
+		},
 	},
 });
 
@@ -58,6 +62,7 @@ export const {
 	SET_MOVE_EXAM_SKILL,
 	SET_RESET_PART_SKILL,
 	SET_RESULT_TEST,
+	SET_MODAL_LIST
 } = generalReducer.actions;
 
 export default generalReducer.reducer;

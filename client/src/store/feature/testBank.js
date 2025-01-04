@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { TOTAL_NUMBER_PART } from '../../Constant/global';
 
 const setResponseReading = (questions, limit) => {
 	questions.forEach((question, index) => {
@@ -48,127 +49,9 @@ const initialState = {
 			part5: [],
 		},
 	},
+
+	dataOfModalList: {},
 };
-
-// export const getAllText = createAsyncThunk(
-// 	'wordStore/getAllText',
-// 	async (payload, { state }) => {
-// 		const listText = JSON.parse(localStorage.getItem('listText'));
-// 		try {
-// 			const { page, limit } = payload;
-// 			const res = await TextService.getAllText({ page, limit });
-
-// 			console.log('res:', res);
-
-// 			if (!listText) {
-// 				localStorage.setItem(
-// 					'listText',
-// 					JSON.stringify(res[RES_DATA].metadata.contents)
-// 				);
-
-// 				localStorage.setItem(
-// 					'totalPages',
-// 					JSON.stringify(res[RES_DATA].metadata.totalPages)
-// 				);
-
-// 				localStorage.setItem(
-// 					'total',
-// 					JSON.stringify(res[RES_DATA].metadata.total)
-// 				);
-// 			}
-
-// 			return res[RES_DATA]?.metadata;
-// 		} catch (error) {
-// 			throw new Error(error.message);
-// 		}
-// 	}
-// );
-
-// export const getListTextByFilter = createAsyncThunk(
-// 	'wordStore/getListTextByFilter',
-// 	async (payload) => {
-// 		// const listText = JSON.parse(localStorage.getItem('listText'));
-// 		try {
-// 			const { page, limit, level, typeText, date } = payload;
-
-// 			const res = await TextService.getListTextByFilter({
-// 				page,
-// 				limit,
-// 				level,
-// 				typeText,
-// 				date,
-// 			});
-
-// 			// if (!listText) {
-// 			// 	localStorage.setItem(
-// 			// 		'listText',
-// 			// 		JSON.stringify(res[RES_DATA].metadata.contents)
-// 			// 	);
-
-// 			// 	localStorage.setItem(
-// 			// 		'totalPages',
-// 			// 		JSON.stringify(res[RES_DATA].metadata.totalPages)
-// 			// 	);
-
-// 			// 	localStorage.setItem(
-// 			// 		'total',
-// 			// 		JSON.stringify(res[RES_DATA].metadata.total)
-// 			// 	);
-// 			// }
-
-// 			return res[RES_DATA]?.metadata;
-// 		} catch (error) {
-// 			console.log({ error });
-// 			throw new Error(error.message);
-// 		}
-// 	}
-// );
-// export const deleteText = createAsyncThunk(
-// 	'wordStore/deleteText',
-// 	async (payload, thunkAPI) => {
-// 		try {
-// 			const { page, limit, level, typeText, date } =
-// 				thunkAPI.getState().wordStore;
-// 			const { textId } = payload;
-
-// 			const res = await TextService.deleteText({
-// 				page:
-// 					thunkAPI.getState().wordStore.remainingQuantity == 1
-// 						? parseInt(page) - 1
-// 						: page,
-// 				limit,
-// 				level,
-// 				typeText,
-// 				date,
-// 				textId,
-// 			});
-
-// 			localStorage.removeItem('listText');
-
-// 			// if (!listText) {
-// 			// 	localStorage.setItem(
-// 			// 		'listText',
-// 			// 		JSON.stringify(res[RES_DATA].metadata.contents)
-// 			// 	);
-
-// 			// 	localStorage.setItem(
-// 			// 		'totalPages',
-// 			// 		JSON.stringify(res[RES_DATA].metadata.totalPages)
-// 			// 	);
-
-// 			// 	localStorage.setItem(
-// 			// 		'total',
-// 			// 		JSON.stringify(res[RES_DATA].metadata.total)
-// 			// 	);
-// 			// }
-
-// 			return res[RES_DATA]?.metadata;
-// 		} catch (error) {
-// 			console.log({ error });
-// 			throw new Error(error.message);
-// 		}
-// 	}
-// );
 
 export const testBankReducer = createSlice({
 	name: 'testBankStore',
@@ -220,6 +103,82 @@ export const testBankReducer = createSlice({
 			};
 		},
 
+		SET_DATA_OF_MODAL_LIST: (state, action) => {
+
+			const { testBankData, currentExamPart, currentQuestion } =
+				action.payload;
+
+			let numberQuestion = [];
+
+			if (currentExamPart === 'reading') {
+				for (let i = 0; i < 5; i++) {
+					numberQuestion.push({
+						question: i + 1,
+						currentExamPart: currentExamPart,
+
+						questionPart: {
+							question: i + 1,
+							status: false,
+							isWatching: currentQuestion == i + 1 ? true : false,
+							activeQuestion: currentQuestion == i + 1 ? true : false,
+						},
+					});
+				}
+			}
+
+			const dataOfModalList = {
+				currentExamPart: currentExamPart,
+				currentQuestion: 1,
+				numberQuestion,
+				totalPart: TOTAL_NUMBER_PART[currentExamPart],
+			};
+
+			state.dataOfModalList = dataOfModalList;
+		},
+
+		SET_UPDATE_MODAL_LIST: (state, action) => {
+			const { numberQuestion, currentExamPart } = action.payload;
+			let numberQuestionUpdate = [];
+
+			if (currentExamPart === 'reading') {
+				numberQuestionUpdate = state.dataOfModalList.numberQuestion.map(
+					(item, index) => {
+						if (item.question === numberQuestion) {
+							item.questionPart.activeQuestion = true;
+							item.questionPart.isWatching = true;
+						} else {
+							item.questionPart.activeQuestion = false;
+						}
+						return item;
+					}
+				);
+			}
+
+			state.dataOfModalList.numberQuestion = numberQuestionUpdate;
+		},
+
+
+		SET_ATTEMPTED_QUESTION: (state, action) => { 
+			const { numberQuestion, currentExamPart } = action.payload;
+
+			let numberQuestionUpdate = [];
+
+			if (currentExamPart === 'reading') {
+				numberQuestionUpdate = state.dataOfModalList.numberQuestion.map(
+					(item, index) => {
+						if (item.question === numberQuestion) {
+							item.questionPart.status = true;
+						}
+						return item;
+					}
+				);
+			}
+			
+			state.dataOfModalList.numberQuestion = numberQuestionUpdate;
+
+
+		},
+
 		SET_TESTBANK_DATA: (state, action) => {
 			const testBank = action.payload;
 
@@ -250,13 +209,12 @@ export const testBankReducer = createSlice({
 				8
 			);
 
-			// setResponseWriting(testBank['writing']['part1'][0]['questions'][0]['subQuestion'], 5);
-			// setResponseWriting(testBank['writing']['part2'][0]['questions'][0]['subQuestion'], 1);
-			// setResponseWriting(testBank['writing']['part3'][0]['questions'][0]['subQuestion'], 3);
-			// setResponseWriting(testBank['writing']['part4'][0]['questions'][0]['subQuestion'], 2);
-
 			state.testBankData = testBank;
 		},
+
+
+
+
 
 		SET_RESPONSE_RESULT_WRITING: (state, action) => {
 			const { part, index, value } = action.payload;
@@ -292,8 +250,6 @@ export const testBankReducer = createSlice({
 				'subQuestion'
 			][index - 1]['responseUser'] = value;
 		},
-
-
 	},
 });
 
@@ -305,6 +261,9 @@ export const {
 	SET_RESPONSE_RESULT_WRITING,
 	SET_RESPONSE_RESULT_READING,
 	SET_RESPONSE_RESULT_SPEAKING,
+	SET_DATA_OF_MODAL_LIST,
+	SET_UPDATE_MODAL_LIST,
+	SET_ATTEMPTED_QUESTION
 } = testBankReducer.actions;
 
 export default testBankReducer.reducer;

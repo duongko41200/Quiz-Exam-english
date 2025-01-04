@@ -99,6 +99,9 @@ export const readingReducer = createSlice({
 		SET_RESET_NUMBER_QUESTION: (state, action) => {
 			state.numberQuestion = 1;
 		},
+		SET_NUMBER_QUESTION_READING: (state, action) => {
+			state.numberQuestion = action.payload
+		}
 
 		//Action
 	},
@@ -124,6 +127,7 @@ export const {
 	SET_INCREMENT,
 	SET_DECREMENT,
 	SET_RESET_NUMBER_QUESTION,
+	SET_NUMBER_QUESTION_READING
 } = readingReducer.actions;
 
 export default readingReducer.reducer;

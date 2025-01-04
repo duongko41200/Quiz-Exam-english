@@ -3,10 +3,9 @@ import '../../Reading/ExamReading.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../../Constant/global';
 import {
+  SET_ATTEMPTED_QUESTION,
 	SET_RESPONSE_RESULT_READING,
-	SET_TESTBANK_DATA,
 } from '../../../../store/feature/testBank';
-import TestBankService from '../../../../services/API/testBank.service';
 import { useNavigate } from "react-router-dom";
 
 const TITLE = 0;
@@ -29,6 +28,10 @@ const ReadingPartOne = () => {
     const value = e.target.value;
 
     dispatch(SET_RESPONSE_RESULT_READING({ part: PART_ONE, index, value }));
+    dispatch(SET_ATTEMPTED_QUESTION({
+      numberQuestion: 1,
+      currentExamPart: 'reading',
+    }));
   };
 
   useEffect(() => {

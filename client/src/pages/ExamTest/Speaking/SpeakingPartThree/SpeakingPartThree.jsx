@@ -63,11 +63,11 @@ const SpeakingPartThree = () => {
               
             }
           }}>
-            <img src={contentPartThree.image[0].path} />
+            <img src={contentPartThree.image && contentPartThree?.image[0]?.path} />
           </Box>
 
           <Box>
-            <img src={contentPartThree.image[1].path} />
+            <img src={contentPartThree.image && contentPartThree?.image[1]?.path} />
           </Box>
         </Box>
       )}

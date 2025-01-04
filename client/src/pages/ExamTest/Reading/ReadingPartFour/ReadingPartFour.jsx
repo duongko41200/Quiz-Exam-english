@@ -4,7 +4,10 @@ import React, { useEffect, useState } from 'react';
 import Split from 'react-split';
 import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../../Constant/global';
-import { SET_RESPONSE_RESULT_READING } from '../../../../store/feature/testBank';
+import {
+	SET_ATTEMPTED_QUESTION,
+	SET_RESPONSE_RESULT_READING,
+} from '../../../../store/feature/testBank';
 
 const PART_FOUR = 4;
 
@@ -34,6 +37,12 @@ const ReadingPartFour = () => {
 
 		dispatch(
 			SET_RESPONSE_RESULT_READING({ part: PART_FOUR, index, value })
+		);
+		dispatch(
+			SET_ATTEMPTED_QUESTION({
+				numberQuestion: 4,
+				currentExamPart: 'reading',
+			})
 		);
 	};
 
