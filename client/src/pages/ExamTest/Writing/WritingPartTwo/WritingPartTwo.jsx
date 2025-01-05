@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../../Constant/global';
 import TextareaInput from '../../../../components/TextareaAutosize/TextareaAutosize';
 import { Box, Button, Checkbox, TextareaAutosize } from '@mui/material';
-import { SET_RESPONSE_RESULT_WRITING } from '../../../../store/feature/testBank';
+import {
+	SET_ATTEMPTED_QUESTION,
+	SET_RESPONSE_RESULT_WRITING,
+} from '../../../../store/feature/testBank';
 
 const PART_TWO = 2;
 
@@ -27,11 +30,6 @@ const WritingPartTwo = () => {
 	};
 	const handleChangeTextarea = useCallback(
 		debounce((e) => {
-			// const value = e.target.value
-			// setInput(value);
-
-			console.log('values text:', e.target.value);
-
 			const value = e.target.value;
 
 			const inputWords = value
@@ -39,14 +37,17 @@ const WritingPartTwo = () => {
 				.split(/\s+/)
 				.filter((word) => word.length > 0);
 
-			console.log({ inputWords });
-
 			setResult(inputWords);
 			dispatch(
 				SET_RESPONSE_RESULT_WRITING({ part: PART_TWO, index: 0, value })
 			);
-
-			// setUserCode(inputWords)
+			dispatch(
+				SET_ATTEMPTED_QUESTION({
+					part: 1,
+					numberQuestion: 2,
+					currentExamPart: 'writing',
+				})
+			);
 		}, 500),
 		[]
 	);
@@ -58,22 +59,6 @@ const WritingPartTwo = () => {
 		);
 		setContentPartOne(writingPartTwo?.questions[RES_DATA].content);
 	}, [testBankData]);
-
-	// useEffect(() => {
-	// 	const writingPartTwo = testBankData.writing.part2[RES_DATA].questions[0].subQuestion
-
-	// 	console.log("testBankData",testBankData)
-
-	// 	// if (writingPartTwo) {
-
-	// 	// 	console.log('writingPartTwo:', writingPartTwo);
-	// 	// 	const inputWords = writingPartTwo[0].responseUser
-	// 	// 		.toLowerCase()
-	// 	// 		.split(/\s+/)
-	// 	// 		.filter((word) => word.length > 0);
-	// 	// 	setResult(inputWords);
-	// 	// }
-	// }, []);
 
 	return (
 		<div>

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../Constant/global';
 import BasicTable from '../../../components/Table/BasicTable/BasicTable';
 import BasicTabsResult from '../../../components/Tabs/TabsMenu';
+import { SET_MODAL_LIST } from '../../../store/general';
 
 const PART_ONE = 1;
 
@@ -65,10 +66,11 @@ const ResultTest = () => {
 	const [resultWriting, setResultWriting] = useState();
 	const [resultSpeaking, setResultSpeaking] = useState();
 	const dispatch = useDispatch();
+	useEffect(() => {
+		dispatch(SET_MODAL_LIST(false));
+	}, []);
 
 	useEffect(() => {
-
-		console.log("testBankData",testBankData)
 		const readingPartOne = getResult(
 			testBankData.reading.part1[RES_DATA].data.questions,
 			true

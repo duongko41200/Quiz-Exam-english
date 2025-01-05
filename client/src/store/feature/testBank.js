@@ -104,11 +104,12 @@ export const testBankReducer = createSlice({
 		},
 
 		SET_DATA_OF_MODAL_LIST: (state, action) => {
-
 			const { testBankData, currentExamPart, currentQuestion } =
 				action.payload;
 
 			let numberQuestion = [];
+
+			console.log('testBankData: testbank', testBankData);
 
 			if (currentExamPart === 'reading') {
 				for (let i = 0; i < 5; i++) {
@@ -122,6 +123,31 @@ export const testBankReducer = createSlice({
 							isWatching: currentQuestion == i + 1 ? true : false,
 							activeQuestion: currentQuestion == i + 1 ? true : false,
 						},
+					});
+				}
+			}
+			if (currentExamPart === 'writing') {
+				const questionPart = testBankData[currentExamPart];
+
+				for (let i = 0; i < 4; i++) {
+					numberQuestion.push({
+						question: i + 1,
+						currentExamPart: currentExamPart,
+						activeQuestion: currentQuestion == i + 1 ? true : false,
+						numberPart:
+							questionPart[`part${i + 1}`][0].questions[0].subQuestion
+								.length,
+
+						questionPart: questionPart[
+							`part${i + 1}`
+						][0].questions[0].subQuestion.map((item, index) => {
+							return {
+								question: index + 1,
+								status: false,
+								isWatching: currentQuestion == i + 1 ? true : false,
+								activeQuestion: currentQuestion == i + 1 ? true : false,
+							};
+						}),
 					});
 				}
 			}
@@ -153,17 +179,33 @@ export const testBankReducer = createSlice({
 					}
 				);
 			}
+			if (currentExamPart === 'writing') {
+				numberQuestionUpdate = state.dataOfModalList.numberQuestion.map(
+					(item, index) => {
+						if (item.question === numberQuestion) {
+							item.activeQuestion = true;
+							item.questionPart.map((item) => {
+								item.isWatching = true;
+								return item;
+							});
+						} else {
+							item.activeQuestion = false;
+						}
+						return item;
+					}
+				);
+			}
 
 			state.dataOfModalList.numberQuestion = numberQuestionUpdate;
 		},
 
-
-		SET_ATTEMPTED_QUESTION: (state, action) => { 
-			const { numberQuestion, currentExamPart } = action.payload;
+		SET_ATTEMPTED_QUESTION: (state, action) => {
+			const { currentExamPart } = action.payload;
 
 			let numberQuestionUpdate = [];
 
 			if (currentExamPart === 'reading') {
+				const { numberQuestion } = action.payload;
 				numberQuestionUpdate = state.dataOfModalList.numberQuestion.map(
 					(item, index) => {
 						if (item.question === numberQuestion) {
@@ -173,10 +215,30 @@ export const testBankReducer = createSlice({
 					}
 				);
 			}
-			
+
+			if (currentExamPart === 'writing') {
+				const { part, numberQuestion } = action.payload;
+				numberQuestionUpdate = state.dataOfModalList.numberQuestion.map(
+					(item, index) => {
+						if (
+							item.currentExamPart === 'writing' &&
+							item.question === numberQuestion
+						) {
+							item.questionPart.map((data) => {
+								if (data.question === part) {
+									data.status = true;
+								}
+
+								return item;
+							});
+						}
+						return item;
+					}
+				);
+			}
+
+
 			state.dataOfModalList.numberQuestion = numberQuestionUpdate;
-
-
 		},
 
 		SET_TESTBANK_DATA: (state, action) => {
@@ -212,10 +274,6 @@ export const testBankReducer = createSlice({
 			state.testBankData = testBank;
 		},
 
-
-
-
-
 		SET_RESPONSE_RESULT_WRITING: (state, action) => {
 			const { part, index, value } = action.payload;
 
@@ -234,8 +292,6 @@ export const testBankReducer = createSlice({
 				]['subQuestion'][index]['responseUser'] = value;
 			}
 			if (part === 2 || part === 3) {
-				let data = [];
-				console.log({ value });
 				state.testBankData['reading'][`part${part}`][0]['data'][
 					'questions'
 				]['responseUser'] = value;
@@ -263,7 +319,7 @@ export const {
 	SET_RESPONSE_RESULT_SPEAKING,
 	SET_DATA_OF_MODAL_LIST,
 	SET_UPDATE_MODAL_LIST,
-	SET_ATTEMPTED_QUESTION
+	SET_ATTEMPTED_QUESTION,
 } = testBankReducer.actions;
 
 export default testBankReducer.reducer;

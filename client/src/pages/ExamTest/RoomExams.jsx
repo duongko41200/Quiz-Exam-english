@@ -77,7 +77,16 @@ const RoomExam = () => {
 		if (currentExamPart === 'writing') {
 			setMinutes(50);
 			setTimeLeft(50 * 60);
+			dispatch(
+				SET_DATA_OF_MODAL_LIST({
+					testBankData: testBankData,
+					currentExamPart: currentExamPart,
+					currentQuestion: numberQuestionWriting,
+				})
+			);
 		} else if (currentExamPart === 'reading') {
+			setMinutes(30);
+			setTimeLeft(30 * 60);
 			dispatch(
 				SET_DATA_OF_MODAL_LIST({
 					testBankData: testBankData,
@@ -85,9 +94,6 @@ const RoomExam = () => {
 					currentQuestion: numberQuestion,
 				})
 			);
-
-			setMinutes(30);
-			setTimeLeft(30 * 60);
 		}
 	}, [currentExamPart]);
 
@@ -193,12 +199,21 @@ const RoomExam = () => {
 	const nextQuestion = () => {
 		if (numberQuestion < 5 && currentExamPart === 'reading') {
 			dispatch(
-				SET_UPDATE_MODAL_LIST({ numberQuestion: numberQuestion + 1,currentExamPart })
+				SET_UPDATE_MODAL_LIST({
+					numberQuestion: numberQuestion + 1,
+					currentExamPart,
+				})
 			);
 			dispatch(SET_INCREMENT());
 			return;
 		}
 		if (numberQuestionWriting < 4 && currentExamPart === 'writing') {
+			dispatch(
+				SET_UPDATE_MODAL_LIST({
+					numberQuestion: numberQuestionWriting + 1,
+					currentExamPart,
+				})
+			);
 			dispatch(SET_INCREMENT_WRITING());
 			return;
 		}
@@ -214,11 +229,20 @@ const RoomExam = () => {
 	const previousQuestion = () => {
 		if (numberQuestion > 1 && currentExamPart === 'reading') {
 			dispatch(
-				SET_UPDATE_MODAL_LIST({ numberQuestion: numberQuestion - 1,currentExamPart })
+				SET_UPDATE_MODAL_LIST({
+					numberQuestion: numberQuestion - 1,
+					currentExamPart,
+				})
 			);
 			dispatch(SET_DECREMENT());
 		}
 		if (numberQuestionWriting > 1 && currentExamPart === 'writing') {
+			dispatch(
+				SET_UPDATE_MODAL_LIST({
+					numberQuestion: numberQuestionWriting - 1,
+					currentExamPart,
+				})
+			);
 			dispatch(SET_DECREMENT_WRITING());
 		}
 	};

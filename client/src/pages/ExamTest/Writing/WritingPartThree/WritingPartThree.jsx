@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../../Constant/global';
 import TextareaInput from '../../../../components/TextareaAutosize/TextareaAutosize';
 import { Box, Button, Checkbox, TextareaAutosize } from '@mui/material';
-import { SET_RESPONSE_RESULT_WRITING } from '../../../../store/feature/testBank';
+import { SET_ATTEMPTED_QUESTION, SET_RESPONSE_RESULT_WRITING } from '../../../../store/feature/testBank';
 
 const QUESTON_FIRST = 0;
 const QUESTON_SECOND = 1;
@@ -46,6 +46,14 @@ const WritingPartThree = () => {
 				SET_RESPONSE_RESULT_WRITING({ part: PART_THREE, index, value })
 			);
 
+			dispatch(
+				SET_ATTEMPTED_QUESTION({
+					part: index + 1,
+					numberQuestion: 3,
+					currentExamPart: 'writing',
+				})
+			);
+
 			if (index === QUESTON_FIRST) setResult1(inputWords);
 			if (index === QUESTON_SECOND) setResult2(inputWords);
 			if (index === QUESTON_THIRD) setResult3(inputWords);
@@ -60,18 +68,7 @@ const WritingPartThree = () => {
 		);
 		setContentPartOne(writingPartThree?.questions[RES_DATA].content);
 	}, [testBankData]);
-	// useEffect(() => {
-	// 	const writingPartThree = testBankData.writing.part3[RES_DATA];
-	// 	if (writingPartThree) {
-	// 		const subQuestion = writingPartThree.questions[RES_DATA].subQuestion;
-	// 		const responseUser = subQuestion.map((item) => item.responseUser);
-	// 		if (responseUser.length === 3) {
-	// 			setResult1(responseUser[0].split(/\s+/).filter((word) => word.length > 0));
-	// 			setResult2(responseUser[1].split(/\s+/).filter((word) => word.length > 0));
-	// 			setResult3(responseUser[2].split(/\s+/).filter((word) => word.length > 0));
-	// 		}
-	// 	}
-	// }, []);
+
 
 	return (
 		<div>

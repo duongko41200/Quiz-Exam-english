@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA, SPACE_BANK } from '../../../../Constant/global';
 import TextareaInput from '../../../../components/TextareaAutosize/TextareaAutosize';
 import { Box, TextareaAutosize } from '@mui/material';
-import { SET_RESPONSE_RESULT_WRITING } from '../../../../store/feature/testBank';
+import {
+	SET_ATTEMPTED_QUESTION,
+	SET_RESPONSE_RESULT_WRITING,
+} from '../../../../store/feature/testBank';
 
 const TITLE = 0;
 const BODY = 1;
@@ -47,6 +50,13 @@ const WritingPartFour = () => {
 
 			dispatch(
 				SET_RESPONSE_RESULT_WRITING({ part: PART_FOUR, index, value })
+			);
+			dispatch(
+				SET_ATTEMPTED_QUESTION({
+					part: index + 1,
+					numberQuestion: 4,
+					currentExamPart: 'writing',
+				})
 			);
 
 			if (index === EMAIL_INFOMAL) {

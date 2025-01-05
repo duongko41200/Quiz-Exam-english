@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../../Constant/global';
 import TextareaInput from '../../../../components/TextareaAutosize/TextareaAutosize';
 import { Box, Button, Checkbox, TextareaAutosize } from '@mui/material';
-import { SET_RESPONSE_RESULT_WRITING } from '../../../../store/feature/testBank';
+import { SET_ATTEMPTED_QUESTION, SET_RESPONSE_RESULT_WRITING } from '../../../../store/feature/testBank';
 
 const PART_ONE = 1;
 
@@ -37,6 +37,14 @@ const WritingPartOne = () => {
 
 			dispatch(
 				SET_RESPONSE_RESULT_WRITING({ part: PART_ONE, index, value })
+			);
+			dispatch(
+				SET_ATTEMPTED_QUESTION({
+					part: index + 1,
+					numberQuestion: 1,
+					currentExamPart: 'writing',
+					
+				})
 			);
 		}, 300),
 		[]
