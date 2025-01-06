@@ -1,156 +1,303 @@
-import { Box } from '@mui/material';
-import './ReadingPartThree.css';
 import React, { useEffect, useState } from 'react';
-import {
-	DragDropContext,
-	Droppable,
-	Draggable,
-} from 'react-beautiful-dnd';
-
-import DragHandleIcon from '@mui/icons-material/DragHandle';
-import { RES_DATA } from '../../../../Constant/global';
+import { use } from 'react';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useDispatch, useSelector } from 'react-redux';
-import { SET_ATTEMPTED_QUESTION, SET_RESPONSE_RESULT_READING } from '../../../../store/feature/testBank';
+import { RES_DATA } from '../../../../Constant/global';
+import DragHandleIcon from '@mui/icons-material/DragHandle';
+import { Box } from '@mui/material';
+import {
+	SET_ATTEMPTED_QUESTION,
+	SET_RESPONSE_RESULT_READING,
+} from '../../../../store/feature/testBank';
+
+const ItemTypes = {
+	BOX: 'box',
+};
+
+const PART_THREE = 3;
 
 const TITLE = 0;
 const DEAR_PERSON = 1;
 const FOOT_FISH = 2;
-const SIGNAL = 3;
-const PART_THREE = 3
 
-const ReadingPartThree = () => {
+const BoxText = ({ id, content, column, moveItem }) => {
+	const [{ isDragging }, drag] = useDrag({
+		type: ItemTypes.BOX,
+		item: { id, content, column },
+		collect: (monitor) => ({
+			isDragging: monitor.isDragging(),
+		}),
+	});
+
+
+	return (
+		<div
+			ref={drag}
+			style={{
+				opacity: isDragging ? 0.5 : 1,
+				margin: '4px',
+				backgroundColor: column === 2 ? 'lightblue' : 'lightgreen',
+				cursor: 'move',
+				zIndex: 1,
+				position: 'relative',
+			}}
+		>
+			<div className="border border-gray-200 my-1 bg-white rounded">
+				<Box
+					sx={{
+						width: '100%',
+						height: '100px',
+						border: '1px solid #939393',
+						backgroundColor: '#fff',
+						borderRadius: '2px',
+					}}
+				>
+					<Box sx={{ textAlign: 'center' }}>
+						<DragHandleIcon />
+					</Box>
+
+					<Box
+						sx={{
+							textAlign: 'left',
+							fontSize: '14px',
+							padding: '7px 9px',
+						}}
+					>
+						{content}
+					</Box>
+				</Box>
+			</div>
+		</div>
+	);
+};
+
+const DropBox = ({
+	id,
+	content,
+	acceptBox,
+	column,
+	moveItem,
+	setIsDragging,
+}) => {
+	const [{ isDragging }, drag] = useDrag({
+		type: ItemTypes.BOX,
+		item: { id, content, column },
+		collect: (monitor) => ({
+			isDragging: monitor.isDragging(),
+		}),
+	});
+
+	useEffect(() => {
+		if (isDragging) {
+			setIsDragging(true);
+		}
+	}, [isDragging]);
+
+	const [, drop] = useDrop({
+		accept: ItemTypes.BOX,
+		drop: (item) => acceptBox(item.id, id, item.content, item.column),
+	});
+
+	return (
+		<Box
+			ref={(node) => {
+				drag(node);
+				drop(node);
+			}}
+			className="bg-white border rounded min-h-[50px] flex items-center justify-center cursor-move"
+			sx={{
+				width: '100%',
+				maxWidth: '400xx',
+				minHeight: '3.5em',
+				backgroundColor: '#F4F6F9',
+				borderRadius: '2px',
+				position: 'relative',
+			}}
+		>
+			<Box
+				sx={{
+					width: '100%',
+					border: '2px dashed #939393',
+					minHeight: '3.5em',
+					backgroundColor: '#F4F6F9',
+					borderRadius: '2px',
+					padding: '5px',
+					fontSize: '14px',
+
+					position: 'absolute',
+					padding: '5px',
+					fontSize: '14px',
+				}}
+			>
+				{content}
+			</Box>
+		</Box>
+	);
+};
+
+const DropBoxColumn2 = ({
+	id,
+	content,
+	acceptBox,
+	column,
+	isDraggings,
+}) => {
+	const [{ isDragging }, drag] = useDrag({
+		type: ItemTypes.BOX,
+		item: { id, content, column },
+		collect: (monitor) => ({
+			isDragging: monitor.isDragging(),
+		}),
+	});
+
+	const [, drop] = useDrop({
+		accept: ItemTypes.BOX,
+		drop: (item) => acceptBox(item.id, id, item.content, item.column),
+	});
+
+	return (
+		<div
+			ref={(node) => {
+				drag(node);
+				drop(node);
+			}}
+			style={{
+				opacity: 0,
+				padding: '8px',
+				margin: '4px',
+				backgroundColor: content ? 'lightgreen' : 'lightgray',
+				minHeight: '50px',
+				cursor: 'move',
+				position: 'absolute',
+				height: '100%',
+				zIndex: isDraggings ? 5 : 0,
+				width: '100%',
+			}}
+		></div>
+	);
+};
+
+const DragDropApp = () => {
 	const [column1, setColumn1] = useState(Array(5).fill(null));
 	const [column2, setColumn2] = useState([]);
 	const [pointActive, setPointActive] = useState(null);
-	const [contentPartThree, setContentPartThree] = useState();
+	const [contentPartTwo, setContentPartTwo] = useState();
+	const dispatch = useDispatch();
+
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
 	);
-	const dispatch = useDispatch();
 
-	const onDragEnd = (result) => {
-		const { source, destination } = result;
+	const [isDragging, setIsDragging] = useState(false);
 
-		if (!destination) {
-			return;
-		}
+	/**
+	 *
+	 * @param {*} draggedId : id của item được kéo cootj 2
+	 * @param {*} dropId : id vi trí thả vào cột 1
+	 * @param {*} draggedContent : noi dung
+	 * @param {*} fromColumn : keo tu cot nao
+	 */
 
-		// Nếu kéo từ cột 2 sang cột 1
-		if (
-			source.droppableId === 'column2' &&
-			destination.droppableId.startsWith('droppable-')
-		) {
-			const newColumn1 = [...column1];
-			const newColumn2 = [...column2];
-			const targetIndex = parseInt(
-				destination.droppableId.split('-')[1]
+	// Handle dropping an item into another column
+	const handleDrop = (
+		draggedId,
+		dropId,
+		draggedContent,
+		fromColumn
+	) => {
+		setIsDragging(false);
+		console.log(draggedId, dropId, draggedContent, fromColumn);
+		if (fromColumn === 2) {
+			// Kéo item từ cột 2 vào cột 1
+
+			if (dropId === -1) return;
+			setColumn2(column2.filter((box) => box.id !== draggedId));
+			const updatedColumn1 = [...column1];
+			const updatedColumn2 = [...column2].filter(
+				(box) => box.id !== draggedId
 			);
 
-			// Nếu ô đích không trống
-			if (newColumn1[targetIndex]) {
-				// Đưa item hiện tại trong ô đích trở lại cột 2
-				newColumn2.push(newColumn1[targetIndex]);
+			console.log({ updatedColumn2 });
+
+			if (updatedColumn1[dropId] === null) {
+				updatedColumn1[dropId] = {
+					id: draggedId,
+					content: draggedContent,
+				};
+			} else {
+				const temp = updatedColumn1[dropId];
+
+				updatedColumn1[dropId] = {
+					id: draggedId,
+					content: draggedContent,
+				};
+
+				updatedColumn2.push(temp);
+				setColumn2(updatedColumn2);
 			}
 
-			// Thay thế nội dung ở cột 1
-			newColumn1[targetIndex] = newColumn2[source.index];
-			newColumn2.splice(source.index, 1); // Xóa item từ cột 2
-			setColumn1(newColumn1);
-			setColumn2(newColumn2);
+			console.log({ updatedColumn1 });
+			setColumn1(updatedColumn1);
 
 			dispatch(
 				SET_RESPONSE_RESULT_READING({
 					part: PART_THREE,
-					value: newColumn1,
+					value: updatedColumn1,
 				})
 			);
-						dispatch(SET_ATTEMPTED_QUESTION({
-							  numberQuestion: 3,
-							  currentExamPart: 'reading',
-							}));
-		}
-
-		// Nếu kéo từ cột 1 về cột 2
-		if (
-			source.droppableId.startsWith('droppable-') &&
-			destination.droppableId === 'column2'
-		) {
-			const newColumn1 = [...column1];
-			const newColumn2 = [...column2];
-			const targetIndex = parseInt(source.droppableId.split('-')[1]);
-
-			// Đặt lại ô ở cột 1
-			newColumn2.push(newColumn1[targetIndex]);
-			newColumn1[targetIndex] = null; // Đặt lại giá trị
-			setColumn1(newColumn1);
-			setColumn2(newColumn2);
-		}
-
-		// Nếu kéo trong cùng cột 1
-		if (
-			source.droppableId.startsWith('droppable-') &&
-			destination.droppableId.startsWith('droppable-')
-		) {
-			const newColumn1 = [...column1];
-			const sourceIndex = parseInt(source.droppableId.split('-')[1]);
-			const destinationIndex = parseInt(
-				destination.droppableId.split('-')[1]
+			dispatch(
+				SET_ATTEMPTED_QUESTION({
+					numberQuestion: 3,
+					currentExamPart: 'reading',
+				})
 			);
+		} else if (fromColumn === 1) {
+			// Kéo item trong cột 1 để thay đổi vị trí
 
-			// Hoán đổi vị trí
-			const temp = newColumn1[sourceIndex];
-			newColumn1[sourceIndex] = newColumn1[destinationIndex];
-			newColumn1[destinationIndex] = temp;
+			if (dropId === -1) {
+				// Thả vào cột 2
 
-			setColumn1(newColumn1);
-		}
-		setPointActive(null);
-	};
+				console.log('column1 test', column1);
+				if (column1[draggedId] === null) return;
 
-	const onDragStart = (start) => {
-		console.log('start', start);
-	};
+				console.log('column1', column1);
+				const updatedColumn1 = column1.map((box, index) => {
+					if (index === draggedId) {
+						box = null;
+					}
 
-	const onDragUpdate = (result) => {
-		const { source, destination } = result;
-		console.log('result', result);
+					return box;
+				});
+				setColumn1(updatedColumn1);
+				setColumn2([
+					...column2,
+					{ id: column1[draggedId].id, content: draggedContent },
+				]);
 
-		// Nếu kéo từ cột 2 sang cột 1
-		if (
-			source.droppableId === 'column2' &&
-			destination.droppableId.startsWith('droppable-')
-		) {
-			const newColumn1 = [...column1];
-			const newColumn2 = [...column2];
-			const targetIndex = parseInt(
-				destination.droppableId.split('-')[1]
-			);
-
-			// Nếu ô đích không trống
-			if (newColumn1[targetIndex]) {
-				// Đưa item hiện tại trong ô đích trở lại cột 2
-				setPointActive(newColumn1[targetIndex].id);
+				dispatch(
+					SET_RESPONSE_RESULT_READING({
+						part: PART_THREE,
+						value: updatedColumn1,
+					})
+				);
 			} else {
-				setPointActive(null);
-				console.log('newColumn1[targetIndex]', newColumn1[targetIndex]);
-			}
-		}
+				const updatedColumn1 = [...column1];
 
-		if (
-			source.droppableId.startsWith('droppable-') &&
-			destination.droppableId.startsWith('droppable-')
-		) {
-			console.log('source.droppableId', source.droppableId);
-			const targetIndex = parseInt(
-				destination.droppableId.split('-')[1]
-			);
-			const newColumn1 = [...column1];
-			if (newColumn1[targetIndex]) {
-				// Đưa item hiện tại trong ô đích trở lại cột 2
-				setPointActive(newColumn1[targetIndex].id);
-			} else {
-				setPointActive(null);
-				console.log('newColumn1[targetIndex]', newColumn1[targetIndex]);
+				const temp = updatedColumn1[dropId];
+				updatedColumn1[dropId] = {
+					id: updatedColumn1[draggedId].id,
+					content: draggedContent,
+				};
+				updatedColumn1[draggedId] = temp;
+				setColumn1(updatedColumn1);
+
+				dispatch(
+					SET_RESPONSE_RESULT_READING({
+						part: PART_THREE,
+						value: updatedColumn1,
+					})
+				);
 			}
 		}
 	};
@@ -160,9 +307,21 @@ const ReadingPartThree = () => {
 
 		const answerList = readingPartThree?.questions?.answerList;
 
+		const responseUser = readingPartThree?.questions?.responseUser;
+
 		let answerListPart3 = [];
 
 		for (let i = 0; i < answerList.length; i++) {
+			let isExist = false;
+			for (let j = 0; j < responseUser.length; j++) {
+				if (+responseUser[j]?.id == answerList[i].numberOrder) {
+					isExist = true;
+					break;
+				}
+			}
+
+			if (isExist == true) continue;
+
 			answerListPart3 = [
 				...answerListPart3,
 				{
@@ -172,239 +331,124 @@ const ReadingPartThree = () => {
 			];
 		}
 
+		setColumn1(responseUser);
 		setColumn2(answerListPart3);
-		setContentPartThree(readingPartThree?.questions);
-	}, [testBankData]);
+		setContentPartTwo(readingPartThree?.questions);
+	}, []);
 
 	return (
-		<>
-			<Box>
+		<DndProvider backend={HTML5Backend}>
+			<Box className="w-fit">
 				<Box sx={{ fontWeight: '700', fontSize: '16px' }}>
-					{contentPartThree?.content.split('tentisspace')[TITLE]}
+					{contentPartTwo?.content.split('tentisspace')[TITLE]}
 				</Box>
-				<DragDropContext
-					onDragEnd={onDragEnd}
-					onDragStart={onDragStart}
-					onDragUpdate={onDragUpdate}
+
+				<Box
+					sx={{
+						border:
+							'1px solid var(--secondary-400, #b0b0b0) !important',
+						display: 'flex',
+						marginTop: '1rem',
+							width:'100%'
+					}}
 				>
-					<Box
-						sx={{
-							border:
-								'1px solid var(--secondary-400, #b0b0b0) !important',
-							display: 'flex',
-							maxWidth: 'fit-content',
-							marginTop: '1rem',
-						}}
-					>
-						{/* Box Left  */}
-						<Box className=" box-left">
-							<Droppable droppableId="column1">
-								{(provided) => (
-									<Box
-										ref={provided.innerRef}
-										{...provided.droppableProps}
-										className="w-1/1    rounded"
-										sx={{
-											display: 'flex',
-											flexDirection: 'column',
-											gap: 4,
-											height: '600px',
-										}}
-									>
-										<Box
-											sx={{
-												maxWidth: '400px',
-											}}
-										>
-											<Box
-												sx={{
-													fontFamily: 'Inter, sans-serif !important',
-													fontSize: '15px',
-												}}
-											>
-												<strong>
-													{
-														contentPartThree?.content.split(
-															'tentisspace'
-														)[DEAR_PERSON]
-													}
-												</strong>
-											</Box>
-											<Box>
-												<Box sx={{ marginTop: '10px' }}>
-													{
-														contentPartThree?.content.split(
-															'tentisspace'
-														)[FOOT_FISH]
-													}
-												</Box>
-											</Box>
-										</Box>
-										{column1.map((item, index) => (
-											<Droppable
-												key={`droppable-${index}`}
-												droppableId={`droppable-${index}`}
-												direction="vertical"
-											>
-												{(provided) => (
-													<Box
-														ref={provided.innerRef}
-														{...provided.droppableProps}
-														className="bg-white border rounded min-h-[50px] flex items-center justify-center"
-														sx={{
-															width: '400px',
-															maxWidth: '400xx',
-															minHeight: '2.5em',
-															backgroundColor: '#F4F6F9',
-															borderRadius: '2px',
-															position: 'relative',
-														}}
-													>
-														{item && item.id !== pointActive ? (
-															<Draggable
-																key={item.id}
-																draggableId={item.id}
-																index={index}
-																direction="vertical"
-															>
-																{(provided) => (
-																	<Box
-																		sx={{
-																			width: '400px',
-																			border: '2px dashed #939393',
-																			minHeight: '2.5em',
-																			backgroundColor: '#F4F6F9',
-																			borderRadius: '2px',
-																			padding: '5px',
-																			fontSize: '14px',
-
-																			position: 'absolute',
-																			padding: '5px',
-																			fontSize: '14px',
-																		}}
-																		ref={provided.innerRef}
-																		{...provided.draggableProps}
-																		{...provided.dragHandleProps}
-																	>
-																		{item.content}
-																	</Box>
-																)}
-															</Draggable>
-														) : (
-															<Box
-																sx={{
-																	width: '100%',
-																	height: '100%',
-																	maxWidth: '400xx',
-																	border: '2px dashed #939393',
-																	minHeight: '50px',
-																	backgroundColor: '#F4F6F9',
-																	borderRadius: '2px',
-																	position: 'absolute',
-																	padding: '5px',
-																	fontSize: '14px',
-																}}
-															>
-																{item?.content}
-															</Box>
-														)}
-														{provided.placeholder}
-													</Box>
-												)}
-											</Droppable>
-										))}
-										{provided.placeholder}
-									</Box>
-								)}
-							</Droppable>
-						</Box>
-
-						{/* box right */}
+					{/* Box Left  */}
+					<Box className=" box-left p-4 w-[60%]">
 						<Box
-							className="colum-right"
+							className="w-1/1    rounded"
 							sx={{
-								backgroundColor: '#F4F6F9',
-								minWidth: '279px',
-								height: 'auto',
-								padding: '14px',
-								overflow: 'hidden',
-								maxWidth: '279px',
 								display: 'flex',
 								flexDirection: 'column',
-								gap: '0.5rem',
+								gap: 2,
+								height: '550px',
 							}}
 						>
-							{/* // box element */}
-
-							{/* //Draggable items */}
-							<Droppable droppableId="column2" direction="horizontal">
-								{(provided) => (
-									<div
-										ref={provided.innerRef}
-										{...provided.droppableProps}
-										className="w-1/1 h-full  rounded"
-									>
-										{column2.map((item, index) => (
-											<Draggable
-												key={item.id}
-												draggableId={item.id}
-												index={index}
-												direction="vertical"
-											>
-												{(provided) => (
-													<div
-														ref={provided.innerRef}
-														{...provided.draggableProps}
-														{...provided.dragHandleProps}
-														className="border border-gray-200 my-1 bg-white rounded"
-													>
-														<Draggable
-															key={item.id}
-															draggableId={item.id}
-															index={index}
-															direction="vertical"
-														>
-															{(provided) => (
-																<Box
-																	sx={{
-																		width: '250px',
-																		height: '100px',
-																		border: '1px solid #939393',
-																		backgroundColor: '#fff',
-																		borderRadius: '2px',
-																	}}
-																>
-																	<Box sx={{ textAlign: 'center' }}>
-																		<DragHandleIcon />
-																	</Box>
-
-																	<Box
-																		sx={{
-																			textAlign: 'left',
-																			fontSize: '14px',
-																			padding: '7px 9px',
-																		}}
-																	>
-																		{item.content}
-																	</Box>
-																</Box>
-															)}
-														</Draggable>
-														{provided.placeholder}
-													</div>
-												)}
-											</Draggable>
-										))}
-										{provided.placeholder}
-									</div>
-								)}
-							</Droppable>
+							<Box
+								sx={{
+									width: '100%',
+								}}
+							>
+								<Box
+									sx={{
+										fontFamily: 'Inter, sans-serif !important',
+										fontSize: '15px',
+									}}
+								>
+									<strong>
+										{
+											contentPartTwo?.content.split('tentisspace')[
+												DEAR_PERSON
+											]
+										}
+									</strong>
+								</Box>
+								<Box>
+									<Box sx={{ marginTop: '10px' }}>
+										{
+											contentPartTwo?.content.split('tentisspace')[
+												FOOT_FISH
+											]
+										}
+									</Box>
+								</Box>
+							</Box>
+							{column1.map((content, index) => (
+								<DropBox
+									key={index}
+									id={index}
+									content={content?.content}
+									acceptBox={handleDrop} // Truyền acceptBox cho DropBox trong cột 1
+									column={1}
+									moveItem={handleDrop}
+									setIsDragging={setIsDragging}
+								/>
+							))}
 						</Box>
 					</Box>
-				</DragDropContext>
+
+					{/* box right */}
+					<Box
+						className="colum-right"
+						sx={{
+							backgroundColor: '#F4F6F9',
+							minWidth: '279px',
+							height: 'auto',
+							padding: '14px',
+							overflow: 'hidden',
+							display: 'flex',
+							flexDirection: 'column',
+							gap: '0.5rem',
+							width:'40%'
+						}}
+					>
+						{/* // box element */}
+
+						{/* //Draggable items */}
+
+						<div className="w-1/1 h-full  rounded relative">
+							<DropBoxColumn2
+								key="-1"
+								id={-1}
+								content={null}
+								acceptBox={handleDrop}
+								column={2}
+								isDraggings={isDragging}
+							/>
+							{column2.map((box, index) => (
+								<BoxText
+									key={box.id}
+									id={box.id}
+									content={box.content}
+									column={2}
+									moveItem={handleDrop}
+								/>
+							))}
+						</div>
+					</Box>
+				</Box>
 			</Box>
-		</>
+		</DndProvider>
 	);
 };
 
-export default ReadingPartThree;
+export default DragDropApp;

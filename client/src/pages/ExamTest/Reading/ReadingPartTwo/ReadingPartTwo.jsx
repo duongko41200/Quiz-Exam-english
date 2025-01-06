@@ -6,6 +6,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RES_DATA } from '../../../../Constant/global';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { Box } from '@mui/material';
+import {
+	SET_ATTEMPTED_QUESTION,
+	SET_RESPONSE_RESULT_READING,
+} from '../../../../store/feature/testBank';
 
 const ItemTypes = {
 	BOX: 'box',
@@ -26,14 +30,12 @@ const BoxText = ({ id, content, column, moveItem }) => {
 		}),
 	});
 
-	// console.log('isDragging', isDragging);
 
 	return (
 		<div
 			ref={drag}
 			style={{
 				opacity: isDragging ? 0.5 : 1,
-				// padding: '8px',
 				margin: '4px',
 				backgroundColor: column === 2 ? 'lightblue' : 'lightgreen',
 				cursor: 'move',
@@ -44,7 +46,7 @@ const BoxText = ({ id, content, column, moveItem }) => {
 			<div className="border border-gray-200 my-1 bg-white rounded">
 				<Box
 					sx={{
-						width: '250px',
+						width: '100%',
 						height: '100px',
 						border: '1px solid #939393',
 						backgroundColor: '#fff',
@@ -105,7 +107,7 @@ const DropBox = ({
 			}}
 			className="bg-white border rounded min-h-[50px] flex items-center justify-center cursor-move"
 			sx={{
-				width: '400px',
+				width: '100%',
 				maxWidth: '400xx',
 				minHeight: '3.5em',
 				backgroundColor: '#F4F6F9',
@@ -115,7 +117,7 @@ const DropBox = ({
 		>
 			<Box
 				sx={{
-					width: '400px',
+					width: '100%',
 					border: '2px dashed #939393',
 					minHeight: '3.5em',
 					backgroundColor: '#F4F6F9',
@@ -208,30 +210,55 @@ const DragDropApp = () => {
 		console.log(draggedId, dropId, draggedContent, fromColumn);
 		if (fromColumn === 2) {
 			// Kéo item từ cột 2 vào cột 1
+
+			if (dropId === -1) return;
 			setColumn2(column2.filter((box) => box.id !== draggedId));
 			const updatedColumn1 = [...column1];
 			const updatedColumn2 = [...column2].filter(
 				(box) => box.id !== draggedId
 			);
+
+			console.log({ updatedColumn2 });
+
 			if (updatedColumn1[dropId] === null) {
-				updatedColumn1[dropId] = draggedContent;
+				updatedColumn1[dropId] = {
+					id: draggedId,
+					content: draggedContent,
+				};
 			} else {
 				const temp = updatedColumn1[dropId];
 
-				console.log();
-				updatedColumn1[dropId] = draggedContent;
+				updatedColumn1[dropId] = {
+					id: draggedId,
+					content: draggedContent,
+				};
 
-				updatedColumn2.push({ id: draggedId, content: temp });
+				updatedColumn2.push(temp);
 				setColumn2(updatedColumn2);
 			}
 
 			console.log({ updatedColumn1 });
 			setColumn1(updatedColumn1);
+
+			dispatch(
+				SET_RESPONSE_RESULT_READING({
+					part: PART_TWO,
+					value: updatedColumn1,
+				})
+			);
+			dispatch(
+				SET_ATTEMPTED_QUESTION({
+					numberQuestion: 2,
+					currentExamPart: 'reading',
+				})
+			);
 		} else if (fromColumn === 1) {
 			// Kéo item trong cột 1 để thay đổi vị trí
 
 			if (dropId === -1) {
 				// Thả vào cột 2
+
+				console.log('column1 test', column1);
 				if (column1[draggedId] === null) return;
 
 				console.log('column1', column1);
@@ -245,14 +272,32 @@ const DragDropApp = () => {
 				setColumn1(updatedColumn1);
 				setColumn2([
 					...column2,
-					{ id: draggedId, content: draggedContent },
+					{ id: column1[draggedId].id, content: draggedContent },
 				]);
+
+				dispatch(
+					SET_RESPONSE_RESULT_READING({
+						part: PART_TWO,
+						value: updatedColumn1,
+					})
+				);
 			} else {
 				const updatedColumn1 = [...column1];
+
 				const temp = updatedColumn1[dropId];
-				updatedColumn1[dropId] = draggedContent;
+				updatedColumn1[dropId] = {
+					id: updatedColumn1[draggedId].id,
+					content: draggedContent,
+				};
 				updatedColumn1[draggedId] = temp;
 				setColumn1(updatedColumn1);
+
+				dispatch(
+					SET_RESPONSE_RESULT_READING({
+						part: PART_TWO,
+						value: updatedColumn1,
+					})
+				);
 			}
 		}
 	};
@@ -262,9 +307,21 @@ const DragDropApp = () => {
 
 		const answerList = readingPartTwo?.questions?.answerList;
 
+		const responseUser = readingPartTwo?.questions?.responseUser;
+
 		let answerListPart2 = [];
 
 		for (let i = 0; i < answerList.length; i++) {
+			let isExist = false;
+			for (let j = 0; j < responseUser.length; j++) {
+				if (+responseUser[j]?.id == answerList[i].numberOrder) {
+					isExist = true;
+					break;
+				}
+			}
+
+			if (isExist == true) continue;
+
 			answerListPart2 = [
 				...answerListPart2,
 				{
@@ -274,13 +331,14 @@ const DragDropApp = () => {
 			];
 		}
 
+		setColumn1(responseUser);
 		setColumn2(answerListPart2);
 		setContentPartTwo(readingPartTwo?.questions);
-	}, [testBankData]);
+	}, []);
 
 	return (
 		<DndProvider backend={HTML5Backend}>
-			<Box>
+			<Box className="w-fit">
 				<Box sx={{ fontWeight: '700', fontSize: '16px' }}>
 					{contentPartTwo?.content.split('tentisspace')[TITLE]}
 				</Box>
@@ -290,24 +348,25 @@ const DragDropApp = () => {
 						border:
 							'1px solid var(--secondary-400, #b0b0b0) !important',
 						display: 'flex',
-						maxWidth: 'fit-content',
 						marginTop: '1rem',
+
+						width:'100%'
 					}}
 				>
 					{/* Box Left  */}
-					<Box className=" box-left">
+					<Box className=" box-left p-4 w-[60%]">
 						<Box
 							className="w-1/1    rounded"
 							sx={{
 								display: 'flex',
 								flexDirection: 'column',
 								gap: 2,
-								height: '600px',
+								height: '550px',
 							}}
 						>
 							<Box
 								sx={{
-									maxWidth: '400px',
+									width: '100%',
 								}}
 							>
 								<Box
@@ -338,7 +397,7 @@ const DragDropApp = () => {
 								<DropBox
 									key={index}
 									id={index}
-									content={content}
+									content={content?.content}
 									acceptBox={handleDrop} // Truyền acceptBox cho DropBox trong cột 1
 									column={1}
 									moveItem={handleDrop}
@@ -357,10 +416,11 @@ const DragDropApp = () => {
 							height: 'auto',
 							padding: '14px',
 							overflow: 'hidden',
-							maxWidth: '279px',
 							display: 'flex',
 							flexDirection: 'column',
 							gap: '0.5rem',
+
+							width:'40%'
 						}}
 					>
 						{/* // box element */}
