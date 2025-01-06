@@ -27,7 +27,7 @@ export default function FooterTest({
 	};
 
 	return (
-		<Box className="footer-test">
+		<Box className="footer-test z-50">
 			<Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
 				{(currentExamPart !== 'speaking' && currentExamPart !== 'result') && (
 						<IconBox onClick={openModalList}>
