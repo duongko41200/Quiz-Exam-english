@@ -4,6 +4,11 @@ import { RES_DATA } from '../../../../Constant/global';
 import BasicTable from '../../../../components/Table/BasicTable/BasicTable';
 import ReadingBaseOne from '../../../../components/ReadingBase/ReadingBaseOne.tsx';
 import FrameReadingResult from '../../../../components/FrameReadingResult/FrameReadingResult.jsx';
+import { Box } from '@mui/material';
+
+const TITLE = 0;
+const DEAR_PERSON = 1;
+const FOOT_FISH = 2;
 
 const ResultTestReading = ({ resultReading, numberLession }) => {
 	const testBankData = useSelector(
@@ -14,6 +19,7 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 	const [resReadingPartFour, setResReadingPartFour] = useState();
 	const [resReadingPartFive, setResReadingPartFive] = useState();
 	const [contentPartOne, setContentPartOne] = useState(null);
+	const [resReadingPartTwo, setResReadingPartTwo] = useState();
 
 	const [resultReadingFour, setResultReadingFour] = useState([]);
 
@@ -27,6 +33,9 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 			testBankData.reading.part4[RES_DATA].data?.questions;
 		const readingPartFive =
 			testBankData.reading.part5[RES_DATA].data.questions;
+
+		const readingPartTwo =
+			testBankData.reading.part2[RES_DATA].data.questions;
 
 		///// results / datauser
 
@@ -64,6 +73,7 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 		}
 
 		setResultReadingFour(resultReadingFourUser);
+		setResReadingPartTwo(readingPartTwo);
 
 		setResReadingPartFour(readingPartFour);
 		setResReadingPartFive(readingPartFive);
@@ -135,27 +145,60 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 	const renderPartTwo = () => (
 		<FrameReadingResult>
 			<div className="flex flex-col gap-4">
-				{resultReading?.[1]?.part2?.[0]?.resultOfUser?.map(
-					(item, index) => (
-						<div
-							className={`border border-gray-300 shadow rounded p-2 bg-gray-50 min-h-[50px] ${
-								item?.id == index + 1
-									? 'text-[#3cb46e]'
-									: 'text-red-500'
-							} ${!item ? 'bg-gray-200' : ''}`}
-							key={index}
-						>
-							<div>{item?.content}</div>
+				<div className="text-[15px] font-medium">
+					{resReadingPartTwo?.content.split('tentisspace')[TITLE]}
+				</div>
+
+				<div className="box-left p-4 w-full">
+					<div className="w-full rounded flex flex-col gap-2 h-fit">
+						<div className="w-full">
+							<div className="font-inter text-[15px]">
+								<strong>
+									{
+										resReadingPartTwo?.content.split('tentisspace')[
+											DEAR_PERSON
+										]
+									}
+								</strong>
+							</div>
+							<div className="mt-2">
+								{
+									resReadingPartTwo?.content.split('tentisspace')[
+										FOOT_FISH
+									]
+								}
+							</div>
 						</div>
-					)
-				)}
+						{resultReading?.[1]?.part2?.[0]?.resultOfUser?.map(
+							(content, index) => (
+								<div
+									className={`bg-white border rounded min-h-[50px] flex items-center justify-center cursor-move relative w-full bg-[#F4F6F9] border-dashed border-2 border-[#939393] p-2 text-[14px] mb-2
+									
+									
+										border border-gray-300 shadow rounded p-2 bg-gray-50 min-h-[50px] ${
+											content?.id == index + 1
+												? 'text-[#3cb46e] border-[#3cb46e]'
+												: 'text-red-500 border-[#f44336]'
+										} ${!content ? 'bg-gray-200' : ''}
+									
+									`}
+									key={index}
+								>
+									{content?.content}
+								</div>
+							)
+						)}
+					</div>
+				</div>
 			</div>
 			{resultReading?.[1]?.part2?.[0]?.resultCorrect?.map(
 				(item, index) => (
 					<div className="questions-wrapper" key={index}>
 						<div className="question-wrapper flex gap-2">
 							<div className="question-number">
-								<strong className="rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block">
+								<strong
+									className={`rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block `}
+								>
 									{index + 1}
 								</strong>
 							</div>
@@ -240,9 +283,9 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 													: 'text-red-500'
 											}`}
 										>
-											{resultReadingFour[index == 3 ? 0 : (index - 3) / 2]?.resultUser.join(
-												' / '
-											)}
+											{resultReadingFour[
+												index == 3 ? 0 : (index - 3) / 2
+											]?.resultUser.join(' / ')}
 										</span>
 									</div>
 								</div>
@@ -260,16 +303,22 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 							</div>
 							<div className="question-content">
 								<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
-								<span className="text-gray-700 text-lg font-bold">{item?.content}</span>
-									<u className='no-underline'>
-										{item.resultSystem && item.resultSystem.map((item, index) => {
-											
-											return (
-												<li key={index} className="text-green-500 text-none mt-2 no-underline text-sm">{item}</li>
-											)
-										})}
+									<span className="text-gray-700 text-lg font-bold">
+										{item?.content}
+									</span>
+									<u className="no-underline">
+										{item.resultSystem &&
+											item.resultSystem.map((item, index) => {
+												return (
+													<li
+														key={index}
+														className="text-green-500 text-none mt-2 no-underline text-sm"
+													>
+														{item}
+													</li>
+												);
+											})}
 									</u>
-								
 								</div>
 							</div>
 						</div>
@@ -352,7 +401,6 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 				))}
 		</FrameReadingResult>
 	);
-	
 
 	return (
 		<div
