@@ -20,6 +20,7 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 	const [resReadingPartFive, setResReadingPartFive] = useState();
 	const [contentPartOne, setContentPartOne] = useState(null);
 	const [resReadingPartTwo, setResReadingPartTwo] = useState();
+	const [resReadingPartThree, setResReadingPartThree] = useState();
 
 	const [resultReadingFour, setResultReadingFour] = useState([]);
 
@@ -36,6 +37,10 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 
 		const readingPartTwo =
 			testBankData.reading.part2[RES_DATA].data.questions;
+		
+		const readingPartThree = testBankData.reading.part3[RES_DATA].data.questions;
+		
+		
 
 		///// results / datauser
 
@@ -74,6 +79,7 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 
 		setResultReadingFour(resultReadingFourUser);
 		setResReadingPartTwo(readingPartTwo);
+		setResReadingPartThree(readingPartThree);
 
 		setResReadingPartFour(readingPartFour);
 		setResReadingPartFive(readingPartFive);
@@ -172,14 +178,11 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 						{resultReading?.[1]?.part2?.[0]?.resultOfUser?.map(
 							(content, index) => (
 								<div
-									className={`bg-white border rounded min-h-[50px] flex items-center justify-center cursor-move relative w-full bg-[#F4F6F9] border-dashed border-2 border-[#939393] p-2 text-[14px] mb-2
-									
-									
-										border border-gray-300 shadow rounded p-2 bg-gray-50 min-h-[50px] ${
-											content?.id == index + 1
-												? 'text-[#3cb46e] border-[#3cb46e]'
-												: 'text-red-500 border-[#f44336]'
-										} ${!content ? 'bg-gray-200' : ''}
+									className={` border rounded min-h-[50px] flex items-center justify-center cursor-move relative w-full bg-[#f4f7fc] border-dashed border-2 border-[#939393] p-2 text-[14px] mb-2 border border-gray-300 shadow rounded p-2 bg-gray-50 min-h-[50px] ${
+										content?.id == index + 1
+											? 'text-[#3cb46e] border-[#3cb46e]'
+											: 'text-red-500 border-[#f44336]'
+									} 
 									
 									`}
 									key={index}
@@ -216,41 +219,71 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 
 	const renderPartThree = () => (
 		<FrameReadingResult>
-			<div className="flex flex-col gap-4">
-				{resultReading?.[2]?.part3?.[0]?.resultOfUser?.map(
-					(item, index) => (
-						<div
-							className={`border border-gray-300 shadow rounded p-2 bg-gray-50 min-h-[50px] ${
-								item?.id == index + 1
-									? 'text-[#3cb46e]'
-									: 'text-red-500'
-							} ${!item ? 'bg-gray-200' : ''}`}
-							key={index}
-						>
-							<div>{item?.content}</div>
-						</div>
-					)
-				)}
+		<div className="flex flex-col gap-4">
+			<div className="text-[15px] font-medium">
+				{resReadingPartThree?.content.split('tentisspace')[TITLE]}
 			</div>
-			{resultReading?.[2]?.part3?.[0]?.resultCorrect?.map(
-				(item, index) => (
-					<div className="questions-wrapper" key={index}>
-						<div className="question-wrapper flex gap-2">
-							<div className="question-number">
-								<strong className="rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block">
-									{index + 1}
-								</strong>
+
+			<div className="box-left p-4 w-full">
+				<div className="w-full rounded flex flex-col gap-2 h-fit">
+					<div className="w-full">
+						<div className="font-inter text-[15px]">
+							<strong>
+								{
+									resReadingPartThree?.content.split('tentisspace')[
+										DEAR_PERSON
+									]
+								}
+							</strong>
+						</div>
+						<div className="mt-2">
+							{
+								resReadingPartThree?.content.split('tentisspace')[
+									FOOT_FISH
+								]
+							}
+						</div>
+					</div>
+					{resultReading?.[2]?.part3?.[0]?.resultOfUser?.map(
+						(content, index) => (
+							<div
+								className={` border rounded min-h-[50px] flex items-center justify-center cursor-move relative w-full bg-[#f4f7fc] border-dashed border-2 border-[#939393] p-2 text-[14px] mb-2 border border-gray-300 shadow rounded p-2 bg-gray-50 min-h-[50px] ${
+									content?.id == index + 1
+										? 'text-[#3cb46e] border-[#3cb46e]'
+										: 'text-red-500 border-[#f44336]'
+								} 
+								
+								`}
+								key={index}
+							>
+								{content?.content}
 							</div>
-							<div className="question-content">
-								<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
-									{item?.content}
-								</div>
+						)
+					)}
+				</div>
+			</div>
+		</div>
+		{resultReading?.[2]?.part3?.[0]?.resultCorrect?.map(
+			(item, index) => (
+				<div className="questions-wrapper" key={index}>
+					<div className="question-wrapper flex gap-2">
+						<div className="question-number">
+							<strong
+								className={`rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block `}
+							>
+								{index + 1}
+							</strong>
+						</div>
+						<div className="question-content">
+							<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
+								{item?.content}
 							</div>
 						</div>
 					</div>
-				)
-			)}
-		</FrameReadingResult>
+				</div>
+			)
+		)}
+	</FrameReadingResult>
 	);
 
 	const renderPartFour = () => (
