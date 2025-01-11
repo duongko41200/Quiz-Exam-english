@@ -32,7 +32,6 @@ const initialState = {
 			part2: [],
 			part3: [],
 			part4: [],
-			part5: [],
 		},
 		reading: {
 			part1: [],
@@ -84,7 +83,6 @@ export const testBankReducer = createSlice({
 					part2: [],
 					part3: [],
 					part4: [],
-					part5: [],
 				},
 				reading: {
 					part1: [],
@@ -237,39 +235,27 @@ export const testBankReducer = createSlice({
 				);
 			}
 
-
 			state.dataOfModalList.numberQuestion = numberQuestionUpdate;
 		},
 
 		SET_TESTBANK_DATA: (state, action) => {
 			const testBank = action.payload;
 
-			console.log('testBank store:', testBank);
+			// console.log('testBank store:', testBank);
 
-			setResponseReading(
-				testBank['reading']['part1'][0]['data']['questions'][
-					'subQuestion'
-				],
-				6
-			);
-			testBank['reading']['part2'][0]['data']['questions'][
-				'responseUser'
-			] = [null, null, null, null, null];
-			testBank['reading']['part3'][0]['data']['questions'][
-				'responseUser'
-			] = [null, null, null, null, null];
-			setResponseReading(
-				testBank['reading']['part4'][0]['data']['questions'][
-					'subQuestion'
-				],
-				8
-			);
-			setResponseReading(
-				testBank['reading']['part5'][0]['data']['questions'][
-					'subQuestion'
-				],
-				8
-			);
+			const { writing, reading, speaking, listening } = testBank;
+
+			if (listening) {
+				for (let i = 1; i <= 4; i++) {
+					listening[`part${i}`]?.forEach((item) => {
+						item.questions[0].subQuestion.forEach((subItem) => {
+							subItem['isActive'] = false;
+
+							subItem['responseUser'] = '';
+						});
+					});
+				}
+			}
 
 			state.testBankData = testBank;
 		},
@@ -280,7 +266,6 @@ export const testBankReducer = createSlice({
 			state.testBankData['writing'][`part${part}`][0]['questions'][0][
 				'subQuestion'
 			][index]['responseUser'] = value;
-			console.log('first,', state.testBankData);
 		},
 
 		SET_RESPONSE_RESULT_READING: (state, action) => {
@@ -306,6 +291,34 @@ export const testBankReducer = createSlice({
 				'subQuestion'
 			][index - 1]['responseUser'] = value;
 		},
+		SET_RESPONSE_RESULT_LISTENING:  (state, action) => {
+			const { part, index, value, number } = action.payload;
+			console.log('skdjfksdjflsdjflkjsdfds')
+
+			// if (part === 4) { 
+			// 	state.testBankData['listening'][`part${part}`][number]['questions'][0][
+			// 		'subQuestion'
+			// 	][index]['responseUser'] = value;
+
+			// 	return
+			// }
+
+
+			console.log({ part, index, value, number });
+			state.testBankData['listening'][`part${part}`][number]['questions'][0][
+				'subQuestion'
+			][index]['responseUser'] = value;
+
+			// state.testBankData['listening'][`part${1}`][0][
+			// 	'questions'
+			// ][0]['subQuestion'][0]['responseUser'] = value;
+
+			// state.testBankData['listening'][`part${part}`][number]['questions'][0][
+			// 	'subQuestion'
+			// ][index]['isActive'] = true;
+
+			// console.log('state.testBankData', await state.testBankData);
+		},
 	},
 });
 
@@ -320,6 +333,7 @@ export const {
 	SET_DATA_OF_MODAL_LIST,
 	SET_UPDATE_MODAL_LIST,
 	SET_ATTEMPTED_QUESTION,
+	SET_RESPONSE_RESULT_LISTENING,
 } = testBankReducer.actions;
 
 export default testBankReducer.reducer;

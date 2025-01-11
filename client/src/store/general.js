@@ -5,10 +5,12 @@ const convertCurrentExamSkill = (currentExamPart) => {
 		case 1:
 			return 'speaking';
 		case 2:
-			return 'reading';
+			return 'listening';
 		case 3:
-			return 'writing';
+			return 'reading';
 		case 4:
+			return 'writing';
+		case 5:
 			return 'result';
 		// case 5:
 		// 	return 'result';

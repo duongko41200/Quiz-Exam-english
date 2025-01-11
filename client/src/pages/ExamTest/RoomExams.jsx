@@ -31,6 +31,20 @@ import {
 	SET_DATA_OF_MODAL_LIST,
 	SET_UPDATE_MODAL_LIST,
 } from '../../store/feature/testBank.js';
+import ExamListening from './Listening/ExamListening.jsx';
+import {
+	SET_DECREMENT_LISTENING,
+	SET_DECREMENT_LISTENING_EACH_PART,
+	SET_INCREMENT_LISTENING,
+	SET_INCREMENT_LISTENING_EACH_PART,
+} from '../../store/feature/listening.js';
+import { isFulfilled } from '@reduxjs/toolkit';
+import {
+	NUMBER_PART_FOUR,
+	NUMBER_PART_ONE,
+	NUMBER_PART_THREE,
+	NUMBER_PART_TWO,
+} from '../../Constant/global.js';
 
 const RoomExam = () => {
 	const testBankData = useSelector(
@@ -50,6 +64,12 @@ const RoomExam = () => {
 	);
 	const numberQuestionEachPart = useSelector(
 		(state) => state.speakingStore.numberQuestionEachPart
+	);
+	const numberQuestionEachPartListening = useSelector(
+		(state) => state.listeningStore.numberQuestionEachPart
+	);
+	const numberQuestionListening = useSelector(
+		(state) => state.listeningStore.numberQuestion
 	);
 	const { isModalList } = useSelector((state) => state.generalStore);
 
@@ -94,6 +114,9 @@ const RoomExam = () => {
 					currentQuestion: numberQuestion,
 				})
 			);
+		} else if (currentExamPart === 'listening') {
+			setMinutes(30);
+			setTimeLeft(30 * 60);
 		}
 	}, [currentExamPart]);
 
@@ -217,6 +240,42 @@ const RoomExam = () => {
 			dispatch(SET_INCREMENT_WRITING());
 			return;
 		}
+
+		if (
+			numberQuestionListening <= 4 &&
+			currentExamPart === 'listening'
+		) {
+			// dispatch(
+			// 	SET_UPDATE_MODAL_LIST({
+			// 		numberQuestion: numberQuestionWriting + 1,
+			// 		currentExamPart,
+			// 	})
+			// );
+
+			if (numberQuestionEachPartListening === 17) {
+				moveExamSkill();
+				return;
+			}
+
+			const partLimits = {
+				[NUMBER_PART_ONE]: 13,
+				[NUMBER_PART_TWO]: 14,
+				[NUMBER_PART_THREE]: 15,
+				[NUMBER_PART_FOUR]: 17,
+			};
+
+			dispatch(SET_INCREMENT_LISTENING_EACH_PART());
+
+			if (
+				numberQuestionEachPartListening ===
+				partLimits[numberQuestionListening]
+			) {
+				dispatch(SET_INCREMENT_LISTENING());
+				return;
+			}
+
+			return;
+		}
 		if (numberQuestionSpeaking < 4 && currentExamPart === 'speaking') {
 			dispatch(SET_RESET_NUMBER_QUESTION_SPEAKING());
 			dispatch(SET_INCREMENT_SPEAKING());
@@ -244,6 +303,36 @@ const RoomExam = () => {
 				})
 			);
 			dispatch(SET_DECREMENT_WRITING());
+		}
+
+		if (
+			numberQuestionListening >= 1 &&
+			currentExamPart === 'listening'
+		) {
+			if (numberQuestionEachPartListening === 1) {
+				return;
+			}
+			const partLimits = {
+				[NUMBER_PART_ONE]: 13,
+				[NUMBER_PART_TWO]: 14,
+				[NUMBER_PART_THREE]: 15,
+				[NUMBER_PART_FOUR]: 16,
+			};
+
+			dispatch(SET_DECREMENT_LISTENING_EACH_PART());
+			console.log({ numberQuestionListening ,numberQuestionEachPartListening});
+			if (
+				numberQuestionEachPartListening ===
+				partLimits[numberQuestionListening]
+			) {
+				if (numberQuestionListening > 1) {
+					dispatch(SET_DECREMENT_LISTENING());
+				}
+
+				return;
+			}
+
+			return;
 		}
 	};
 	const stopRecord = () => {
@@ -338,6 +427,7 @@ const RoomExam = () => {
 				)}
 
 				{currentExamPart === 'speaking' && <ExamSpeaking />}
+				{currentExamPart === 'listening' && <ExamListening />}
 				{currentExamPart === 'reading' && <ExamReading />}
 				{currentExamPart === 'writing' && <ExamWriting />}
 				{currentExamPart === 'result' && <ResultTest />}

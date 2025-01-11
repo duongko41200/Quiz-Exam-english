@@ -25,6 +25,8 @@ const MainDash = () => {
 		try {
 			const getTestBank = await TestBankService.getAllTestBank();
 
+			console.log('getTestBank:', getTestBank);
+
 			const data = await getTestBank[RES_DATA].metadata[RES_DATA];
 
 			console.log('tesst dataa:', data);

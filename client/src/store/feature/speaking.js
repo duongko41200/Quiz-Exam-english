@@ -26,7 +26,7 @@ export const speakingReducer = createSlice({
       state.numberQuestionEachPart = 1;
     },
 
-    //Action
+    //Actiona
   },
 });
 

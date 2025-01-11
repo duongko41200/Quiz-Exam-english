@@ -80,7 +80,7 @@ const ResultTest = () => {
 			true
 		);
 		const readingPartFive = getResult(
-			testBankData.reading.part5[RES_DATA].data.questions,
+			testBankData.reading.part5[RES_DATA]?.data?.questions,
 			true
 		);
 

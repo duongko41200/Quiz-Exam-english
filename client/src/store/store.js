@@ -6,7 +6,8 @@ import generalReducer from './general';
 import readingReducer from './feature/reading';
 import testBankReducer from './feature/testBank';
 import writingReducer from './feature/writing';
-import speakingReducer  from './feature/speaking';
+import speakingReducer from './feature/speaking';
+import listeningReducer from './feature/listening';
 
 export const store = configureStore({
 	reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
 		readingStore: readingReducer,
 		writingStore: writingReducer,
 		speakingStore: speakingReducer,
+		listeningStore: listeningReducer,
 		testBankStore: testBankReducer,
 	},
 });

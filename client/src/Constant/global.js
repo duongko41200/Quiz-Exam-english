@@ -31,10 +31,16 @@ export {
 	BG_COLOR,
 	SPACE_BANK,
 };
-	
+
 export const TOTAL_NUMBER_PART = {
 	reading: 5,
 	writing: 4,
 	speaking: 4,
 	listening: 4,
-}
+};
+
+export const NUMBER_PART_ONE = 1;
+export const NUMBER_PART_TWO = 2;
+export const NUMBER_PART_THREE = 3;
+export const NUMBER_PART_FOUR = 4;
+export const NUMBER_PART_FIVE = 5;
