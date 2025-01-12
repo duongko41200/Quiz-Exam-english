@@ -7,6 +7,7 @@ import ResultTestReading from '../../pages/ExamTest/ResultTest/ResultReading/Res
 import ResultTestWriting from '../../pages/ExamTest/ResultTest/ResultWritiing/ResultWriting';
 import { Button, Grid, Typography } from '@mui/material';
 import ResultTestSpeaking from '../../pages/ExamTest/ResultTest/ResultSpeaking/ResultSpeaking';
+import ResultTestListening from '../../pages/ExamTest/ResultTest/ResultListening/ResultListening';
 
 export default function BasicTabsResult({
 	resultReading,
@@ -15,6 +16,8 @@ export default function BasicTabsResult({
 	const [value, setValue] = React.useState(0);
 	const [partSkill, setPartSkill] = React.useState('Reading');
 	const [numberLession, setNumberLession] = React.useState(1);
+
+	const [numberListening, setNumberListening] = React.useState(1);
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
@@ -39,10 +42,32 @@ export default function BasicTabsResult({
 	];
 
 	const moveLession = (number: number, title: string) => {
-		setNumberLession(number);
 		if (title != partSkill) {
 			setPartSkill(title);
 		}
+		if (number >= 1 && number <= 13 && title === 'Listening') {
+			setNumberLession(1);
+			setNumberListening(number);
+			return;
+		}
+		if (number == 14 && title === 'Listening') {
+			setNumberLession(2);
+			setNumberListening(number);
+			return;
+		}
+		if (number == 15 && title === 'Listening') {
+			setNumberLession(3);
+			setNumberListening(number);
+			return;
+		}
+		if (number >= 16 && title === 'Listening') {
+			setNumberLession(4);
+			setNumberListening(number);
+			return;
+		}
+
+		setNumberLession(number);
+
 	};
 	return (
 		<>
@@ -74,9 +99,10 @@ export default function BasicTabsResult({
 						/>
 					)}
 					{partSkill && partSkill === 'Speaking' && (
-						<ResultTestSpeaking
-							numberLession={numberLession}
-						/>
+						<ResultTestSpeaking numberLession={numberLession} />
+					)}
+					{partSkill && partSkill === 'Listening' && (
+						<ResultTestListening numberLession={numberLession} numberListening={numberListening} />
 					)}
 				</Box>
 				<div className="h-full flex justify-center shadow-md bg-gray-100">

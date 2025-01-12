@@ -115,6 +115,13 @@ const RoomExam = () => {
 				})
 			);
 		} else if (currentExamPart === 'listening') {
+			dispatch(
+				SET_DATA_OF_MODAL_LIST({
+					testBankData: testBankData,
+					currentExamPart: currentExamPart,
+					currentQuestion: numberQuestion,
+				})
+			);
 			setMinutes(30);
 			setTimeLeft(30 * 60);
 		}
@@ -245,12 +252,12 @@ const RoomExam = () => {
 			numberQuestionListening <= 4 &&
 			currentExamPart === 'listening'
 		) {
-			// dispatch(
-			// 	SET_UPDATE_MODAL_LIST({
-			// 		numberQuestion: numberQuestionWriting + 1,
-			// 		currentExamPart,
-			// 	})
-			// );
+			dispatch(
+				SET_UPDATE_MODAL_LIST({
+					numberQuestion: numberQuestionEachPartListening + 1,
+					currentExamPart,
+				})
+			);
 
 			if (numberQuestionEachPartListening === 17) {
 				moveExamSkill();
@@ -312,6 +319,12 @@ const RoomExam = () => {
 			if (numberQuestionEachPartListening === 1) {
 				return;
 			}
+			dispatch(
+				SET_UPDATE_MODAL_LIST({
+					numberQuestion: numberQuestionEachPartListening - 1,
+					currentExamPart,
+				})
+			);
 			const partLimits = {
 				[NUMBER_PART_ONE]: 13,
 				[NUMBER_PART_TWO]: 14,

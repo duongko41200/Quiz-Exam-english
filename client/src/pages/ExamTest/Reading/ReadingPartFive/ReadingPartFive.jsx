@@ -2,7 +2,7 @@ import { Box, Button, Typography } from '@mui/material';
 import './ReadingPartFive.css';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RES_DATA } from '../../../../Constant/global';
+import { POINT_REPLACE, RES_DATA } from '../../../../Constant/global';
 import {
 	SET_ATTEMPTED_QUESTION,
 	SET_RESPONSE_RESULT_READING,
@@ -48,7 +48,7 @@ const ReadingPartFive = () => {
 
 	const renderContent = () => {
 		if (!contentPartFour) return null;
-		return contentPartFour.split('tentisspace').map((part, index) => (
+		return contentPartFour.split(POINT_REPLACE).map((part, index) => (
 			<Box
 				key={index}
 				className={index === 0 ? '' : 'ql-align-justify'}
@@ -58,7 +58,7 @@ const ReadingPartFive = () => {
 				}}
 			>
 				{index >
-					(contentPartFour.split('tentisspace')[1] === 'null'
+					(contentPartFour.split(POINT_REPLACE)[1] === 'null'
 						? 0
 						: 1) && (
 					<Box className="answer p-1 col-4 w-[200px]">
@@ -72,7 +72,7 @@ const ReadingPartFive = () => {
 										selectOption(
 											e,
 											index -
-												(contentPartFour.split('tentisspace')[1] ===
+												(contentPartFour.split(POINT_REPLACE)[1] ===
 												'null'
 													? 1
 													: 2)
@@ -82,7 +82,7 @@ const ReadingPartFive = () => {
 										subQuestion.length > 0 &&
 										subQuestion[
 											index -
-												(contentPartFour.split('tentisspace')[1] ===
+												(contentPartFour.split(POINT_REPLACE)[1] ===
 												'null'
 													? 1
 													: 2)

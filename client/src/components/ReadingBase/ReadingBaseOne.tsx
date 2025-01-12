@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../../pages/ExamTest/Reading/ExamReading.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { RES_DATA } from '../../Constant/global';
+import { POINT_REPLACE, RES_DATA } from '../../Constant/global';
 import {
 	SET_RESPONSE_RESULT_READING,
 	SET_TESTBANK_DATA,
@@ -61,7 +61,7 @@ const ReadingBaseOne = ({ children }) => {
 		return subQuestions.map((item, index) => (
 			<div key={index} className="flex justify-start gap-1 text-sm">
 				{item.content.split(' ').map((word, idx) =>
-					word !== 'tentisspace' ? (
+					word !== POINT_REPLACE ? (
 						<div key={idx}>{word}</div>
 					) : (
 						<span key={idx} data-lrn-template-response="">
@@ -101,20 +101,20 @@ const ReadingBaseOne = ({ children }) => {
 	return (
 		<div>
 			<div className="lrn_stimulus_content lrn_clearfix lrn_question mb-5">
-				<b>{contentPartOne?.content.split('tentisspace')[TITLE]}</b>
+				<b>{contentPartOne?.content.split(POINT_REPLACE)[TITLE]}</b>
 			</div>
 			<div className="lrn_response_innerbody lrn-response-validate-wrapper">
 				<div className="lrn_response_input"></div>
 				<p>
-					{contentPartOne?.content.split('tentisspace')[DEAR_PERSON]}
+					{contentPartOne?.content.split(POINT_REPLACE)[DEAR_PERSON]}
 				</p>
 				<div className="flex justify-start flex-col gap-6">
 					 { children }
 				</div>
 				<div>
-					{contentPartOne?.content.split('tentisspace')[FOOT_FISH]}
+					{contentPartOne?.content.split(POINT_REPLACE)[FOOT_FISH]}
 				</div>
-				<p>{contentPartOne?.content.split('tentisspace')[SIGNAL]}</p>
+				<p>{contentPartOne?.content.split(POINT_REPLACE)[SIGNAL]}</p>
 			</div>
 		</div>
 	);

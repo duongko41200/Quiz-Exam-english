@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RES_DATA } from '../../../../Constant/global';
+import { POINT_REPLACE, RES_DATA } from '../../../../Constant/global';
 import BasicTable from '../../../../components/Table/BasicTable/BasicTable';
 import ReadingBaseOne from '../../../../components/ReadingBase/ReadingBaseOne.tsx';
 import FrameReadingResult from '../../../../components/FrameReadingResult/FrameReadingResult.jsx';
@@ -97,7 +97,7 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 							className="flex justify-start gap-1 text-sm"
 						>
 							{item?.content.split(' ').map((word, idx) =>
-								word !== 'tentisspace' ? (
+								word !== POINT_REPLACE ? (
 									<div key={idx}>{word}</div>
 								) : (
 									<span key={idx}>
@@ -152,7 +152,7 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 		<FrameReadingResult>
 			<div className="flex flex-col gap-4">
 				<div className="text-[15px] font-medium">
-					{resReadingPartTwo?.content.split('tentisspace')[TITLE]}
+					{resReadingPartTwo?.content.split(POINT_REPLACE)[TITLE]}
 				</div>
 
 				<div className="box-left p-4 w-full">
@@ -161,7 +161,7 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 							<div className="font-inter text-[15px]">
 								<strong>
 									{
-										resReadingPartTwo?.content.split('tentisspace')[
+										resReadingPartTwo?.content.split(POINT_REPLACE)[
 											DEAR_PERSON
 										]
 									}
@@ -169,7 +169,7 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 							</div>
 							<div className="mt-2">
 								{
-									resReadingPartTwo?.content.split('tentisspace')[
+									resReadingPartTwo?.content.split(POINT_REPLACE)[
 										FOOT_FISH
 									]
 								}
@@ -221,7 +221,7 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 		<FrameReadingResult>
 		<div className="flex flex-col gap-4">
 			<div className="text-[15px] font-medium">
-				{resReadingPartThree?.content.split('tentisspace')[TITLE]}
+				{resReadingPartThree?.content.split(POINT_REPLACE)[TITLE]}
 			</div>
 
 			<div className="box-left p-4 w-full">
@@ -230,7 +230,7 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 						<div className="font-inter text-[15px]">
 							<strong>
 								{
-									resReadingPartThree?.content.split('tentisspace')[
+									resReadingPartThree?.content.split(POINT_REPLACE)[
 										DEAR_PERSON
 									]
 								}
@@ -238,7 +238,7 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 						</div>
 						<div className="mt-2">
 							{
-								resReadingPartThree?.content.split('tentisspace')[
+								resReadingPartThree?.content.split(POINT_REPLACE)[
 									FOOT_FISH
 								]
 							}
@@ -290,7 +290,7 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 		<FrameReadingResult percentage={50}>
 			{resReadingPartFour &&
 				resReadingPartFour?.content
-					?.split('tentisspace')
+					?.split(POINT_REPLACE)
 					.map((part, index) => (
 						<div
 							key={index}
@@ -364,14 +364,14 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 		<FrameReadingResult>
 			{resReadingPartFive &&
 				resReadingPartFive?.content
-					?.split('tentisspace')
+					?.split(POINT_REPLACE)
 					.map((part, index) => (
 						<div
 							key={index}
 							className="md:text-[14px] 2xl:text-[16px] leading-[1.7rem]"
 						>
 							{index >
-								(part.split('tentisspace')[1] === 'null' ? 0 : 1) && (
+								(part.split(POINT_REPLACE)[1] === 'null' ? 0 : 1) && (
 								<div className="answer p-1 col-4 w-[200px]">
 									<span data-lrn-template-response="">
 										<span className="lrn_combobox">
@@ -379,13 +379,13 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 												className={`min-w-[250px] border-2 bg-white border-black shadow rounded-md p-1 ${
 													resReadingPartFive.subQuestion[
 														index -
-															(part.split('tentisspace')[1] === 'null'
+															(part.split(POINT_REPLACE)[1] === 'null'
 																? 1
 																: 2)
 													]?.responseUser ===
 													resReadingPartFive.subQuestion[
 														index -
-															(part.split('tentisspace')[1] === 'null'
+															(part.split(POINT_REPLACE)[1] === 'null'
 																? 1
 																: 2)
 													]?.correctAnswer
@@ -397,7 +397,7 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 													resReadingPartFive.subQuestion.length > 0 &&
 													resReadingPartFive.subQuestion[
 														index -
-															(part.split('tentisspace')[1] === 'null'
+															(part.split(POINT_REPLACE)[1] === 'null'
 																? 1
 																: 2)
 													]?.responseUser

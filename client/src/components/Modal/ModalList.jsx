@@ -33,6 +33,7 @@ export default function ModalList({ children, open, label }) {
 	const dataOfModalList = useSelector(
 		(state) => state.testBankStore.dataOfModalList
 	);
+	// console.log('dataOfModalList', dataOfModalList);
 
 	const moveToQuestion = (item) => {
 		console.log('item', item);
@@ -152,6 +153,65 @@ export default function ModalList({ children, open, label }) {
 															return (
 																<div
 																	className={`w-full flex flex-col   border border-[#e5e5e5] p-2 rounded-[6px] p-2 hover:bg-[#e7e6f1] cursor-pointer   `}
+																	key={idx}
+																	onClick={() => moveToQuestion(item)}
+																>
+																	<div className="text-md font-bold">
+																		Part {data.question}
+																	</div>
+																	<div className="w-full flex justify-between items-center text-sm">
+																		<div>
+																			{data.isWatching
+																				? 'Seen'
+																				: 'Unseen'}
+																		</div>
+																		<div>
+																			{data.status
+																				? 'Attempted'
+																				: 'Not Attempted'}
+																		</div>
+																	</div>
+																</div>
+															);
+														})}
+													</div>
+												</div>
+											</div>
+										)}
+
+										{item && item?.currentExamPart === 'listening' && (
+											<div className="w-full flex flex-col border border-[#e5e5e5] rounded-[6px]">
+												<div className="w-full flex flex-col gap-1 rounded-[6px]">
+													<div
+														className={`w-full flex justify-between items-center  p-2 rounded-[6px] ${
+															item.activeQuestion
+																? 'bg-[#c3c1ddc4]'
+																: 'hover:bg-[#e7e6f1] cursor-pointer'
+														}  `}
+														key={index}
+														onClick={() => moveToQuestion(item)}
+													>
+														<div>
+															<div className="text-md font-bold">
+																0{item.question}
+															</div>
+															<div className="w-full flex justify-between items-center text-sm">
+																<div>{item?.numberPart} Parts</div>
+															</div>
+														</div>
+														<div className="p-2 w-[24px] h-[24px] border border-[#0000001f] flex justify-center items-center rounded-[4px] cursor-pointer hover:bg-[#f4f4f5] hover:bg-[#e7e6f1] bg-[#c3c1dd] shadow-[inset 0 0 10px rgba(0, 8, 206, 0.25)]">
+															<div>-</div>
+														</div>
+													</div>
+													<div className="w-full flex flex-col gap-2 p-2 ">
+														{item?.questionPart?.map((data, idx) => {
+															return (
+																<div
+																	className={`w-full flex flex-col   border border-[#e5e5e5] p-2 rounded-[6px] p-2 hover:bg-[#e7e6f1] cursor-pointer  ${
+																		data.activeQuestion
+																			? 'bg-[#c3c1ddc4]'
+																			: 'hover:bg-[#e7e6f1] cursor-pointer'
+																	}   `}
 																	key={idx}
 																	onClick={() => moveToQuestion(item)}
 																>

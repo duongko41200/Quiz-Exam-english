@@ -3,7 +3,7 @@ import { use } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useDispatch, useSelector } from 'react-redux';
-import { RES_DATA } from '../../../../Constant/global';
+import { POINT_REPLACE, RES_DATA } from '../../../../Constant/global';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import { Box } from '@mui/material';
 import {
@@ -305,15 +305,19 @@ const DragDropApp = () => {
 	useEffect(() => {
 		const readingPartTwo = testBankData.reading.part2[RES_DATA].data;
 
+		console.log({ readingPartTwo });
+
 		const answerList = readingPartTwo?.questions?.answerList;
 
 		const responseUser = readingPartTwo?.questions?.responseUser;
+
+		console.log({ responseUser });
 
 		let answerListPart2 = [];
 
 		for (let i = 0; i < answerList.length; i++) {
 			let isExist = false;
-			for (let j = 0; j < responseUser.length; j++) {
+			for (let j = 0; j < responseUser?.length; j++) {
 				if (+responseUser[j]?.id == answerList[i].numberOrder) {
 					isExist = true;
 					break;
@@ -330,8 +334,11 @@ const DragDropApp = () => {
 				},
 			];
 		}
+		if (responseUser) {
 
-		setColumn1(responseUser);
+			setColumn1(responseUser);
+		 }
+	
 		setColumn2(answerListPart2);
 		setContentPartTwo(readingPartTwo?.questions);
 	}, []);
@@ -340,7 +347,7 @@ const DragDropApp = () => {
 		<DndProvider backend={HTML5Backend}>
 			<Box className="w-fit">
 				<Box sx={{ fontWeight: '700', fontSize: '16px' }}>
-					{contentPartTwo?.content.split('tentisspace')[TITLE]}
+					{contentPartTwo?.content.split(POINT_REPLACE)[TITLE]}
 				</Box>
 
 				<Box
@@ -377,7 +384,7 @@ const DragDropApp = () => {
 								>
 									<strong>
 										{
-											contentPartTwo?.content.split('tentisspace')[
+											contentPartTwo?.content.split(POINT_REPLACE)[
 												DEAR_PERSON
 											]
 										}
@@ -386,14 +393,14 @@ const DragDropApp = () => {
 								<Box>
 									<Box sx={{ marginTop: '10px' }}>
 										{
-											contentPartTwo?.content.split('tentisspace')[
+											contentPartTwo?.content.split(POINT_REPLACE)[
 												FOOT_FISH
 											]
 										}
 									</Box>
 								</Box>
 							</Box>
-							{column1.map((content, index) => (
+							{column1 && column1?.map((content, index) => (
 								<DropBox
 									key={index}
 									id={index}

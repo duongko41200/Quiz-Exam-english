@@ -39,6 +39,9 @@ export const TOTAL_NUMBER_PART = {
 	listening: 4,
 };
 
+
+export const POINT_REPLACE = "tentisspace";
+
 export const NUMBER_PART_ONE = 1;
 export const NUMBER_PART_TWO = 2;
 export const NUMBER_PART_THREE = 3;

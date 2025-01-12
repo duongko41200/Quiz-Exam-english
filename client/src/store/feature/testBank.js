@@ -124,6 +124,9 @@ export const testBankReducer = createSlice({
 					});
 				}
 			}
+
+
+
 			if (currentExamPart === 'writing') {
 				const questionPart = testBankData[currentExamPart];
 
@@ -149,6 +152,55 @@ export const testBankReducer = createSlice({
 					});
 				}
 			}
+
+			if (currentExamPart === 'listening') {
+				const questionPart = testBankData[currentExamPart];
+
+				for (let i = 0; i < 4; i++) {
+					if (i == 0 || i == 3) {
+						numberQuestion.push({
+							question: i + 1,
+							currentExamPart: currentExamPart,
+							activeQuestion: currentQuestion == i + 1 ? true : false,
+							numberPart:
+								questionPart[`part${i + 1}`][0].questions[0].subQuestion
+									.length,
+
+							questionPart: questionPart[
+								`part${i + 1}`
+							][0].questions[0].subQuestion.map((item, index) => {
+								return {
+									question: i == 3 ? index + 16 : index + 1,
+									status: false,
+									isWatching: currentQuestion == i + 1 ? true : false,
+									activeQuestion:
+										currentQuestion == ( i == 3 ? index + 16 : index + 1) ? true : false,
+								};
+							}),
+						});
+						continue;
+					}
+
+					numberQuestion.push({
+						question: i + 1,
+						currentExamPart: currentExamPart,
+						activeQuestion: currentQuestion == i + 1 ? true : false,
+						numberPart: 1,
+
+						questionPart: [
+							{
+								question: i + 13,
+								status: false,
+								isWatching: currentQuestion == i + 13 ? true : false,
+								activeQuestion:
+									currentQuestion == i + 13 ? true : false,
+							},
+						],
+					});
+				}
+			}
+
+			console.log('numberQuestion:', numberQuestion);
 
 			const dataOfModalList = {
 				currentExamPart: currentExamPart,
@@ -193,6 +245,41 @@ export const testBankReducer = createSlice({
 					}
 				);
 			}
+
+			if (currentExamPart === 'listening') {
+
+				if(numberQuestion == 18) return
+				numberQuestionUpdate = state.dataOfModalList.numberQuestion.map(
+					(item, index) => {
+
+						item?.questionPart?.map((data) => { 
+
+
+							if (data.question === numberQuestion) {
+								data.activeQuestion = true;
+								data.isWatching = true;
+							} else {
+								data.activeQuestion = false;
+							}
+							return data;
+						});
+
+						if ([13,14, 15, 16].includes(numberQuestion)) {
+							const questionMap = {13:1, 14: 2, 15: 3, 16: 4 };
+							item.activeQuestion = item.question === questionMap[numberQuestion];
+							item.questionPart.forEach((part) => {
+							
+								// if (part.question = numberQuestion) {
+									part.isWatching = true;
+								// }
+							});
+						}
+					
+						return item;
+					}
+				);
+			}
+
 
 			state.dataOfModalList.numberQuestion = numberQuestionUpdate;
 		},
@@ -241,7 +328,6 @@ export const testBankReducer = createSlice({
 		SET_TESTBANK_DATA: (state, action) => {
 			const testBank = action.payload;
 
-			// console.log('testBank store:', testBank);
 
 			const { writing, reading, speaking, listening } = testBank;
 
@@ -291,11 +377,10 @@ export const testBankReducer = createSlice({
 				'subQuestion'
 			][index - 1]['responseUser'] = value;
 		},
-		SET_RESPONSE_RESULT_LISTENING:  (state, action) => {
+		SET_RESPONSE_RESULT_LISTENING: (state, action) => {
 			const { part, index, value, number } = action.payload;
-			console.log('skdjfksdjflsdjflkjsdfds')
 
-			// if (part === 4) { 
+			// if (part === 4) {
 			// 	state.testBankData['listening'][`part${part}`][number]['questions'][0][
 			// 		'subQuestion'
 			// 	][index]['responseUser'] = value;
@@ -303,11 +388,10 @@ export const testBankReducer = createSlice({
 			// 	return
 			// }
 
-
 			console.log({ part, index, value, number });
-			state.testBankData['listening'][`part${part}`][number]['questions'][0][
-				'subQuestion'
-			][index]['responseUser'] = value;
+			state.testBankData['listening'][`part${part}`][number][
+				'questions'
+			][0]['subQuestion'][index]['responseUser'] = value;
 
 			// state.testBankData['listening'][`part${1}`][0][
 			// 	'questions'

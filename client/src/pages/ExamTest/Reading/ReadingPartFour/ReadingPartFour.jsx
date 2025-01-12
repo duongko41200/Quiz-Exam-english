@@ -3,7 +3,7 @@ import './ReadingPartFour.css';
 import React, { useEffect, useState } from 'react';
 import Split from 'react-split';
 import { useDispatch, useSelector } from 'react-redux';
-import { RES_DATA } from '../../../../Constant/global';
+import { POINT_REPLACE, RES_DATA } from '../../../../Constant/global';
 import {
 	SET_ATTEMPTED_QUESTION,
 	SET_RESPONSE_RESULT_READING,
@@ -48,7 +48,7 @@ const ReadingPartFour = () => {
 
 	const renderContent = () => {
 		if (!contentPartFour) return null;
-		return contentPartFour.split('tentisspace').map((part, index) => (
+		return contentPartFour.split(POINT_REPLACE).map((part, index) => (
 			<Box
 				key={index}
 				className={index % 2 === 0 ? '' : 'ql-align-justify'}
