@@ -125,8 +125,6 @@ export const testBankReducer = createSlice({
 				}
 			}
 
-
-
 			if (currentExamPart === 'writing') {
 				const questionPart = testBankData[currentExamPart];
 
@@ -172,9 +170,11 @@ export const testBankReducer = createSlice({
 								return {
 									question: i == 3 ? index + 16 : index + 1,
 									status: false,
-									isWatching: currentQuestion == i + 1 ? true : false,
+									isWatching: index == i ? true : false,
 									activeQuestion:
-										currentQuestion == ( i == 3 ? index + 16 : index + 1) ? true : false,
+										currentQuestion == (i == 3 ? index + 16 : index + 1)
+											? true
+											: false,
 								};
 							}),
 						});
@@ -247,14 +247,10 @@ export const testBankReducer = createSlice({
 			}
 
 			if (currentExamPart === 'listening') {
-
-				if(numberQuestion == 18) return
+				if (numberQuestion == 18) return;
 				numberQuestionUpdate = state.dataOfModalList.numberQuestion.map(
 					(item, index) => {
-
-						item?.questionPart?.map((data) => { 
-
-
+						item?.questionPart?.map((data) => {
 							if (data.question === numberQuestion) {
 								data.activeQuestion = true;
 								data.isWatching = true;
@@ -264,22 +260,21 @@ export const testBankReducer = createSlice({
 							return data;
 						});
 
-						if ([13,14, 15, 16].includes(numberQuestion)) {
-							const questionMap = {13:1, 14: 2, 15: 3, 16: 4 };
-							item.activeQuestion = item.question === questionMap[numberQuestion];
+						if ([13, 14, 15, 16].includes(numberQuestion)) {
+							const questionMap = { 13: 1, 14: 2, 15: 3, 16: 4 };
+							item.activeQuestion =
+								item.question === questionMap[numberQuestion];
 							item.questionPart.forEach((part) => {
-							
-								// if (part.question = numberQuestion) {
+								if (part.question == numberQuestion) {
 									part.isWatching = true;
-								// }
+								}
 							});
 						}
-					
+
 						return item;
 					}
 				);
 			}
-
 
 			state.dataOfModalList.numberQuestion = numberQuestionUpdate;
 		},
@@ -327,7 +322,6 @@ export const testBankReducer = createSlice({
 
 		SET_TESTBANK_DATA: (state, action) => {
 			const testBank = action.payload;
-
 
 			const { writing, reading, speaking, listening } = testBank;
 
