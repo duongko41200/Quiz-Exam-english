@@ -35,7 +35,7 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 		const ListeningPartOne = testBankData.listening.part1[RES_DATA];
 
 		const ListeningPartTwo = testBankData.listening.part2[RES_DATA];
-
+		console.log({ first: ListeningPartTwo });
 		const ListeningPartThree = testBankData.listening.part3[RES_DATA];
 
 		setContentPartThree(ListeningPartThree?.questions);
@@ -70,9 +70,7 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 							(item, index) => (
 								<div
 									className="flex h-[65px] w-full  border border-[#d4d4d4] cursor-pointer "
-									// onClick={() => {
-									// 	handleClick(item, index);
-									// }}
+									key={index}
 								>
 									<div
 										className={`text-[2rem] w-[4.5rem]  text-center h-full flex items-center border border-r-2 border-[#d4d4d4] justify-center ${
@@ -127,24 +125,23 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 				</div>
 			</div>
 
-			{/* {resultReading?.[0]?.part1 &&
-				resultReading?.[0]?.part1.map((item, index) => (
-					<div className="questions-wrapper" key={index}>
-						<div className="question-wrapper flex gap-2">
-							<div className="question-number">
-								<strong className="rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block">
-									{index + 1}
-								</strong>
-							</div>
-							<div className="question-content">
-								<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
-									{item.resultCorrect}
-								</div>
+			{
+				<div className="questions-wrapper">
+					<div className="question-wrapper flex gap-2">
+						<div className="question-number">
+							<strong className="rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block">
+								1
+							</strong>
+						</div>
+						<div className="question-content">
+							<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
+								{subQuestions.length > 0 &&
+									subQuestions[numberListening - 1].correctAnswer}
 							</div>
 						</div>
 					</div>
-				))} */}
-			<div>ksdjfklsd</div>
+				</div>
+			}
 		</FrameReadingResult>
 	);
 
@@ -203,8 +200,8 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 						))}
 				</div>
 			</div>
-			{/* {resultReading?.[1]?.part2?.[0]?.resultCorrect?.map(
-				(item, index) => (
+			{subQuestionsTwo.length > 0 &&
+				subQuestionsTwo.map((item, index) => (
 					<div className="questions-wrapper" key={index}>
 						<div className="question-wrapper flex gap-2">
 							<div className="question-number">
@@ -216,15 +213,12 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 							</div>
 							<div className="question-content">
 								<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
-									{item?.content}
+									{item?.correctAnswer}
 								</div>
 							</div>
 						</div>
 					</div>
-				)
-			)} */}
-
-			<div>duongko123</div>
+				))}
 		</FrameReadingResult>
 	);
 
@@ -288,8 +282,8 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 						))}
 				</div>
 			</div>
-			{/* {resultReading?.[2]?.part3?.[0]?.resultCorrect?.map(
-				(item, index) => (
+			{subQuestionsThree.length > 0 &&
+				subQuestionsThree.map((item, index) => (
 					<div className="questions-wrapper" key={index}>
 						<div className="question-wrapper flex gap-2">
 							<div className="question-number">
@@ -301,15 +295,12 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 							</div>
 							<div className="question-content">
 								<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
-									{item?.content}
+									{item?.correctAnswer}
 								</div>
 							</div>
 						</div>
 					</div>
-				)
-			)} */}
-
-			<div>sjfsdkjf</div>
+				))}
 		</FrameReadingResult>
 	);
 
@@ -392,8 +383,13 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 					</div>
 				</div>
 			</div>
-			{/* {resultReadingFour &&
-				resultReadingFour?.map((item, index) => (
+			{numberListening >= 16 &&
+				numberListening <= 17 &&
+				testBankData.listening.part4[numberListening - 16].questions[0]
+					.subQuestion.length > 0 &&
+				testBankData.listening.part4[
+					numberListening - 16
+				].questions[0].subQuestion.map((item, index) => (
 					<div className="questions-wrapper" key={index}>
 						<div className="question-wrapper flex gap-2">
 							<div className="question-number">
@@ -403,9 +399,7 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 							</div>
 							<div className="question-content">
 								<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
-									<span className="text-gray-700 text-lg font-bold">
-										{item?.content}
-									</span>
+									<span className="">{item?.correctAnswer}</span>
 									<u className="no-underline">
 										{item.resultSystem &&
 											item.resultSystem.map((item, index) => {
@@ -423,9 +417,7 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 							</div>
 						</div>
 					</div>
-				))} */}
-
-			<div>duongabc ksj</div>
+				))}
 		</FrameReadingResult>
 	);
 

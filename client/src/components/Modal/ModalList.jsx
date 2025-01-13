@@ -55,6 +55,18 @@ export default function ModalList({ children, open, label }) {
 				})
 			);
 		}
+
+		if (item.currentExamPart === 'listening') {
+
+			console.log("item.question",item)
+			dispatch(SET_NUMBER_QUESTION_WRITING(item.question));
+			dispatch(
+				SET_UPDATE_MODAL_LIST({
+					numberQuestion: item.question,
+					currentExamPart: item.currentExamPart,
+				})
+			);
+		}
 	};
 
 	const closeModelList = () => {
@@ -189,7 +201,7 @@ export default function ModalList({ children, open, label }) {
 																: 'hover:bg-[#e7e6f1] cursor-pointer'
 														}  `}
 														key={index}
-														onClick={() => moveToQuestion(item)}
+														// onClick={() => moveToQuestion(item)}
 													>
 														<div>
 															<div className="text-md font-bold">
@@ -213,7 +225,7 @@ export default function ModalList({ children, open, label }) {
 																			: 'hover:bg-[#e7e6f1] cursor-pointer'
 																	}   `}
 																	key={idx}
-																	onClick={() => moveToQuestion(item)}
+																	onClick={() => moveToQuestion({ numberQuestion:item, numberQuestionPart:idx })}
 																>
 																	<div className="text-md font-bold">
 																		Part {data.question}

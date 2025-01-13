@@ -9,7 +9,7 @@ export default function FrameReadingResult({ children, percentage = 60, defaultW
 
 			<div className={`right max-h-[550px] overflow-y-auto w-[${100 - percentage}%] bg-white px-6 py-4 rounded-xl`}>
 				<div class="question-group-wrapper flex flex-col gap-8">
-					{children[1]}
+					{children[1]} 
 				</div>
 			</div>
 		</div>

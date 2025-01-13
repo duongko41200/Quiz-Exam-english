@@ -25,6 +25,10 @@ export const listeningReducer = createSlice({
     SET_RESET_NUMBER_QUESTION_LISTENING: (state, action) => {
       state.numberQuestionEachPart = 1;
     },
+    SET_NUMBER_QUESTION_LISTENING: (state, action) => {
+			state.numberQuestion = action.payload
+		}
+    
 
     //Actiona
   },
@@ -37,6 +41,7 @@ export const {
   SET_INCREMENT_LISTENING_EACH_PART,
   SET_DECREMENT_LISTENING_EACH_PART,
   SET_RESET_NUMBER_QUESTION_LISTENING,
+  SET_NUMBER_QUESTION_LISTENING
 } = listeningReducer.actions;
 
 export default listeningReducer.reducer;
