@@ -9,7 +9,7 @@ export const styles = {
 			'linear-gradient(to bottom right, rgb(254, 254, 139), #fec948b0)',
 		border: '1px solid hsl(215, 15%, 89%)',
 		borderRadius: '30px',
-		boxShadow: 'rgba(223, 226, 231, 0.6) 0px 4px 8px',
+		// boxShadow: 'rgba(223, 226, 231, 0.6) 0px 4px 8px',
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'space-between',

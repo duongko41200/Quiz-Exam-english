@@ -40,7 +40,7 @@ const ExamReading = () => {
 							display: 'flex',
 							flexDirection: 'column',
 							justifyContent: 'center',
-							marginTop: '1rem',
+							// marginTop: '1rem',
 							padding: '1rem',
 							width: '65%',
 						}}

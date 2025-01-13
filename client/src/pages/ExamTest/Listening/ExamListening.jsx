@@ -38,8 +38,9 @@ const ExamListening = () => {
 						display: 'flex',
 						justifyContent: 'center',
 						marginTop: '3.25rem',
-						padding: '1rem',
+						// padding: '1rem',
 						width: '100%',
+						marginBottom: '1.5rem',
 					}}
 				>
 					<Box
@@ -47,8 +48,8 @@ const ExamListening = () => {
 							display: 'flex',
 							flexDirection: 'column',
 							justifyContent: 'center',
-							marginTop: '1rem',
-							padding: '1rem',
+							// marginTop: '1rem',
+							// padding: '1rem',
 							width: '65%',
 						}}
 					>
@@ -67,7 +68,7 @@ const ExamListening = () => {
 										marginBottom: '1.5em',
 										marginTop: 0,
 										fontWeight: '600',
-										fontSize: '1.275rem',
+										fontSize: '1.2rem',
 									}}
 								>
 									Question {numberQuestionEachPart} of 17

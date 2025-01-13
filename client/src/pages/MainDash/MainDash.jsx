@@ -16,16 +16,14 @@ const MainDash = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const moveToExam = async () => {
-		navigate('/exam-test');
+	const moveToExam = async (router) => {
+		navigate(`/${router}`);
 		dispatch(SET_RESET_PART_SKILL());
 	};
 
 	const fetchData = async () => {
 		try {
 			const getTestBank = await TestBankService.getAllTestBank();
-
-			console.log('getTestBank:', getTestBank);
 
 			const data = await getTestBank[RES_DATA].metadata[RES_DATA];
 
@@ -67,15 +65,16 @@ const MainDash = () => {
 							<Button
 								variant="contained"
 								className="pt-3 btn btn-primary shadow lift me-1 mr-1"
-								onClick={moveToExam}
+								onClick={()=>moveToExam('exam-test')}
 							>
 								Vào thi ngay <i className="fe fe-headphones ms-2"></i>
 							</Button>
 							<Button
 								variant="outlined"
 								className="m-2 pt-3 w-fit btn btn-primary shadow"
+								onClick={()=>moveToExam('history')}
 							>
-								Lịch thi mới nhất
+								Lịch sử làm bài  
 							</Button>
 						</div>
 					</div>
