@@ -97,7 +97,7 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 									</div>
 
 									<div
-										className={`w-full bg-[#eef0f3] p-[0.7rem] flex items-center text-md  ${
+										className={`w-full p-[0.7rem] flex items-center text-md  ${
 											subQuestions[numberListening - 1]
 												?.responseUser ===
 												subQuestions[numberListening - 1]
@@ -105,7 +105,7 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 											subQuestions[numberListening - 1]
 												?.responseUser === item.content
 												? 'bg-[#69c18ed4]'
-												: ''
+												: ' bg-[#eef0f3]'
 										}   ${
 											subQuestions[numberListening - 1]
 												?.responseUser !==

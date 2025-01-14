@@ -6,6 +6,7 @@ import { SET_MODAL_LIST } from '../../store/general';
 import { SET_NUMBER_QUESTION_READING } from '../../store/feature/reading';
 import { SET_UPDATE_MODAL_LIST } from '../../store/feature/testBank';
 import { SET_NUMBER_QUESTION_WRITING } from '../../store/feature/writing';
+import { SET_NUMBER_QUESTION_LISTENING } from '../../store/feature/listening';
 
 const style = {
 	position: 'fixed',
@@ -56,14 +57,27 @@ export default function ModalList({ children, open, label }) {
 			);
 		}
 
-		if (item.currentExamPart === 'listening') {
+		if (item.numberQuestion.currentExamPart === 'listening') {
 
-			console.log("item.question",item)
-			dispatch(SET_NUMBER_QUESTION_WRITING(item.question));
+			console.log("item.question", item)
+			let numberQuestionPart = item.numberQuestionPart;
+
+			const numberQuestion = item.numberQuestion.question;
+			
+			if (numberQuestion === 2) {
+				numberQuestionPart = 13;
+			}
+			if (numberQuestion === 3) {
+				numberQuestionPart = 14;
+			}
+			if (numberQuestion === 4) {
+				numberQuestionPart = 15 + numberQuestionPart;
+			}
+			dispatch(SET_NUMBER_QUESTION_LISTENING(item));
 			dispatch(
 				SET_UPDATE_MODAL_LIST({
-					numberQuestion: item.question,
-					currentExamPart: item.currentExamPart,
+					numberQuestion: numberQuestionPart + 1,
+					currentExamPart: item.numberQuestion.currentExamPart,
 				})
 			);
 		}

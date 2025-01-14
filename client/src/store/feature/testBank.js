@@ -247,6 +247,8 @@ export const testBankReducer = createSlice({
 			}
 
 			if (currentExamPart === 'listening') {
+				console.log('numberQuestion:', numberQuestion);
+
 				if (numberQuestion == 18) return;
 				numberQuestionUpdate = state.dataOfModalList.numberQuestion.map(
 					(item, index) => {
@@ -259,6 +261,8 @@ export const testBankReducer = createSlice({
 							}
 							return data;
 						});
+
+						/// check logic again
 
 						if ([13, 14, 15, 16].includes(numberQuestion)) {
 							const questionMap = { 13: 1, 14: 2, 15: 3, 16: 4 };
