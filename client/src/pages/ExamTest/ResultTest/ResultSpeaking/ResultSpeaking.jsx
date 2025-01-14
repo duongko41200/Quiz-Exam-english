@@ -8,6 +8,9 @@ const ResultTestSpeaking = ({ numberLession }) => {
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
 	);
+	const isShowResult = useSelector(
+		(state) => state.generalStore.isShowResult
+	);
 	const numberQuestionEachPart = useSelector(
 		(state) => state.speakingStore.numberQuestionEachPart
 	);
@@ -122,7 +125,12 @@ const ResultTestSpeaking = ({ numberLession }) => {
 								</div>
 								<div>
 									{index === 0 && contentPartTwo && (
-										<img src={contentPartTwo.image && contentPartTwo?.image[0]?.path} />
+										<img
+											src={
+												contentPartTwo.image &&
+												contentPartTwo?.image[0]?.path
+											}
+										/>
 									)}
 								</div>
 
@@ -171,11 +179,21 @@ const ResultTestSpeaking = ({ numberLession }) => {
 													with: {},
 												}}
 											>
-												<img src={contentPartThree.image && contentPartThree?.image[0]?.path} />
+												<img
+													src={
+														contentPartThree.image &&
+														contentPartThree?.image[0]?.path
+													}
+												/>
 											</div>
 
 											<div>
-												<img src={contentPartThree.image && contentPartThree?.image[1]?.path} />
+												<img
+													src={
+														contentPartThree.image &&
+														contentPartThree?.image[1]?.path
+													}
+												/>
 											</div>
 										</div>
 									)}
@@ -247,7 +265,10 @@ const ResultTestSpeaking = ({ numberLession }) => {
 	return (
 		<div
 			className="bg-[#f8f9fa] flex flex-col gap-10"
-			style={{ width: 'calc(100vw - 270px)', important: 'true' }}
+			style={{
+				width: `calc(100vw - ${!isShowResult ? '270px' : '400px'})`,
+				important: 'true',
+			}}
 		>
 			{numberLession === 1 && renderPartOne()}
 			{numberLession === 2 && renderPartTwo()}

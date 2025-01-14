@@ -1,13 +1,12 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
+
 import Box from '@mui/material/Box';
 import ResultTestReading from '../../pages/ExamTest/ResultTest/ResultReading/ResultReading';
 import ResultTestWriting from '../../pages/ExamTest/ResultTest/ResultWritiing/ResultWriting';
-import { Button, Grid, Typography } from '@mui/material';
 import ResultTestSpeaking from '../../pages/ExamTest/ResultTest/ResultSpeaking/ResultSpeaking';
 import ResultTestListening from '../../pages/ExamTest/ResultTest/ResultListening/ResultListening';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_IS_SHOW_RESULT } from '../../store/general';
 
 export default function BasicTabsResult({
 	resultReading,
@@ -16,6 +15,11 @@ export default function BasicTabsResult({
 	const [value, setValue] = React.useState(0);
 	const [partSkill, setPartSkill] = React.useState('Reading');
 	const [numberLession, setNumberLession] = React.useState(1);
+	const isShowResult = useSelector(
+		(state: any) => state.generalStore.isShowResult
+	);
+
+	const dispatch = useDispatch();
 
 	const [numberListening, setNumberListening] = React.useState(1);
 
@@ -67,22 +71,46 @@ export default function BasicTabsResult({
 		}
 
 		setNumberLession(number);
+	};
 
+	const BackHistoryScreen = () => {
+		dispatch(SET_IS_SHOW_RESULT(false));
 	};
 	return (
 		<>
-			<div className="w-full flex justify-center font-bold items-center h-[50px] text-[18px] ">
-				Đáp án/transcript: Aptis Test - {partSkill} - Part{' '}
-				{numberLession}
+			<div
+				className={` w-full flex ${
+					!isShowResult ? 'justify-center' : 'justify-between gap-20'
+				} gap-2 font-bold items-center h-[50px] text-[18px] `}
+			>
+				{isShowResult && (
+					<div
+						className="w-fit p-1 px-4 bg-blue-100 rounded-xl font-sans font-medium cursor-pointer hover:bg-blue-200"
+						onClick={BackHistoryScreen}
+					>
+						Quay lại
+					</div>
+				)}
+
+				<div className="text-[#45368f] ">
+					Đáp án/transcript: Aptis Test - {partSkill} - Part
+					{numberLession}
+				</div>
+				{isShowResult && <div> </div>}
 			</div>
 			<Box
 				sx={{
-					width: 'calc(100vw - 40px) !important',
+					width: `${
+						!isShowResult
+							? 'calc(100vw - 40px) !important'
+							: '100% !important'
+					}`,
 					display: 'flex',
 					gap: 1,
 					background: '#f8f9fa',
-					marginBottom: '70px',
+					marginBottom: `${isShowResult ? '0px' : '70px'}`,
 					height: '580px',
+					
 				}}
 			>
 				<Box>
@@ -102,7 +130,10 @@ export default function BasicTabsResult({
 						<ResultTestSpeaking numberLession={numberLession} />
 					)}
 					{partSkill && partSkill === 'Listening' && (
-						<ResultTestListening numberLession={numberLession} numberListening={numberListening} />
+						<ResultTestListening
+							numberLession={numberLession}
+							numberListening={numberListening}
+						/>
 					)}
 				</Box>
 				<div className="h-full flex justify-center shadow-md bg-gray-100">

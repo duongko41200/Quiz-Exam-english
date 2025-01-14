@@ -11,9 +11,11 @@ const BODY = 1;
 const FOOT_FISH = 2;
 
 const ResultTestWriting = ({ resultWriting, numberLession }) => {
-
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
+	);
+	const isShowResult = useSelector(
+		(state) => state.generalStore.isShowResult
 	);
 
 	const [resWritingPartOne, setResWritingPartOne] = useState();
@@ -278,7 +280,10 @@ const ResultTestWriting = ({ resultWriting, numberLession }) => {
 	return (
 		<div
 			className="bg-[#f8f9fa] flex flex-col gap-10"
-			style={{ width: 'calc(100vw - 270px)', important: 'true' }}
+			style={{
+				width: `calc(100vw - ${!isShowResult ? '270px' : '400px'})`,
+				important: 'true',
+			}}
 		>
 			{numberLession === 1 && renderPartOne()}
 			{numberLession === 2 && renderPartTwo()}

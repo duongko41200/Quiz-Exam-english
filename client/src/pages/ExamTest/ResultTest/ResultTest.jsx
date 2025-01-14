@@ -4,6 +4,8 @@ import { RES_DATA } from '../../../Constant/global';
 import BasicTable from '../../../components/Table/BasicTable/BasicTable';
 import BasicTabsResult from '../../../components/Tabs/TabsMenu';
 import { SET_MODAL_LIST } from '../../../store/general';
+import { use } from 'react';
+import useIndexedDB from '../../../hook/useIndexedDB';
 
 const PART_ONE = 1;
 
@@ -51,6 +53,13 @@ const getResultWithDisplay = (partData) => {
 };
 
 const ResultTest = () => {
+	const { saveObjectToDB, getDataFromDB,isSaving, error } = useIndexedDB(
+		'aptisDB',
+		'aptisTests',
+		'id'
+	);
+	const [people, setPeople] = useState([]);
+
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
 	);
@@ -68,6 +77,15 @@ const ResultTest = () => {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		dispatch(SET_MODAL_LIST(false));
+	}, []);
+
+	useEffect(() => {
+		const objectsToSave = {
+			id: Date.now(),
+			data: testBankData,
+		};
+
+		saveObjectToDB(objectsToSave);
 	}, []);
 
 	useEffect(() => {
@@ -98,7 +116,6 @@ const ResultTest = () => {
 			{ part4: readingPartFour },
 			{ part5: readingPartFive },
 		];
-
 
 		const writingPartOne =
 			testBankData.writing.part1[RES_DATA].questions[0].subQuestion;

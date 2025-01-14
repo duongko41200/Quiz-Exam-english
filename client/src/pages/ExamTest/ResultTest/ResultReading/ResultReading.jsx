@@ -14,7 +14,9 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
 	);
-
+	const isShowResult = useSelector(
+		(state) => state.generalStore.isShowResult
+	);
 	const [resReadingPartOne, setResReadingPartOne] = useState();
 	const [resReadingPartFour, setResReadingPartFour] = useState();
 	const [resReadingPartFive, setResReadingPartFive] = useState();
@@ -37,10 +39,9 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 
 		const readingPartTwo =
 			testBankData.reading.part2[RES_DATA].data.questions;
-		
-		const readingPartThree = testBankData.reading.part3[RES_DATA].data.questions;
-		
-		
+
+		const readingPartThree =
+			testBankData.reading.part3[RES_DATA].data.questions;
 
 		///// results / datauser
 
@@ -219,71 +220,71 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 
 	const renderPartThree = () => (
 		<FrameReadingResult>
-		<div className="flex flex-col gap-4">
-			<div className="text-[15px] font-medium">
-				{resReadingPartThree?.content.split(POINT_REPLACE)[TITLE]}
-			</div>
+			<div className="flex flex-col gap-4">
+				<div className="text-[15px] font-medium">
+					{resReadingPartThree?.content.split(POINT_REPLACE)[TITLE]}
+				</div>
 
-			<div className="box-left p-4 w-full">
-				<div className="w-full rounded flex flex-col gap-2 h-fit">
-					<div className="w-full">
-						<div className="font-inter text-[15px]">
-							<strong>
+				<div className="box-left p-4 w-full">
+					<div className="w-full rounded flex flex-col gap-2 h-fit">
+						<div className="w-full">
+							<div className="font-inter text-[15px]">
+								<strong>
+									{
+										resReadingPartThree?.content.split(POINT_REPLACE)[
+											DEAR_PERSON
+										]
+									}
+								</strong>
+							</div>
+							<div className="mt-2">
 								{
 									resReadingPartThree?.content.split(POINT_REPLACE)[
-										DEAR_PERSON
+										FOOT_FISH
 									]
 								}
-							</strong>
+							</div>
 						</div>
-						<div className="mt-2">
-							{
-								resReadingPartThree?.content.split(POINT_REPLACE)[
-									FOOT_FISH
-								]
-							}
-						</div>
-					</div>
-					{resultReading?.[2]?.part3?.[0]?.resultOfUser?.map(
-						(content, index) => (
-							<div
-								className={` border rounded min-h-[50px] flex items-center justify-center cursor-move relative w-full bg-[#f4f7fc] border-dashed border-2 border-[#939393] p-2 text-[14px] mb-2 border border-gray-300 shadow rounded p-2 bg-gray-50 min-h-[50px] ${
-									content?.id == index + 1
-										? 'text-[#3cb46e] border-[#3cb46e]'
-										: 'text-red-500 border-[#f44336]'
-								} 
+						{resultReading?.[2]?.part3?.[0]?.resultOfUser?.map(
+							(content, index) => (
+								<div
+									className={` border rounded min-h-[50px] flex items-center justify-center cursor-move relative w-full bg-[#f4f7fc] border-dashed border-2 border-[#939393] p-2 text-[14px] mb-2 border border-gray-300 shadow rounded p-2 bg-gray-50 min-h-[50px] ${
+										content?.id == index + 1
+											? 'text-[#3cb46e] border-[#3cb46e]'
+											: 'text-red-500 border-[#f44336]'
+									} 
 								
 								`}
-								key={index}
-							>
-								{content?.content}
-							</div>
-						)
-					)}
+									key={index}
+								>
+									{content?.content}
+								</div>
+							)
+						)}
+					</div>
 				</div>
 			</div>
-		</div>
-		{resultReading?.[2]?.part3?.[0]?.resultCorrect?.map(
-			(item, index) => (
-				<div className="questions-wrapper" key={index}>
-					<div className="question-wrapper flex gap-2">
-						<div className="question-number">
-							<strong
-								className={`rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block `}
-							>
-								{index + 1}
-							</strong>
-						</div>
-						<div className="question-content">
-							<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
-								{item?.content}
+			{resultReading?.[2]?.part3?.[0]?.resultCorrect?.map(
+				(item, index) => (
+					<div className="questions-wrapper" key={index}>
+						<div className="question-wrapper flex gap-2">
+							<div className="question-number">
+								<strong
+									className={`rounded-full bg-[#e8f2ff] text-[#35509a] w-[40px] h-[40px] leading-[40px] text-[15px] text-center inline-block `}
+								>
+									{index + 1}
+								</strong>
+							</div>
+							<div className="question-content">
+								<div className="mt-2 text-success text-[#3cb46e] text-[15px]">
+									{item?.content}
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			)
-		)}
-	</FrameReadingResult>
+				)
+			)}
+		</FrameReadingResult>
 	);
 
 	const renderPartFour = () => (
@@ -438,7 +439,10 @@ const ResultTestReading = ({ resultReading, numberLession }) => {
 	return (
 		<div
 			className="bg-[#f8f9fa] flex flex-col gap-10"
-			style={{ width: 'calc(100vw - 270px)', important: 'true' }}
+			style={{
+				width: `calc(100vw - ${!isShowResult ? '270px' : '400px'})`,
+				important: 'true',
+			}}
 		>
 			{numberLession === 1 && renderPartOne()}
 			{numberLession === 2 && renderPartTwo()}

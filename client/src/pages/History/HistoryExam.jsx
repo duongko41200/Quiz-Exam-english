@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { RESET_WORD, SET_TYPE_TEXT } from '../../store/feature/word';
 import { toast, Toaster } from 'react-hot-toast';
 import PaginationHistory from '../../components/Pagination/PaginationHistory';
+import useIndexedDB from '../../hook/useIndexedDB';
 
 function HistoryExam() {
 	const navigate = useNavigate();
@@ -15,6 +16,7 @@ function HistoryExam() {
 		dispatch(SET_TYPE_TEXT(typeText));
 		navigate('/formWord/step1');
 	};
+
 	useEffect(() => {
 		dispatch(RESET_WORD());
 	}, []);
@@ -23,14 +25,9 @@ function HistoryExam() {
 		<>
 			<div className="overflow-auto">
 				<div className="header pt-[2rem] px-16 h-fit ">
-					
 					<div className="">
 						<div className="target-score w-full mb-[16px]">
 							<div className="flex gap-[16px] w-full h-full">
-
-
-
-				
 								<div className="box-shadow-table w-[50%] md:mb-0 bg-white rounded-[12px]">
 									<div className="cursor-pointer flex items-center gap-[6px] border-neutral-06 border-b-[1px] px-[16px] py-[8px]">
 										<svg
@@ -92,7 +89,7 @@ function HistoryExam() {
 													Reading
 												</p>
 												<div className="overflow-hidden">
-												<div className="relative opacity-100 transform-none">
+													<div className="relative opacity-100 transform-none">
 														<p className="md:h6 h9">_</p>
 													</div>
 												</div>
@@ -112,7 +109,7 @@ function HistoryExam() {
 													Writing
 												</p>
 												<div className="overflow-hidden">
-												<div className="relative opacity-100 transform-none">
+													<div className="relative opacity-100 transform-none">
 														<p className="md:h6 h9">_</p>
 													</div>
 												</div>
@@ -122,7 +119,7 @@ function HistoryExam() {
 													Speaking
 												</p>
 												<div className="overflow-hidden">
-												<div className="relative opacity-100 transform-none">
+													<div className="relative opacity-100 transform-none">
 														<p className="md:h6 h9">_</p>
 													</div>
 												</div>
@@ -204,7 +201,6 @@ function HistoryExam() {
 															21 ngày
 														</p>
 													</div>
-
 												</div>
 											</div>
 										</div>

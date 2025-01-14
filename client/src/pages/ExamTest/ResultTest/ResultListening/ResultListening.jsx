@@ -19,6 +19,7 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
 	);
+	const isShowResult = useSelector((state) => state.generalStore.isShowResult);
 
 	const [subQuestions, setSubQuestions] = useState([]);
 	const [contentPartTwo, setContentPartTwo] = useState();
@@ -165,7 +166,7 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 									<div> Speaker {convertToWord[index + 1]}</div>
 								</div>
 
-								<div className="w-1/2  px-[0.7rem] flex items-center text-md ">
+								<div className="w-fit min-w-1/2  px-[0.7rem] flex items-center text-md ">
 									<select
 										aria-label="Response input area"
 										className={` h-full w-full font-medium ${
@@ -359,12 +360,12 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 												</div>
 
 												<div
-													className={`w-full bg-[#eef0f3] p-[0.7rem] flex items-center text-md  ${
+													className={`w-full  p-[0.7rem] flex items-center text-md  ${
 														item?.responseUser ===
 															item?.correctAnswer &&
 														item?.responseUser === answer.content
 															? 'bg-[#69c18ed4]'
-															: ''
+															: 'bg-[#eef0f3]'
 													}   ${
 														item?.responseUser !==
 															item?.correctAnswer &&
@@ -424,7 +425,7 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 	return (
 		<div
 			className="bg-[#f8f9fa] flex flex-col gap-10"
-			style={{ width: 'calc(100vw - 270px)', important: 'true' }}
+			style={{ width: `calc(100vw - ${!isShowResult ? '270px' :'400px'})`, important: 'true' }}
 		>
 			{numberLession === 1 && renderPartOne()}
 			{numberLession === 2 && renderPartTwo()}
