@@ -45,7 +45,7 @@ const SpeakingPartOne = () => {
       <div className="lrn_stimulus_content lrn_clearfix lrn_question mb-5">
         <b>
           {subQuestions.length > 0 &&
-            subQuestions[numberQuestionEachPart - 1].contdent}
+            subQuestions[numberQuestionEachPart - 1].content}
         </b>
       </div>
 
