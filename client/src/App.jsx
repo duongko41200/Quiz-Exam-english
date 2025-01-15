@@ -17,11 +17,11 @@ const App = () => {
 
   /// *********** Nội dung khởi tạo ban đầu ở dây *************************
   useLayoutEffect(() => {
-    // const userId = localStorage.getItem('userId');
+    const userId = localStorage.getItem('userId');
     // // const listText = localStorage.getItem('listText')
     // const accessToken = localStorage.getItem('accessToken');
     const user = JSON.parse(localStorage.getItem("user"));
-    if (!user) {
+    if (!userId) {
       navigation("/login");
     } else {
       dispatch(SET_USER(user));

@@ -334,13 +334,19 @@ const RoomExam = () => {
 
 				// Lắng nghe sự kiện khi audio phát xong
 				audioRef.current.onended = async () => {
-					await startRecording();
+          await startRecording();
 
-					setMinutes(0);
+          setMinutes(0);
 
-					/// thêm logic check thời gian 
-					setTimeLeft(timecountSpeaking[numberQuestionSpeaking]);
-				};
+          /// thêm logic check thời gian
+          /**
+           * 1. thêm logic thay timecountSpeaking[numberQuestionSpeaking] cho luôn động
+           * 2. chỉ hiện chuyển sang part mới khig timecountSpeaking[numberQuestionSpeaking] chạy
+           *
+           *
+           */
+          setTimeLeft(timecountSpeaking[numberQuestionSpeaking]);
+        };
 
 				
 		
