@@ -45,36 +45,18 @@ import {
 } from '../../Constant/global.js';
 
 const RoomExam = () => {
-	const testBankData = useSelector(
-		(state) => state.testBankStore.testBankData
-	);
-	const currentExamPart = useSelector(
-		(state) => state.generalStore.currentExamPart
-	);
-	const numberQuestion = useSelector(
-		(state) => state.readingStore.numberQuestion
-	);
-	const numberQuestionWriting = useSelector(
-		(state) => state.writingStore.numberQuestion
-	);
-	const numberQuestionSpeaking = useSelector(
-		(state) => state.speakingStore.numberQuestion
-	);
-	const numberQuestionEachPart = useSelector(
-		(state) => state.speakingStore.numberQuestionEachPart
-	);
-	const numberQuestionEachPartListening = useSelector(
-		(state) => state.listeningStore.numberQuestionEachPart
-	);
-	const numberQuestionListening = useSelector(
-		(state) => state.listeningStore.numberQuestion
-	);
+	const testBankData = useSelector((state) => state.testBankStore.testBankData);
+	const currentExamPart = useSelector((state) => state.generalStore.currentExamPart);
+	const numberQuestion = useSelector((state) => state.readingStore.numberQuestion);
+	const numberQuestionWriting = useSelector((state) => state.writingStore.numberQuestion);
+	const numberQuestionSpeaking = useSelector((state) => state.speakingStore.numberQuestion);
+	const numberQuestionEachPart = useSelector((state) => state.speakingStore.numberQuestionEachPart);
+	const numberQuestionEachPartListening = useSelector((state) => state.listeningStore.numberQuestionEachPart);
+	const numberQuestionListening = useSelector((state) => state.listeningStore.numberQuestion);
 	const { isModalList } = useSelector((state) => state.generalStore);
-
+  
 	const dispatch = useDispatch();
-
-	/////////// ABOVE REDUX //////////
-
+  
 	const [hours, setHours] = useState(0);
 	const [minutes, setMinutes] = useState(0);
 	const [seconds, setSeconds] = useState(0);
@@ -82,140 +64,129 @@ const RoomExam = () => {
 	const [intervalId, setIntervalId] = useState(null);
 	const [openModal, setOpenModal] = useState(false);
 	const audioRef = useRef(null);
-
-	const {
-		isRecording,
-		audioURL,
-		errorMessage,
-		startRecording,
-		stopRecording,
-	} = useAudioRecorder();
-
+  
+	const { isRecording, audioURL, errorMessage, startRecording, stopRecording } = useAudioRecorder();
+  
+	// Handle time setup for different exam parts
 	useEffect(() => {
-		if (currentExamPart === 'writing') {
-			setMinutes(50);
-			setTimeLeft(50 * 60);
-			dispatch(
-				SET_DATA_OF_MODAL_LIST({
-					testBankData: testBankData,
-					currentExamPart: currentExamPart,
-					currentQuestion: numberQuestionWriting,
-				})
-			);
-		} else if (currentExamPart === 'reading') {
-			setMinutes(30);
-			setTimeLeft(30 * 60);
-			dispatch(
-				SET_DATA_OF_MODAL_LIST({
-					testBankData: testBankData,
-					currentExamPart: currentExamPart,
-					currentQuestion: numberQuestion,
-				})
-			);
-		} else if (currentExamPart === 'listening') {
-			dispatch(
-				SET_DATA_OF_MODAL_LIST({
-					testBankData: testBankData,
-					currentExamPart: currentExamPart,
-					currentQuestion: numberQuestion,
-				})
-			);
-			setMinutes(30);
-			setTimeLeft(30 * 60);
-		}
+
+		if (intervalId) {
+			clearInterval(intervalId); 
+		  }
+	  if (currentExamPart === 'writing') {
+		setMinutes(50);
+		setTimeLeft(50 * 60);
+		dispatch(
+		  SET_DATA_OF_MODAL_LIST({
+			testBankData: testBankData,
+			currentExamPart: currentExamPart,
+			currentQuestion: numberQuestionWriting,
+		  })
+		);
+	  } else if (currentExamPart === 'reading') {
+		setMinutes(30);
+		setTimeLeft(30 * 60);
+		dispatch(
+		  SET_DATA_OF_MODAL_LIST({
+			testBankData: testBankData,
+			currentExamPart: currentExamPart,
+			currentQuestion: numberQuestion,
+		  })
+		);
+	  } else if (currentExamPart === 'listening') {
+		dispatch(
+		  SET_DATA_OF_MODAL_LIST({
+			testBankData: testBankData,
+			currentExamPart: currentExamPart,
+			currentQuestion: numberQuestion,
+		  })
+		);
+		setMinutes(30);
+		setTimeLeft(30 * 60);
+	  }
 	}, [currentExamPart]);
-
-	//// XỬ LÝ THỜI GIAN CHO SPEAKING ////////
-
+  
+	// Handle speaking section audio and time
 	useEffect(() => {
-		if (currentExamPart === 'speaking') {
-			/**
-			 * b1: check xem part nào đang là part cuối cùng
-			 * b2: cho đọc câu hỏi
-			 * b3: đếm thời gian công thu âm
-			 * b4: lưu file thu âm vào store
-			 *
-			 */
-			const audioSrc =
-				currentExamPart === 'speaking'
-					? testBankData[currentExamPart]?.[
-							`part${numberQuestionSpeaking}`
-					  ]?.[0]?.['questions']?.[0]?.['subQuestion']?.[
-							numberQuestionEachPart - 1
-					  ]?.file
-					: undefined;
-
-			console.log({ audioSrc });
-
-			if (audioSrc) {
-				if (audioRef.current) {
-					audioRef.current.pause();
-				}
-
-				audioRef.current = new Audio(audioSrc);
-			}
-
-			setTimeout(() => {
-				if (!window.speechSynthesis) {
-					alert('Trình duyệt của bạn không hỗ trợ microphone');
-					return;
-				}
-
-				setMinutes(0);
-				setTimeLeft(timecountSpeaking[numberQuestionSpeaking]);
-
-				// console.log({ testBankData });
-				playAudio(audioSrc);
-				// startRecording();
-			}, 2000);
+	  if (currentExamPart === 'speaking') {
+		const audioSrc =
+		  currentExamPart === 'speaking'
+			? testBankData[currentExamPart]?.[ `part${numberQuestionSpeaking}`]?.[0]?.['questions']?.[0]?.['subQuestion']?.[numberQuestionEachPart - 1]?.file
+			: undefined;
+  
+		console.log({ audioSrc });
+  
+		if (audioSrc) {
+		  if (audioRef.current) {
+			audioRef.current.pause();
+		  }
+		  audioRef.current = new Audio(audioSrc);
 		}
-	}, [numberQuestionSpeaking, numberQuestionEachPart]);
-
-	////////////////////////////////////////////
-
-	///////////// XỬ LÝ HÀNH ĐỘNG KHI HẾT THỜI GIAN //////////////////////
-	useEffect(() => {
-		if (timeLeft > 0) {
-			const id = setInterval(() => {
-				setTimeLeft((prevTime) => prevTime - 1);
-			}, 1000);
-			setIntervalId(id);
-
-			return () => clearInterval(id);
-		}
-		if (timeLeft === 0 && currentExamPart !== 'speaking') {
-			moveExamSkill();
+  
+		  if (!window.speechSynthesis) {
+			alert('Trình duyệt của bạn không hỗ trợ microphone');
 			return;
-		}
-		if (timeLeft === 0 && currentExamPart === 'speaking') {
-			if (numberQuestionSpeaking !== 4 && numberQuestionEachPart < 4) {
-				if (numberQuestionEachPart === 3) {
-					stopRecording();
-					nextQuestion();
-					return;
-				}
-
-				stopRecording();
-
-				dispatch(SET_INCREMENT_SPEAKING_EACH_PART());
-			} else {
-				stopRecord();
-				moveExamSkill();
-			}
-		}
-	}, [timeLeft]);
-
-	///////////// XỬ LÝ HÀNH ĐỘNG KHI HẾT THỜI GIAN //////////////////////
-
+		  }
+  
+		  playAudio(audioSrc);
+		  
+		  
+		//   setMinutes(0);
+		//   setTimeLeft(timecountSpeaking[numberQuestionSpeaking]);
+	
+	  }
+	}, [numberQuestionSpeaking, numberQuestionEachPart]);
+  
+	// Set up the interval for counting time
 	useEffect(() => {
-		const remainingHours = Math.floor(timeLeft / 3600);
-		const remainingMinutes = Math.floor((timeLeft % 3600) / 60);
-		const remainingSeconds = timeLeft % 60;
-
-		setHours(remainingHours);
-		setMinutes(remainingMinutes);
-		setSeconds(remainingSeconds);
+	  if (timeLeft !== null && timeLeft > 0) {
+		// Clear any existing interval before setting a new one
+		if (intervalId) clearInterval(intervalId);
+  
+		const id = setInterval(() => {
+		  setTimeLeft((prevTime) => prevTime - 1);
+		}, 1000);
+		  setIntervalId(id);
+		  
+		  return () => clearInterval(id); 
+	  } else if (timeLeft === 0) {
+		// Handle actions when time runs out
+		if (currentExamPart !== 'speaking') {
+		  moveExamSkill();
+		} else {
+		  if (numberQuestionSpeaking !== 4 && numberQuestionEachPart < 4) {
+			if (numberQuestionEachPart === 3) {
+			  stopRecording();
+			  nextQuestion();
+			} else {
+			  stopRecording();
+			  dispatch(SET_INCREMENT_SPEAKING_EACH_PART());
+			}
+		  } else {
+			stopRecording();
+			moveExamSkill();
+		  }
+		}
+	  }
+  
+	  return () => {
+		if (intervalId) {
+		  clearInterval(intervalId); // Cleanup interval when component unmounts
+		}
+	  };
+	}, [timeLeft, currentExamPart, numberQuestionSpeaking, numberQuestionEachPart]);
+  
+	// Update hours, minutes, seconds when timeLeft changes
+	useEffect(() => {
+	  const remainingHours = Math.floor(timeLeft / 3600);
+	  const remainingMinutes = Math.floor((timeLeft % 3600) / 60);
+	  const remainingSeconds = timeLeft % 60;
+  
+	  setHours(remainingHours);
+	  setMinutes(remainingMinutes);
+	  setSeconds(remainingSeconds);
 	}, [timeLeft]);
+  
 
 	const resetCountdown = () => {
 		clearInterval(intervalId);
@@ -362,9 +333,17 @@ const RoomExam = () => {
 				await audioRef.current.play();
 
 				// Lắng nghe sự kiện khi audio phát xong
-				audioRef.current.onended = () => {
-					startRecording();
+				audioRef.current.onended = async () => {
+					await startRecording();
+
+					setMinutes(0);
+
+					/// thêm logic check thời gian 
+					setTimeLeft(timecountSpeaking[numberQuestionSpeaking]);
 				};
+
+				
+		
 				return;
 			} catch (error) {
 				console.error('Error playing audio:', error);
