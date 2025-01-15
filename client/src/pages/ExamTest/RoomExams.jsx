@@ -23,7 +23,6 @@ import {
 	SET_RESET_NUMBER_QUESTION_SPEAKING,
 } from '../../store/feature/speaking.js';
 import ResultTest from './ResultTest/ResultTest.jsx';
-import { speechToText } from '../../utils/speechToText.js';
 import useAudioRecorder from '../../hook/useAudioRecorder.js';
 import FooterTest from '../../components/FooterTest/FooterTest.jsx';
 import ModalList from '../../components/Modal/ModalList.jsx';
@@ -38,7 +37,6 @@ import {
 	SET_INCREMENT_LISTENING,
 	SET_INCREMENT_LISTENING_EACH_PART,
 } from '../../store/feature/listening.js';
-import { isFulfilled } from '@reduxjs/toolkit';
 import {
 	NUMBER_PART_FOUR,
 	NUMBER_PART_ONE,
@@ -159,7 +157,7 @@ const RoomExam = () => {
 
 			setTimeout(() => {
 				if (!window.speechSynthesis) {
-					alert('Trình duyệt của bạn không hỗ trợ Text-to-Speech.');
+					alert('Trình duyệt của bạn không hỗ trợ microphone');
 					return;
 				}
 
@@ -382,11 +380,11 @@ const RoomExam = () => {
 	};
 
 	// move to next part skill
-	const nextPartSkill = () => {
+	const nextPartSkill = async() => {
+		await stopRecord();
 		dispatch(SET_MOVE_EXAM_SKILL());
 		// dispatch(SET_RESET_NUMBER_QUESTION());
 		setOpenModal(false);
-		stopRecord();
 	};
 
 	return (

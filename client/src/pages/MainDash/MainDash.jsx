@@ -9,7 +9,10 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import TestBankService from '../../services/API/testBank.service';
 import { RES_DATA } from '../../Constant/global';
 import { SET_TESTBANK_DATA } from '../../store/feature/testBank';
-import { SET_RESET_PART_SKILL } from '../../store/general';
+import {
+	SET_IS_SHOW_RESULT,
+	SET_RESET_PART_SKILL,
+} from '../../store/general';
 
 const MainDash = () => {
 	const auth = useSelector((state) => state.authStore.user);
@@ -18,6 +21,7 @@ const MainDash = () => {
 
 	const moveToExam = async (router) => {
 		navigate(`/${router}`);
+		dispatch(SET_IS_SHOW_RESULT(false));
 		dispatch(SET_RESET_PART_SKILL());
 	};
 
@@ -65,16 +69,16 @@ const MainDash = () => {
 							<Button
 								variant="contained"
 								className="pt-3 btn btn-primary shadow lift me-1 mr-1"
-								onClick={()=>moveToExam('exam-test')}
+								onClick={() => moveToExam('exam-test')}
 							>
 								Vào thi ngay <i className="fe fe-headphones ms-2"></i>
 							</Button>
 							<Button
 								variant="outlined"
 								className="m-2 pt-3 w-fit btn btn-primary shadow"
-								onClick={()=>moveToExam('history')}
+								onClick={() => moveToExam('history')}
 							>
-								Lịch sử làm bài  
+								Lịch sử làm bài
 							</Button>
 						</div>
 					</div>
