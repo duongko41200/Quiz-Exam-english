@@ -93,7 +93,7 @@ const MainDash = () => {
       </section>
 
       <section>
-        <div className="max-w-6xl mx-auto p-6 bg-[#fafafa99]">
+        <div className="2xl:max-w-7xl md:max-w-6xl mx-auto p-6 bg-[#fafafa99]">
           <h1 className="text-2xl font-semibold text-gray-800">Our Services</h1>
           <p className="text-gray-600 mt-2">
             Designed to maximize the benefits for candidates during the exam
@@ -181,13 +181,13 @@ const MainDash = () => {
               </ul>
             </div>
           </div>
-          <div className="mt-8 flex justify-center">
+          {/* <div className="mt-8 flex justify-center">
             <img
               src="https://placehold.co/200x200"
               alt="Illustration of a person sitting with a laptop and various icons around them"
               className="w-48 h-48"
             />
-          </div>
+          </div> */}
         </div>
       </section>
     </div>

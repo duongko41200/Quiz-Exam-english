@@ -211,7 +211,7 @@ function HistoryExam() {
 					</div>
 				</div>
 
-				<div className="px-16 pb-[2rem]">
+				<div className="px-16 pb-[2rem] ">
 					<PaginationHistory />
 				</div>
 			</div>

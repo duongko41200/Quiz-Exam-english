@@ -36,7 +36,6 @@ const ResultTestListening = ({ numberLession, numberListening }) => {
 		const ListeningPartOne = testBankData.listening.part1[RES_DATA];
 
 		const ListeningPartTwo = testBankData.listening.part2[RES_DATA];
-		console.log({ first: ListeningPartTwo });
 		const ListeningPartThree = testBankData.listening.part3[RES_DATA];
 
 		setContentPartThree(ListeningPartThree?.questions);

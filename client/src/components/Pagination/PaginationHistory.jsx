@@ -45,16 +45,16 @@ export default function TablePaginationDemo() {
 	return (
 		<>
 			{!isShowResult ? (
-				<div className="flex flex-col items-center  border-t border-gray-200 bg-white px-4 py-3  sm:px-6 rounded-b-lg shadow-sm">
+				<div className="flex flex-col items-center  border-t border-gray-200 bg-white px-4 py-3  sm:px-6 rounded-b-lg shadow-sm ">
 					<div className="header-body border-b-2 border-b-[#e3ebf6] flex justify-start w-full mb-2 items-center p-4 px-6 rounded-lg shadow-sm">
 						<div className="text-[18px] font-sans text-[#12263F] font-medium uppercase">
 							<h2>Lịch sử làm bài </h2>
 						</div>
 					</div>
-					<div className=" justify-between items-center w-full">
+					<div className=" justify-between items-center w-full max-h-[300px] overflow-y-auto">
 						<div class="relative overflow-x-auto shadow-sm sm:rounded-lg">
 							<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-								<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+								<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400  ">
 									<tr>
 										<th scope="col" class="px-6 py-3">
 											ID
