@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RES_DATA } from '../../../Constant/global';
+import { INDEXED_DB_APTIS, INDEXED_DB_APTIS_STORE, RES_DATA } from '../../../Constant/global';
 import BasicTable from '../../../components/Table/BasicTable/BasicTable';
 import BasicTabsResult from '../../../components/Tabs/TabsMenu';
 import { SET_MODAL_LIST } from '../../../store/general';
@@ -53,11 +53,11 @@ const getResultWithDisplay = (partData) => {
 };
 
 const ResultTest = () => {
-	const { saveObjectToDB, getDataFromDB,isSaving, error } = useIndexedDB(
-		'aptisDB',
-		'aptisTests',
-		'id'
-	);
+	const { saveObjectToDB, getDataFromDB, isSaving, error } = useIndexedDB(
+    INDEXED_DB_APTIS,
+INDEXED_DB_APTIS_STORE,
+    "id"
+  );
 	const [people, setPeople] = useState([]);
 
 	const testBankData = useSelector(
@@ -80,10 +80,14 @@ const ResultTest = () => {
 	}, []);
 
 	useEffect(() => {
+
+		 getDataFromDB();
 		const objectsToSave = {
 			id: Date.now(),
 			data: testBankData,
 		};
+
+		console.log({ objectsToSave });
 
 		saveObjectToDB(objectsToSave);
 	}, []);

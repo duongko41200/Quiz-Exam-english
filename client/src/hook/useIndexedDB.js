@@ -1,35 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect } from "react";
 
-// Custom hook để lưu trữ và truy xuất object từ IndexedDB
 const useIndexedDB = (dbName, storeName, keyPath) => {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(null);
-  const [data, setData] = useState([]); // Lưu trữ dữ liệu đã lấy từ IndexedDB
+  const [data, setData] = useState([]);
 
-  // Hàm lưu object vào IndexedDB
+  useEffect(() => {
+    // Mở cơ sở dữ liệu với phiên bản mới để kích hoạt onupgradeneeded
+    const request = indexedDB.open(dbName, 2); // Tăng phiên bản lên 2
+
+    request.onupgradeneeded = function (e) {
+      const db = e.target.result;
+
+      
+      if (!db.objectStoreNames.contains(storeName)) {
+        console.log(`Creating store: ${storeName}`);
+        db.createObjectStore(storeName, { keyPath });
+      } else {
+        console.log(`Store ${storeName} already exists`);
+      }
+    };
+
+    request.onerror = function (err) {
+      setError(err);
+      console.error("Error opening IndexedDB:", err);
+    };
+
+    request.onsuccess = function (e) {
+      console.log("Database opened successfully");
+    };
+  }, [dbName, storeName, keyPath]);
+
   const saveObjectToDB = (object) => {
     setIsSaving(true);
     setError(null);
 
-    // Mở cơ sở dữ liệu
-    const request = indexedDB.open(dbName, 1);
-
-    request.onupgradeneeded = function (e) {
-      const db = e.target.result;
-      // Tạo object store nếu chưa có
-      if (!db.objectStoreNames.contains(storeName)) {
-        db.createObjectStore(storeName, { keyPath });
-      }
-    };
+    const request = indexedDB.open(dbName, 2);
 
     request.onsuccess = function (e) {
       const db = e.target.result;
-
-      // Tạo transaction và thêm object vào store
-      const transaction = db.transaction(storeName, 'readwrite');
+      const transaction = db.transaction(storeName, "readwrite");
       const store = transaction.objectStore(storeName);
 
-      // Thêm object vào store
       const addRequest = store.add(object);
 
       addRequest.onsuccess = function () {
@@ -40,40 +52,39 @@ const useIndexedDB = (dbName, storeName, keyPath) => {
       addRequest.onerror = function (err) {
         setIsSaving(false);
         setError(err);
-        console.error('Error adding object:', err);
+        console.error("Error adding object:", err);
       };
     };
 
     request.onerror = function (err) {
       setIsSaving(false);
       setError(err);
-      console.error('Error opening IndexedDB:', err);
+      console.error("Error opening IndexedDB:", err);
     };
   };
 
-  // Hàm lấy tất cả dữ liệu từ IndexedDB
   const getDataFromDB = () => {
-    const request = indexedDB.open(dbName, 1);
+    const request = indexedDB.open(dbName, 2);
 
     request.onsuccess = function (e) {
       const db = e.target.result;
-      const transaction = db.transaction(storeName, 'readonly');
+      const transaction = db.transaction(storeName, "readonly");
       const store = transaction.objectStore(storeName);
-      const getAllRequest = store.getAll(); // Lấy tất cả các object trong store
+      const getAllRequest = store.getAll();
 
       getAllRequest.onsuccess = function () {
-        setData(getAllRequest.result); // Lưu dữ liệu vào state
+        setData(getAllRequest.result);
       };
 
       getAllRequest.onerror = function (err) {
         setError(err);
-        console.error('Error getting data from store:', err);
+        console.error("Error getting data from store:", err);
       };
     };
 
     request.onerror = function (err) {
       setError(err);
-      console.error('Error opening IndexedDB:', err);
+      console.error("Error opening IndexedDB:", err);
     };
   };
 
