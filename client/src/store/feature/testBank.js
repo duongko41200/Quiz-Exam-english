@@ -367,6 +367,14 @@ export const testBankReducer = createSlice({
 					});
 				}
 			}
+			if (reading) {
+				for (let i = 1; i <= 5; i++) {
+
+					if(i === 2 || i === 3) {
+						reading[`part${i}`][0].data.questions['responseUser'] = [null, null , null, null, null]
+					}
+				}
+			}
 
 			state.testBankData = testBank;
 		},

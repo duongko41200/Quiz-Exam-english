@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { INDEXED_DB_APTIS, INDEXED_DB_APTIS_STORE, RES_DATA } from '../../../Constant/global';
+import {
+	INDEXED_DB_APTIS,
+	INDEXED_DB_APTIS_STORE,
+	RES_DATA,
+} from '../../../Constant/global';
 import BasicTable from '../../../components/Table/BasicTable/BasicTable';
 import BasicTabsResult from '../../../components/Tabs/TabsMenu';
 import { SET_MODAL_LIST } from '../../../store/general';
@@ -53,16 +57,12 @@ const getResultWithDisplay = (partData) => {
 };
 
 const ResultTest = () => {
-	const { saveObjectToDB, getDataFromDB, isSaving, error } = useIndexedDB(
-    INDEXED_DB_APTIS,
-INDEXED_DB_APTIS_STORE,
-    "id"
-  );
-	const [people, setPeople] = useState([]);
+
 
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
 	);
+
 
 	const [resultReading, setResultReading] = useState([
 		{ part1: [] },
@@ -79,18 +79,18 @@ INDEXED_DB_APTIS_STORE,
 		dispatch(SET_MODAL_LIST(false));
 	}, []);
 
-	useEffect(() => {
+	// useEffect(() => {
+	// 	console.log({ currentExamPart });
 
-		 getDataFromDB();
-		const objectsToSave = {
-			id: Date.now(),
-			data: testBankData,
-		};
+	// 	if (currentExamPart !== 'result') return;
 
-		console.log({ objectsToSave });
+	// 	const objectsToSave = {
+	// 		id: Date.now(),
+	// 		data: testBankData,
+	// 	};
 
-		saveObjectToDB(objectsToSave);
-	}, []);
+	// 	saveObjectToDB(objectsToSave);
+	// }, []);
 
 	useEffect(() => {
 		const readingPartOne = getResult(
