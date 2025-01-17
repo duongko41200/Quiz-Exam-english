@@ -26,6 +26,12 @@ const initialState = {
 	isShowResult: false,
 
 	isShowOverallScore: false,
+	Score4Part: {
+		speaking: 0,
+		listening: 0,
+		reading: 0,
+		writing: 0,
+	}
 };
 
 export const generalReducer = createSlice({
@@ -63,19 +69,23 @@ export const generalReducer = createSlice({
 		},
 		SET_IS_SHOW_OVERALL_SCORE: (state, action) => {
 			state.isShowOverallScore = action.payload;
-		 }
+		},
+		SET_SCORE_4_PART: (state, action) => {
+			state.Score4Part = action.payload;
+		},
 	},
 });
 
 // Action creators are generated for each case reducer function
 export const {
-	SET_OPEN_MODAL_BOTTOM,
-	SET_MOVE_EXAM_SKILL,
-	SET_RESET_PART_SKILL,
-	SET_RESULT_TEST,
-	SET_MODAL_LIST,
-	SET_IS_SHOW_RESULT,
-	SET_IS_SHOW_OVERALL_SCORE
+  SET_OPEN_MODAL_BOTTOM,
+  SET_MOVE_EXAM_SKILL,
+  SET_RESET_PART_SKILL,
+  SET_RESULT_TEST,
+  SET_MODAL_LIST,
+  SET_IS_SHOW_RESULT,
+  SET_IS_SHOW_OVERALL_SCORE,
+  SET_SCORE_4_PART,
 } = generalReducer.actions;
 
 export default generalReducer.reducer;

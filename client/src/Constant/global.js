@@ -48,5 +48,5 @@ export const NUMBER_PART_THREE = 3;
 export const NUMBER_PART_FOUR = 4;
 export const NUMBER_PART_FIVE = 5;
 
-export const INDEXED_DB_APTIS = "aptisDB";
+export const INDEXED_DB_APTIS = "aptisDBs";
 export const INDEXED_DB_APTIS_STORE = "aptisTests";
