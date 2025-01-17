@@ -4,7 +4,6 @@ import useIndexedDB from '../../hook/useIndexedDB';
 import ResultTest from '../../pages/ExamTest/ResultTest/ResultTest';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_TESTBANK_DATA_RESULT } from '../../store/feature/testBank';
-import { isFulfilled } from '@reduxjs/toolkit';
 import { SET_IS_SHOW_RESULT } from '../../store/general';
 import {
 	INDEXED_DB_APTIS,
@@ -80,6 +79,7 @@ export default function TablePaginationDemo() {
 										<th scope="col" class="px-6 py-3">
 											Date
 										</th>
+										<th scope="col" class="px-6 py-3"></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -97,12 +97,15 @@ export default function TablePaginationDemo() {
 														{idx + 1}
 													</th>
 													<td class="px-6 py-4 text-[18px] font-medium">
+														{item?.coreListening && item.coreListening}{' '}
+														:
 														{item?.coreListening &&
 															convertToCoreAptisListening(
 																item.coreListening
 															)}
 													</td>
 													<td class="px-6 py-4 text-[18px] font-medium">
+														{item?.coreReading && item.coreReading} :
 														{item?.coreReading &&
 															convertToCoreAptisListening(
 																item.coreReading

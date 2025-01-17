@@ -10,6 +10,7 @@ import BasicTabsResult from '../../../components/Tabs/TabsMenu';
 import { SET_MODAL_LIST } from '../../../store/general';
 import { use } from 'react';
 import useIndexedDB from '../../../hook/useIndexedDB';
+import TableScore from '../../../components/TableScore/TableScore';
 
 const PART_ONE = 1;
 
@@ -57,12 +58,13 @@ const getResultWithDisplay = (partData) => {
 };
 
 const ResultTest = () => {
-
-
 	const testBankData = useSelector(
 		(state) => state.testBankStore.testBankData
 	);
 
+	const isShowOverallScore = useSelector(
+		(state) => state.generalStore.isShowOverallScore
+	);
 
 	const [resultReading, setResultReading] = useState([
 		{ part1: [] },
@@ -149,10 +151,14 @@ const ResultTest = () => {
 	return (
 		<div className="p-4 bg-[#f8f9fa]">
 			<div>
-				<BasicTabsResult
-					resultReading={resultReading}
-					resultWriting={resultWriting}
-				/>
+				{!isShowOverallScore ? (
+					<BasicTabsResult
+						resultReading={resultReading}
+						resultWriting={resultWriting}
+					/>
+				) : (
+					<TableScore />
+				)}
 			</div>
 		</div>
 	);

@@ -24,6 +24,8 @@ const initialState = {
 	pointExam: 1, // current point skill exam
 	isModalList: false,
 	isShowResult: false,
+
+	isShowOverallScore: false,
 };
 
 export const generalReducer = createSlice({
@@ -58,7 +60,10 @@ export const generalReducer = createSlice({
 		},
 		SET_IS_SHOW_RESULT: (state, action) => { 
 			state.isShowResult = action.payload
-		}
+		},
+		SET_IS_SHOW_OVERALL_SCORE: (state, action) => {
+			state.isShowOverallScore = action.payload;
+		 }
 	},
 });
 
@@ -69,7 +74,8 @@ export const {
 	SET_RESET_PART_SKILL,
 	SET_RESULT_TEST,
 	SET_MODAL_LIST,
-	SET_IS_SHOW_RESULT
+	SET_IS_SHOW_RESULT,
+	SET_IS_SHOW_OVERALL_SCORE
 } = generalReducer.actions;
 
 export default generalReducer.reducer;

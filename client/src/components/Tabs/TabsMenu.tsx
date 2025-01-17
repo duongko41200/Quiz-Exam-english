@@ -5,8 +5,12 @@ import ResultTestWriting from '../../pages/ExamTest/ResultTest/ResultWritiing/Re
 import ResultTestSpeaking from '../../pages/ExamTest/ResultTest/ResultSpeaking/ResultSpeaking';
 import ResultTestListening from '../../pages/ExamTest/ResultTest/ResultListening/ResultListening';
 import { useDispatch, useSelector } from 'react-redux';
-import { SET_IS_SHOW_RESULT } from '../../store/general';
-import { INDEXED_DB_APTIS, INDEXED_DB_APTIS_STORE, RES_DATA } from '../../Constant/global';
+import { SET_IS_SHOW_OVERALL_SCORE, SET_IS_SHOW_RESULT } from '../../store/general';
+import {
+	INDEXED_DB_APTIS,
+	INDEXED_DB_APTIS_STORE,
+	RES_DATA,
+} from '../../Constant/global';
 import useIndexedDB from '../../hook/useIndexedDB';
 
 export default function BasicTabsResult({
@@ -19,13 +23,13 @@ export default function BasicTabsResult({
 	const [numberListening, setNumberListening] = React.useState(1);
 
 	const { saveObjectToDB, getDataFromDB, isSaving, error } =
-	useIndexedDB(INDEXED_DB_APTIS, INDEXED_DB_APTIS_STORE, 'id');
+		useIndexedDB(INDEXED_DB_APTIS, INDEXED_DB_APTIS_STORE, 'id');
 
 	const isShowResult = useSelector(
 		(state: any) => state.generalStore.isShowResult
 	);
 	const currentExamPart = useSelector(
-		(state:any) => state.generalStore.currentExamPart
+		(state: any) => state.generalStore.currentExamPart
 	);
 	const testBankData = useSelector(
 		(state: any) => state.testBankStore.testBankData
@@ -322,6 +326,13 @@ export default function BasicTabsResult({
 						Quay lại
 					</div>
 				)}
+
+				<div
+					className="w-fit p-1 px-4 bg-blue-100 rounded-xl font-sans font-medium cursor-pointer hover:bg-blue-200"
+					onClick={() => dispatch(SET_IS_SHOW_OVERALL_SCORE(true))}
+				>
+					overall score
+				</div>
 				<div className="text-[#45368f]">
 					Đáp án/transcript: Aptis Test - {partSkill} - Part{' '}
 					{numberLession}
