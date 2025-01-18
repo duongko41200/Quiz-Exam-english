@@ -12,8 +12,7 @@ const convertCurrentExamSkill = (currentExamPart) => {
 			return 'writing';
 		case 5:
 			return 'result';
-		// case 5:
-		// 	return 'result';
+
 		default:
 			return 'speaking';
 	}
@@ -31,7 +30,11 @@ const initialState = {
 		listening: 0,
 		reading: 0,
 		writing: 0,
-	}
+
+		startDate: '',
+	},
+
+	isCheckoutResult: false,
 };
 
 export const generalReducer = createSlice({
@@ -39,19 +42,17 @@ export const generalReducer = createSlice({
 	initialState,
 	reducers: {
 		SET_OPEN_MODAL_BOTTOM: (state, action) => {
-			console.log('auth', action.payload);
 			state.openModalBottom = action.payload;
 		},
 
 		SET_MOVE_EXAM_SKILL: (state, action) => {
-
-			console.log("part:",convertCurrentExamSkill(
-				state.pointExam + 1
-			))
 			state.currentExamPart = convertCurrentExamSkill(
 				state.pointExam + 1
 			);
 			state.pointExam = state.pointExam + 1;
+			if (convertCurrentExamSkill(state.pointExam + 1) === 'result') {
+				state.isCheckoutResult = true;
+			}
 		},
 		SET_RESET_PART_SKILL: (state, action) => {
 			state.currentExamPart = 'speaking';
@@ -64,8 +65,8 @@ export const generalReducer = createSlice({
 		SET_MODAL_LIST: (state, action) => {
 			state.isModalList = action.payload;
 		},
-		SET_IS_SHOW_RESULT: (state, action) => { 
-			state.isShowResult = action.payload
+		SET_IS_SHOW_RESULT: (state, action) => {
+			state.isShowResult = action.payload;
 		},
 		SET_IS_SHOW_OVERALL_SCORE: (state, action) => {
 			state.isShowOverallScore = action.payload;
@@ -73,19 +74,22 @@ export const generalReducer = createSlice({
 		SET_SCORE_4_PART: (state, action) => {
 			state.Score4Part = action.payload;
 		},
+		SET_IS_CHECKOUT_RESULT: (state, action) => {
+			state.isCheckoutResult = action.payload;
+		},
 	},
 });
 
-// Action creators are generated for each case reducer function
 export const {
-  SET_OPEN_MODAL_BOTTOM,
-  SET_MOVE_EXAM_SKILL,
-  SET_RESET_PART_SKILL,
-  SET_RESULT_TEST,
-  SET_MODAL_LIST,
-  SET_IS_SHOW_RESULT,
-  SET_IS_SHOW_OVERALL_SCORE,
-  SET_SCORE_4_PART,
+	SET_OPEN_MODAL_BOTTOM,
+	SET_MOVE_EXAM_SKILL,
+	SET_RESET_PART_SKILL,
+	SET_RESULT_TEST,
+	SET_MODAL_LIST,
+	SET_IS_SHOW_RESULT,
+	SET_IS_SHOW_OVERALL_SCORE,
+	SET_SCORE_4_PART,
+	SET_IS_CHECKOUT_RESULT,
 } = generalReducer.actions;
 
 export default generalReducer.reducer;

@@ -55,9 +55,10 @@ export default function TablePaginationDemo() {
 							<h2>Lịch sử làm bài </h2>
 						</div>
 					</div>
-					<div className=" justify-between items-center w-full max-h-[300px] overflow-y-auto">
-						<div class="relative overflow-x-auto shadow-sm sm:rounded-lg">
-							<table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+					<div className="flex justify-between  w-full max-h-[520px] overflow-y-auto">
+						<div class="relative shadow-sm sm:rounded-lg flex flex-col justify-between">
+							<div className=' overflow-y-auto '>
+							<table class="w-fit text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
 								<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400  ">
 									<tr>
 										<th scope="col" class="px-6 py-3">
@@ -97,25 +98,30 @@ export default function TablePaginationDemo() {
 														{idx + 1}
 													</th>
 													<td class="px-6 py-4 text-[18px] font-medium">
-														{item?.coreListening && item.coreListening}{' '}
-														:
-														{item?.coreListening &&
-															convertToCoreAptisListening(
-																item.coreListening
-															)}
+														<div className="bg-gray-100 p-1 w-fit rounded-lg font-bold font-sans">
+															{item?.coreListening &&
+																item.coreListening}
+															:
+															{item?.coreListening &&
+																convertToCoreAptisListening(
+																	item.coreListening
+																)}
+														</div>
 													</td>
 													<td class="px-6 py-4 text-[18px] font-medium">
-														{item?.coreReading && item.coreReading} :
-														{item?.coreReading &&
-															convertToCoreAptisListening(
-																item.coreReading
-															)}
+														<div className="bg-gray-100 p-1 w-fit rounded-lg font-bold font-sans">
+															{item?.coreReading && item.coreReading}:
+															{item?.coreReading &&
+																convertToCoreAptisListening(
+																	item.coreReading
+																)}
+														</div>
 													</td>
 													<td class="px-6 py-4 text-[18px] font-medium">
-														-
+														---
 													</td>
 													<td class="px-6 py-4 text-[18px] font-medium">
-														-
+														---
 													</td>
 													<td class="px-6 py-4 text-[16px] font-medium">
 														{item?.dateTest && item.dateTest}
@@ -130,18 +136,67 @@ export default function TablePaginationDemo() {
 											);
 										})}
 								</tbody>
-							</table>
+								</table>
+								</div>
+							<div>
+								<TablePagination
+									component="div"
+									count={data?.length}
+									page={page}
+									onPageChange={handleChangePage}
+									rowsPerPage={rowsPerPage}
+									onRowsPerPageChange={handleChangeRowsPerPage}
+									className="bg-gray-50"
+									sx={{
+										fontWeight: 'bold',
+										margin: 0,
+										'& .MuiTablePagination-actions': {
+											marginBottom: '16px',
+										},
+										'& .MuiTablePagination-input': {
+											fontSize: '16px',
+											fontWeight: 'bold',
+										},
+										'& .MuiTablePagination-select': {
+										 marginBottom: '16px',
+										},
+									}}
+								/>
+							</div>
+						</div>
+
+						<div className="h-full flex justify-center shadow-md bg-gray-100 col-4 w-1/3">
+							<div className="max-w-md mx-auto h-full overflow-y-auto">
+								<div className="bg-[#23075b] text-white text-center py-2 rounded-t-md h-[50px] flex justify-center items-center">
+									<div className="font-bold text-xl ">CHÚ THÍCH:</div>
+								</div>
+								<hr className="border-t-2 border-purple-900" />
+								<div className="bg-white shadow-md rounded-b-md">
+									<div className="border-b border-gray-200 p-4">
+										<h2 className="font-bold"> Kết quả </h2>
+										<p className="line-height-1">
+											kết quả được xác định dựa trên tổng số điểm từ 0
+											đến 50 điểm. Tuy nhiên điểm số này được tạm tính
+											cho 2 kỹ năng
+											<strong> Listening và Reading </strong>
+										</p>
+									</div>
+									<div className="border-b border-gray-200 p-4">
+										<h2 className="font-bold">Kỹ năng còn lại</h2>
+										<p>
+											<strong>Speaking: </strong> Thí sinh sẽ được đánh
+											giá bởi trưng tâm khi tham gia
+										</p>
+										<p>
+											<strong>Writing: </strong> Thí sinh sẽ được chấm
+											điểm bời AI được thiết kế theo tiêu chí chấm điểm
+											của Aptis
+										</p>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-
-					<TablePagination
-						component="div"
-						count={data?.length}
-						page={page}
-						onPageChange={handleChangePage}
-						rowsPerPage={rowsPerPage}
-						onRowsPerPageChange={handleChangeRowsPerPage}
-					/>
 				</div>
 			) : (
 				<div>
